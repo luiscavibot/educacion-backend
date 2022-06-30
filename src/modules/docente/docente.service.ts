@@ -34,28 +34,26 @@ export class DocenteService {
     return docente;
   }
 
-  async createOne(dto: CreateDocenteDto) {
-    const docenteExist = await this.docenteRepository.findOne({
+  async createDocente(dto: CreateDocenteDto) {
+    const docenteExiste = await this.docenteRepository.findOne({
       where: { nombre: dto.nombre },
     });
-    if (docenteExist)
-      throw new BadRequestException('docente already registered with email');
+    if (docenteExiste)
+      throw new BadRequestException('Docente ya registrado con ese nombre');
 
     const nuevoDocente = this.docenteRepository.create(dto);
     const docente = await this.docenteRepository.save(nuevoDocente);
 
-    delete docente.nombre;
     return docente;
   }
 
-  async editOne(id: number, dto: EditDocenteDto, docenteEntity?: Docente) {
-    // console.log(dto);
+  async editDocente(id: number, dto: EditDocenteDto, docenteEntity?: Docente) {
     const docente = await this.getById(id, docenteEntity);
     const docenteEditado = Object.assign(docente, dto);
     return await this.docenteRepository.save(docenteEditado);
   }
 
-  async deleteOne(id: number, docenteEntity?: Docente) {
+  async deleteDocente(id: number, docenteEntity?: Docente) {
     const docente = await this.getById(id, docenteEntity);
     return await this.docenteRepository.remove(docente);
   }

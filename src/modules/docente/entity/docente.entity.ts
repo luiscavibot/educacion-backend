@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('docentes')
@@ -10,7 +11,7 @@ export class Docente {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 150 })
+  @Column({ type: 'varchar', nullable: false, length: 150 })
   nombre!: string;
 
   @Column({ type: 'varchar', length: 255 })
@@ -25,6 +26,6 @@ export class Docente {
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 
-  @CreateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updated_at: Date;
 }
