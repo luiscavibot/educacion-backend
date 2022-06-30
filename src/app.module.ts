@@ -1,22 +1,45 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { configService } from './config/config.service';
-import { SequelizeModule } from '@nestjs/sequelize';
+import { TYPEORM_CONFIG } from './config/constants';
+import databaseConfig from './config/database.config';
 import { DocenteModule } from './modules/docente/docente.module';
-import { AuthController } from './modules/auth/auth.controller';
-import { AuthService } from './modules/auth/auth.service';
-import { UsuarioModule } from './modules/usuario/usuario.module';
-import { PerfilModule } from './modules/perfil/perfil.module';
+import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
-    SequelizeModule.forRoot(configService.getSequelizeConfig()),
+    ConfigModule.forRoot({
+      isGlobal: true,
+
+      // Implementar variables prod / dev
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+
+      // ¿Validaciones? https://docs.nestjs.com/techniques/configuration
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string()
+          .valid('development', 'production')
+          .default('development'),
+      }),
+
+      // Load database nameSpaces
+      load: [databaseConfig],
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) =>
+        // Extremos las configuraciones desde el servie
+        config.get<TypeOrmModuleOptions>(TYPEORM_CONFIG),
+    }),
+
     DocenteModule,
-    UsuarioModule,
-    PerfilModule,
+    // AccessControlModule.forRoles(roles),
+    // AuthModule,
+    // UserModule,
+    // PostModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
