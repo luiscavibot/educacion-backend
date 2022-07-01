@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { TYPEORM_CONFIG } from './config/constants';
 import databaseConfig from './config/database.config';
 import { DocenteModule } from './modules/docente/docente.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -34,6 +36,10 @@ import * as Joi from '@hapi/joi';
     }),
 
     DocenteModule,
+
+    AuthModule,
+
+    UsersModule,
     // AccessControlModule.forRoles(roles),
     // AuthModule,
     // UserModule,
