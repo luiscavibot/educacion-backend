@@ -41,7 +41,7 @@ import * as Joi from '@hapi/joi';
 
     UsersModule,
     // AccessControlModule.forRoles(roles),
-    // AuthModule,
+    AuthModule,
     // UserModule,
     // PostModule,
   ],

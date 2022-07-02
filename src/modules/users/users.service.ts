@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Hashing } from '../auth/helpers/bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities';
@@ -12,11 +13,13 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const docenteExiste = await this.userRepository.findOne({
+    const usuarioExiste = await this.userRepository.findOne({
       where: { nombre: createUserDto.nombre },
     });
-    if (docenteExiste)
+    if (usuarioExiste)
       throw new BadRequestException('Usuario ya registrado con este nombre');
+
+    createUserDto.password = await Hashing.generate(createUserDto.password);
     const nuevoUsuario = this.userRepository.create(createUserDto);
     return await this.userRepository.save(nuevoUsuario);
   }
@@ -25,15 +28,17 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(correo: string) {
+    return this.userRepository.findOne({
+      where: { correo },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userRepository.update(id, updateUserDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userRepository.delete(id);
   }
 }
