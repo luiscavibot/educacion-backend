@@ -16,7 +16,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { DocenteService } from './docente.service';
+import { DocenteService } from './docentes.service';
 import { CreateDocenteDto, EditDocenteDto } from './dtos';
 
 @Controller('docentes')
