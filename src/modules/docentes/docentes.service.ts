@@ -12,6 +12,7 @@ export interface DocenteFindOne {
   id?: number;
   nombre?: string;
 }
+
 @Injectable()
 export class DocenteService {
   constructor(
