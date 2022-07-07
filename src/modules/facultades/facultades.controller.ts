@@ -71,11 +71,13 @@ export class FacultadesController {
       ejemplo1: {
         value: {
           nombre: 'Facultad demo 1',
+          areaId: '1',
         },
       },
       ejemplo2: {
         value: {
           nombre: 'Facultad demo 2',
+          areaId: '1',
         },
       },
     },

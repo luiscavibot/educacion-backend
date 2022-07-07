@@ -1,9 +1,12 @@
-import { Area } from 'src/modules/areas/entity';
+import { Area } from '../../areas/entity';
+import { Noticia } from '../../noticias/entity/noticia.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -16,7 +19,11 @@ export class Facultad {
   @Column({ type: 'varchar', nullable: false, length: 300 })
   nombre!: string;
 
-  @ManyToOne(() => Area, (area) => area.facultades)
+  @OneToMany(() => Noticia, (noticia) => noticia.facultad)
+  noticias: Noticia[];
+
+  @ManyToOne(() => Area, (area) => area.facultades, { eager: true })
+  @JoinColumn({ name: 'areaId' })
   area: Area;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
