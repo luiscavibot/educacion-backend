@@ -1,5 +1,6 @@
 import { Facultad } from '../../facultades/entity/facultad.entity';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -10,7 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity('noticias')
-export class Noticia {
+export class Noticia extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,6 +20,12 @@ export class Noticia {
 
   @Column({ type: 'text' })
   subtitulo: string;
+
+  @Column({ type: 'text' })
+  slug: string;
+
+  @Column({ type: 'text' })
+  imagenes: string[];
 
   @Column({ type: 'text' })
   cuerpo: string;

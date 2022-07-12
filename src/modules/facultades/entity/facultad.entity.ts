@@ -1,5 +1,6 @@
 import { Area } from '../../areas/entity';
 import { Noticia } from '../../noticias/entity/noticia.entity';
+import { Carrera } from '../../carreras/entity/carrera.entity';
 import {
   Column,
   CreateDateColumn,
@@ -19,10 +20,16 @@ export class Facultad {
   @Column({ type: 'varchar', nullable: false, length: 300 })
   nombre!: string;
 
+  @Column({ type: 'varchar', nullable: false, length: 300 })
+  slug!: string;
+
   @OneToMany(() => Noticia, (noticia) => noticia.facultad)
   noticias: Noticia[];
 
-  @ManyToOne(() => Area, (area) => area.facultades, { eager: true })
+  @OneToMany(() => Carrera, (carrera) => carrera.facultad)
+  carreras: Carrera[];
+
+  @ManyToOne(() => Area, (area) => area.facultades)
   @JoinColumn({ name: 'areaId' })
   area: Area;
 

@@ -18,21 +18,25 @@ import { PaginationQueryDto } from './dtos/pagination-query.dto';
 @Controller('noticias')
 export class NoticiasController {
   constructor(private readonly noticiaService: NoticiasService) {}
-  @Get()
+
+  @Get(':slug')
   @ApiOperation({
     description: 'Devuelve todas las noticias',
   })
-  async getMany(@Query() pagination: PaginationQueryDto) {
-    const data = await this.noticiaService.getMany(pagination);
+  async getMany(
+    @Param('slug') slug: string,
+    @Query() pagination: PaginationQueryDto,
+  ) {
+    const data = await this.noticiaService.getAll(slug, pagination);
     return { data };
   }
 
-  @Get(':id/ultimas')
+  @Get(':slug/ultimas')
   @ApiOperation({
     description: 'Devuelve las noticias ultimas 4 noticias',
   })
-  async getLastNoticias(@Param('id', ParseIntPipe) id: number) {
-    const data = await this.noticiaService.getLastNoticias(id);
+  async getLastNoticias(@Param('slug') slug: string) {
+    const data = await this.noticiaService.getLastNoticias(slug);
     return { data };
   }
 
