@@ -23,20 +23,76 @@ export class NoticiasService {
   // async getLastNoticias(){
   //   return await this.noticiaRepository.find();
   // }
-  async getLastNoticias(id) {
+  async getLastNoticias(slug) {
     return await this.noticiaRepository
       .createQueryBuilder('noticia')
-      .innerJoinAndSelect('noticia.facultad', 'facultad', 'facultad.id = :id', {
-        id: id,
-      })
+      .innerJoinAndSelect(
+        'noticia.facultad',
+        'facultad',
+        'facultad.slug = :slug',
+        {
+          slug: slug,
+        },
+      )
       .limit(2)
       .orderBy('noticia.created_at', 'DESC')
       .getMany();
   }
 
-  async getMany({ limit, offset }: PaginationQueryDto) {
-    return await this.noticiaRepository.find({ skip: offset, take: limit });
+  async getAll(slug: string, { limit, page }: PaginationQueryDto) {
+    var offset = 0;
+    if (limit && page) {
+      offset = (page - 1) * limit;
+      if (offset < 0) {
+        offset = 0;
+      }
+    }
+
+    console.log(limit, page, offset);
+    return await this.noticiaRepository.findAndCount({});
+    // .createQueryBuilder('noticia')
+    // .innerJoinAndSelect(
+    //   'noticia.facultad',
+    //   'facultad',
+    //   'facultad.slug = :slug',
+    //   {
+    //     slug: slug,
+    //   },
+    // )
+    // .limit(limit)
+    // .offset(offset)
+    // // .skip(Number(offset))
+    // .orderBy('noticia.created_at', 'ASC')
+    // .getMany()
+    // ;
   }
+
+  // async getAll2(slug: string, { limit, page }: PaginationQueryDto) {
+  //   var offset = 0;
+  //   if (limit && page) {
+  //     offset = (page - 1) * limit;
+  //     if (offset < 0) {
+  //       offset = 0;
+  //     }
+  //   }
+
+  //   console.log(limit, page, offset);
+  //   return await this.noticiaRepository
+  //     .createQueryBuilder('noticia')
+  //     .innerJoinAndSelect(
+  //       'noticia.facultad',
+  //       'facultad',
+  //       'facultad.slug = :slug',
+  //       {
+  //         slug: slug,
+  //       },
+  //     )
+  //     .limit(limit)
+  //     .offset(offset)
+  //     // .skip(Number(offset))
+  //     .orderBy('noticia.created_at', 'ASC')
+  //     .getMany();
+  // }
 
   async getById(id: number, noticiaEntity?: Noticia) {
     const noticia = await this.noticiaRepository
