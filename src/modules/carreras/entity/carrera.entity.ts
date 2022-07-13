@@ -48,6 +48,9 @@ export class Carrera {
   tipo: string;
 
   @Column({ type: 'varchar', nullable: false, length: 150 })
+  tipo_posgrado: string;
+
+  @Column({ type: 'varchar', nullable: false, length: 150 })
   tipo_maestria: string;
 
   @ManyToOne(() => Facultad, (facultad) => facultad.carreras, { eager: true })

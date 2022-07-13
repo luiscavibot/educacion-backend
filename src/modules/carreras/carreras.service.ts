@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { Carrera } from './entity/carrera.entity';
 import { CreateCarreraDto } from './dtos/create-carrera.dto';
 import { EditCarreraDto } from './dtos/edit-carrera.dto';
+import { from, map, Observable } from 'rxjs';
 
 export interface CarreraFindOne {
   id?: number;
@@ -20,6 +21,20 @@ export class CarrerasService {
     @InjectRepository(Carrera)
     private readonly carreraRepository: Repository<Carrera>,
   ) {}
+
+  carrerasPregrado(slug: string, tipo: string): Observable<Carrera[]> {
+    return from(
+      this.carreraRepository.find({
+        order: { created_at: 'ASC' },
+        where: {
+          facultad: {
+            slug,
+          },
+          tipo,
+        },
+      }),
+    ).pipe(map((carreras: Carrera[]) => carreras));
+  }
 
   async getMany() {
     return await this.carreraRepository.find();

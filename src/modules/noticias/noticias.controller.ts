@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
@@ -14,6 +15,9 @@ import { NoticiasService } from './noticias.service';
 import { CreateNoticiaDto } from './dtos/create-noticia.dto';
 import { EditNoticiaDto } from './dtos';
 import { PaginationQueryDto } from './dtos/pagination-query.dto';
+import { IPaginationMeta, Pagination } from 'nestjs-typeorm-paginate';
+import { Noticia } from './entity/noticia.entity';
+import { Observable } from 'rxjs';
 
 @Controller('noticias')
 export class NoticiasController {
@@ -21,23 +25,35 @@ export class NoticiasController {
 
   @Get(':slug')
   @ApiOperation({
-    description: 'Devuelve todas las noticias',
+    description: 'Devuelve todas las noticias de una facultad',
   })
-  async getMany(
-    @Param('slug') slug: string,
-    @Query() pagination: PaginationQueryDto,
-  ) {
-    const data = await this.noticiaService.getAll(slug, pagination);
-    return { data };
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+    description: 'url de la facultad',
+  })
+  getAllNoticiasFacultad(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
+    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
+    @Param('slug', new DefaultValuePipe('')) slug: string,
+  ): Observable<Pagination<Noticia>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.noticiaService.paginacionNoticias(
+      {
+        limit,
+        page,
+      },
+      slug,
+    );
   }
 
   @Get(':slug/ultimas')
   @ApiOperation({
     description: 'Devuelve las noticias ultimas 4 noticias',
   })
-  async getLastNoticias(@Param('slug') slug: string) {
-    const data = await this.noticiaService.getLastNoticias(slug);
-    return { data };
+  ultimasNoticias(@Param('slug') slug: string): Observable<Noticia[]> {
+    return this.noticiaService.ultimasNoticias(slug);
   }
 
   @Get(':id')

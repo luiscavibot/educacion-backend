@@ -7,23 +7,28 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { EditCarreraDto } from './dtos/edit-carrera.dto';
 import { CreateCarreraDto } from './dtos/create-carrera.dto';
 import { CarrerasService } from './carreras.service';
+import { Observable } from 'rxjs';
+import { Carrera } from './entity';
 
 @Controller('carreras')
 export class CarrerasController {
   constructor(private readonly carreraService: CarrerasService) {}
 
-  @Get()
+  @Get(':slug')
   @ApiOperation({
     description: 'Devuelve todas las carreras',
   })
-  async getMany() {
-    const data = await this.carreraService.getMany();
-    return { data };
+  carreras(
+    @Param('slug') slug: string,
+    @Query('tipo') tipo: string,
+  ): Observable<Carrera[]> {
+    return this.carreraService.carrerasPregrado(slug, tipo);
   }
 
   @Get(':id')
