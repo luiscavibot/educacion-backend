@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateNoticiaDto, EditNoticiaDto, PaginationQueryDto } from './dtos';
 import { Noticia } from './entity/noticia.entity';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { from, map, Observable } from 'rxjs';
 
 export interface NoticiaFindOne {
   id?: number;
@@ -20,79 +22,52 @@ export class NoticiasService {
     private readonly noticiaRepository: Repository<Noticia>,
   ) {}
 
-  // async getLastNoticias(){
-  //   return await this.noticiaRepository.find();
-  // }
-  async getLastNoticias(slug) {
-    return await this.noticiaRepository
-      .createQueryBuilder('noticia')
-      .innerJoinAndSelect(
-        'noticia.facultad',
-        'facultad',
-        'facultad.slug = :slug',
-        {
-          slug: slug,
+  ultimasNoticias(slug: string): Observable<Noticia[]> {
+    return from(
+      this.noticiaRepository.find({
+        take: 3,
+        order: { created_at: 'DESC' },
+        where: {
+          facultad: {
+            slug,
+          },
         },
-      )
-      .limit(2)
-      .orderBy('noticia.created_at', 'DESC')
-      .getMany();
+      }),
+    ).pipe(map((noticias: Noticia[]) => noticias));
   }
 
-  async getAll(slug: string, { limit, page }: PaginationQueryDto) {
-    var offset = 0;
-    if (limit && page) {
-      offset = (page - 1) * limit;
-      if (offset < 0) {
-        offset = 0;
-      }
-    }
-
-    console.log(limit, page, offset);
-    return await this.noticiaRepository.findAndCount({});
-    // .createQueryBuilder('noticia')
-    // .innerJoinAndSelect(
-    //   'noticia.facultad',
-    //   'facultad',
-    //   'facultad.slug = :slug',
-    //   {
-    //     slug: slug,
-    //   },
-    // )
-    // .limit(limit)
-    // .offset(offset)
-    // // .skip(Number(offset))
-    // .orderBy('noticia.created_at', 'ASC')
-    // .getMany()
-    // ;
+  paginacionNoticias(
+    options: IPaginationOptions,
+    slug: string,
+  ): Observable<Pagination<Noticia>> {
+    return from(
+      this.noticiaRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        order: { id: 'ASC' },
+        select: ['id', 'titulo'],
+        where: {
+          facultad: {
+            slug,
+          },
+        },
+      }),
+    ).pipe(
+      map(([noticias, totalNoticias]) => {
+        const noticiasPageable: Pagination<Noticia> = {
+          items: noticias,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: noticias.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalNoticias,
+            totalPages: Math.ceil(totalNoticias / Number(options.limit)),
+          },
+        };
+        return noticiasPageable;
+      }),
+    );
   }
-
-  // async getAll2(slug: string, { limit, page }: PaginationQueryDto) {
-  //   var offset = 0;
-  //   if (limit && page) {
-  //     offset = (page - 1) * limit;
-  //     if (offset < 0) {
-  //       offset = 0;
-  //     }
-  //   }
-
-  //   console.log(limit, page, offset);
-  //   return await this.noticiaRepository
-  //     .createQueryBuilder('noticia')
-  //     .innerJoinAndSelect(
-  //       'noticia.facultad',
-  //       'facultad',
-  //       'facultad.slug = :slug',
-  //       {
-  //         slug: slug,
-  //       },
-  //     )
-  //     .limit(limit)
-  //     .offset(offset)
-  //     // .skip(Number(offset))
-  //     .orderBy('noticia.created_at', 'ASC')
-  //     .getMany();
-  // }
 
   async getById(id: number, noticiaEntity?: Noticia) {
     const noticia = await this.noticiaRepository
