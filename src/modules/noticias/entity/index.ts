@@ -1,1 +1,1 @@
-export class Index {}
+export * from './noticia.entity';

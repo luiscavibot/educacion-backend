@@ -1,6 +1,7 @@
 import { Area } from '../../areas/entity';
 import { Noticia } from '../../noticias/entity/noticia.entity';
 import { Carrera } from '../../carreras/entity/carrera.entity';
+import { Evento } from '../../eventos/entity/evento.entity';
 import {
   Column,
   CreateDateColumn,
@@ -25,6 +26,9 @@ export class Facultad {
 
   @OneToMany(() => Noticia, (noticia) => noticia.facultad)
   noticias: Noticia[];
+
+  @OneToMany(() => Evento, (evento) => evento.facultad)
+  eventos: Evento[];
 
   @OneToMany(() => Carrera, (carrera) => carrera.facultad)
   carreras: Carrera[];

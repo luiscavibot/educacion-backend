@@ -9,17 +9,26 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { NoticiasService } from './noticias.service';
 import { CreateNoticiaDto } from './dtos/create-noticia.dto';
 import { EditNoticiaDto } from './dtos';
-import { PaginationQueryDto } from './dtos/pagination-query.dto';
-import { IPaginationMeta, Pagination } from 'nestjs-typeorm-paginate';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { Noticia } from './entity/noticia.entity';
 import { Observable } from 'rxjs';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('noticias')
+@ApiTags('noticias')
 export class NoticiasController {
   constructor(private readonly noticiaService: NoticiasService) {}
 
@@ -105,9 +114,11 @@ export class NoticiasController {
       },
     },
   })
-  async createNoticia(@Body() dto: CreateNoticiaDto) {
-    const data = await this.noticiaService.createNoticia({ ...dto });
-    return { message: 'Noticia creada', data };
+  @UseInterceptors(FileInterceptor('file'))
+  async createNoticia(@Body() dto: CreateNoticiaDto, @UploadedFile() file) {
+    dto.foto = file.originalname;
+    const data = await this.noticiaService.createNoticia({ ...dto }, file);
+    return { message: 'Noticia creada', dto };
   }
 
   @Put(':id')

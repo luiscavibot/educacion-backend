@@ -13,6 +13,8 @@ import { FacultadesModule } from './modules/facultades/facultades.module';
 import { NoticiasModule } from './modules/noticias/noticias.module';
 import { EgresadosModule } from './modules/egresados/egresados.module';
 import { CarrerasModule } from './modules/carreras/carreras.module';
+import { StorageModule } from './modules/storage/storage.module';
+import { EventosModule } from './modules/eventos/eventos.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -52,6 +54,8 @@ import * as Joi from '@hapi/joi';
     NoticiasModule,
     EgresadosModule,
     CarrerasModule,
+    StorageModule,
+    EventosModule,
     // UserModule,
     // PostModule,
   ],

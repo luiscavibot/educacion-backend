@@ -9,6 +9,7 @@ import { CreateNoticiaDto, EditNoticiaDto, PaginationQueryDto } from './dtos';
 import { Noticia } from './entity/noticia.entity';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
+import { StorageService } from '../storage/storage.service';
 
 export interface NoticiaFindOne {
   id?: number;
@@ -20,6 +21,7 @@ export class NoticiasService {
   constructor(
     @InjectRepository(Noticia)
     private readonly noticiaRepository: Repository<Noticia>,
+    private readonly storageService: StorageService,
   ) {}
 
   ultimasNoticias(slug: string): Observable<Noticia[]> {
@@ -80,17 +82,17 @@ export class NoticiasService {
     return noticia;
   }
 
-  async createNoticia(dto: CreateNoticiaDto) {
+  async createNoticia(dto: CreateNoticiaDto, file: any) {
     const noticiaExiste = await this.noticiaRepository.findOne({
       where: { titulo: dto.titulo },
     });
     if (noticiaExiste)
       throw new BadRequestException('Noticia ya registrada con ese nombre');
-
     const nuevaNoticia = this.noticiaRepository.create(dto);
     const noticia = await this.noticiaRepository.save(nuevaNoticia);
+    await this.storageService.uploadFile(file);
 
-    return noticia;
+    return { noticia };
   }
 
   async editNoticia(id: number, dto: EditNoticiaDto, noticiaEntity?: Noticia) {
