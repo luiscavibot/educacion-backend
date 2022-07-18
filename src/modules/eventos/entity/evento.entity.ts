@@ -10,22 +10,25 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('noticias')
-export class Noticia extends BaseEntity {
+@Entity('eventos')
+export class Evento extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', nullable: false, length: 200 })
+  @Column({ type: 'varchar', nullable: false })
   titulo!: string;
 
-  @Column({ type: 'text' })
-  subtitulo: string;
+  @Column({ type: 'varchar', nullable: false, length: 150 })
+  tipo_evento: string;
 
-  @Column({ type: 'text' })
-  slug: string;
+  @Column({ type: 'varchar', nullable: false, length: 150 })
+  lugar: string;
 
   @Column({ type: 'text' })
   foto: string;
+
+  @Column({ type: 'timestamp' })
+  fecha: string;
 
   @Column({ type: 'text' })
   cuerpo: string;
@@ -33,7 +36,7 @@ export class Noticia extends BaseEntity {
   @Column({ type: 'simple-array' })
   tags: string[];
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.noticias, { eager: true })
+  @ManyToOne(() => Facultad, (facultad) => facultad.eventos, { eager: true })
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 

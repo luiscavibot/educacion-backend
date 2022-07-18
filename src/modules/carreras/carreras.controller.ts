@@ -9,7 +9,13 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { EditCarreraDto } from './dtos/edit-carrera.dto';
 import { CreateCarreraDto } from './dtos/create-carrera.dto';
 import { CarrerasService } from './carreras.service';
@@ -17,6 +23,7 @@ import { Observable } from 'rxjs';
 import { Carrera } from './entity';
 
 @Controller('carreras')
+@ApiTags('carreras')
 export class CarrerasController {
   constructor(private readonly carreraService: CarrerasService) {}
 
