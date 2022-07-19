@@ -9,6 +9,8 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -23,13 +25,14 @@ import { EditEventoDto } from './dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Evento } from './entity/evento.entity';
 import { Observable } from 'rxjs';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('eventos')
 @ApiTags('eventos')
 export class EventosController {
   constructor(private readonly eventoService: EventoService) {}
 
-  @Get('facultad/:slug')
+  @Get(':slug')
   @ApiOperation({
     description: 'Devuelve todas las eventos de una facultad paginados',
   })
@@ -54,15 +57,15 @@ export class EventosController {
     );
   }
 
-  @Get('facultad/:slug/ultimas')
+  @Get(':slug/ultimos')
   @ApiOperation({
-    description: 'Devuelve las eventos ultimos 4 eventos',
+    description: 'Devuelve los ultimos 4 eventos',
   })
   ultimasEventos(@Param('slug') slug: string): Observable<Evento[]> {
     return this.eventoService.ultimosEventos(slug);
   }
 
-  @Get(':id')
+  @Get('id/:id')
   @ApiOperation({
     description: 'Devuelve una evento dado un id',
   })
@@ -91,7 +94,7 @@ export class EventosController {
   })
   @ApiResponse({
     status: 409,
-    description: `La notcia existe`,
+    description: `El evento existe`,
   })
   @ApiBody({
     description: 'Crea una nueva evento usando una EventoDto',
@@ -111,8 +114,13 @@ export class EventosController {
       },
     },
   })
-  async createEvento(@Body() dto: CreateEventoDto) {
-    const data = await this.eventoService.createEvento({ ...dto });
+  @UseInterceptors(FileInterceptor('file'))
+  async createEvento(@Body() dto: CreateEventoDto, @UploadedFile() file) {
+    console.log(file);
+    if (file) {
+      dto.foto = file.originalname;
+    }
+    const data = await this.eventoService.createEvento({ ...dto }, file);
     return { message: 'Evento creado', data };
   }
 
