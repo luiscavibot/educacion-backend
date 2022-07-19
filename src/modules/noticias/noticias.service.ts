@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateNoticiaDto, EditNoticiaDto, PaginationQueryDto } from './dtos';
+import { CreateNoticiaDto, EditNoticiaDto } from './dtos';
 import { Noticia } from './entity/noticia.entity';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
