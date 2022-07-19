@@ -59,13 +59,21 @@ export class NoticiasController {
 
   @Get(':slug/ultimas')
   @ApiOperation({
-    description: 'Devuelve las noticias ultimas 4 noticias',
+    description: 'Devuelve las ultimas noticias (4)',
   })
   ultimasNoticias(@Param('slug') slug: string): Observable<Noticia[]> {
     return this.noticiaService.ultimasNoticias(slug);
   }
 
-  @Get(':id')
+  @Get(':slug/destacadas')
+  @ApiOperation({
+    description: 'Devuelve las noticias destacadas',
+  })
+  destacadasNoticias(@Param('slug') slug: string): Observable<Noticia[]> {
+    return this.noticiaService.destacadasNoticias(slug);
+  }
+
+  @Get('id/:id')
   @ApiOperation({
     description: 'Devuelve una noticia dado un id',
   })
@@ -94,7 +102,7 @@ export class NoticiasController {
   })
   @ApiResponse({
     status: 409,
-    description: `La notcia existe`,
+    description: `La noticia existe`,
   })
   @ApiBody({
     description: 'Crea una nueva noticia usando una NoticiaDto',
@@ -151,7 +159,15 @@ export class NoticiasController {
       },
     },
   })
-  async editNoticia(@Param('id') id: number, @Body() dto: EditNoticiaDto) {
+  @UseInterceptors(FileInterceptor('file'))
+  async editNoticia(
+    @Param('id') id: number,
+    @Body() dto: EditNoticiaDto,
+    @UploadedFile() file,
+  ) {
+    if (file) {
+      dto.foto = file.originalname;
+    }
     let data;
     data = await this.noticiaService.editNoticia(id, dto);
     return { message: 'Noticia editada', data };

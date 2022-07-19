@@ -5,9 +5,11 @@ export class CreateEventoDto {
   @IsString()
   titulo: string;
 
+  @IsOptional()
   @IsArray()
   tags: string[];
 
+  @IsOptional()
   @IsString()
   cuerpo: string;
 

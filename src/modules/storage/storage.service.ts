@@ -1,4 +1,4 @@
-import { Injectable, Req, Res } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 
 @Injectable()
@@ -45,5 +45,14 @@ export class StorageService {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async deleteFile(key: string) {
+    return await this.s3
+      .deleteObject({
+        Bucket: this.AWS_S3_BUCKET,
+        Key: key,
+      })
+      .promise();
   }
 }
