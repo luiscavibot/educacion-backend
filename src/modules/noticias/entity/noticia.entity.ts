@@ -33,6 +33,12 @@ export class Noticia extends BaseEntity {
   @Column({ type: 'simple-array' })
   tags: string[];
 
+  @Column({ type: 'boolean' })
+  destacado: boolean;
+
+  @Column({ type: 'timestamp' })
+  fecha: Date;
+
   @ManyToOne(() => Facultad, (facultad) => facultad.noticias, { eager: true })
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;

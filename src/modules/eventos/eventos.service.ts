@@ -9,6 +9,7 @@ import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
 import { Evento } from './entity/evento.entity';
 import { CreateEventoDto, EditEventoDto } from './dto';
+import { StorageService } from '../storage/storage.service';
 
 export interface EventoFindOne {
   id?: number;
@@ -20,6 +21,7 @@ export class EventoService {
   constructor(
     @InjectRepository(Evento)
     private readonly eventoRepository: Repository<Evento>,
+    private readonly storageService: StorageService,
   ) {}
 
   ultimosEventos(slug: string): Observable<Evento[]> {
@@ -80,7 +82,7 @@ export class EventoService {
     return evento;
   }
 
-  async createEvento(dto: CreateEventoDto) {
+  async createEvento(dto: CreateEventoDto, file: any) {
     const eventoExiste = await this.eventoRepository.findOne({
       where: { titulo: dto.titulo },
     });
@@ -89,8 +91,8 @@ export class EventoService {
 
     const nuevoEvento = this.eventoRepository.create(dto);
     const evento = await this.eventoRepository.save(nuevoEvento);
-
-    return evento;
+    await this.storageService.uploadFile(file);
+    return { evento };
   }
 
   async editEvento(id: number, dto: EditEventoDto, eventoEntity?: Evento) {

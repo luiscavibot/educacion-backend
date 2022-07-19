@@ -28,11 +28,27 @@ export class NoticiasService {
     return from(
       this.noticiaRepository.find({
         take: 3,
+        order: { fecha: 'DESC' },
+        where: {
+          facultad: {
+            slug,
+          },
+          destacado: false,
+        },
+      }),
+    ).pipe(map((noticias: Noticia[]) => noticias));
+  }
+
+  destacadasNoticias(slug: string): Observable<Noticia[]> {
+    return from(
+      this.noticiaRepository.find({
+        take: 3,
         order: { created_at: 'DESC' },
         where: {
           facultad: {
             slug,
           },
+          destacado: true,
         },
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));
@@ -97,6 +113,9 @@ export class NoticiasService {
 
   async editNoticia(id: number, dto: EditNoticiaDto, noticiaEntity?: Noticia) {
     const noticia = await this.getById(id, noticiaEntity);
+    if (noticia.foto != '') {
+      await this.storageService.deleteFile(noticia.foto);
+    }
     const noticiaEditado = Object.assign(noticia, dto);
     return await this.noticiaRepository.save(noticiaEditado);
   }
