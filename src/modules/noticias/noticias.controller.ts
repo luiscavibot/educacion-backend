@@ -124,9 +124,11 @@ export class NoticiasController {
   })
   @UseInterceptors(FileInterceptor('file'))
   async createNoticia(@Body() dto: CreateNoticiaDto, @UploadedFile() file) {
-    dto.foto = file.originalname;
+    if (file) {
+      dto.foto = file.originalname;
+    }
     const data = await this.noticiaService.createNoticia({ ...dto }, file);
-    return { message: 'Noticia creada', dto };
+    return { message: 'Noticia creada', data };
   }
 
   @Put(':id')
@@ -169,7 +171,7 @@ export class NoticiasController {
       dto.foto = file.originalname;
     }
     let data;
-    data = await this.noticiaService.editNoticia(id, dto);
+    data = await this.noticiaService.editNoticia(id, dto, file);
     return { message: 'Noticia editada', data };
   }
 

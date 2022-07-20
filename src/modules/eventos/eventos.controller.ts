@@ -116,7 +116,6 @@ export class EventosController {
   })
   @UseInterceptors(FileInterceptor('file'))
   async createEvento(@Body() dto: CreateEventoDto, @UploadedFile() file) {
-    console.log(file);
     if (file) {
       dto.foto = file.originalname;
     }
@@ -154,9 +153,16 @@ export class EventosController {
       },
     },
   })
-  async editEvento(@Param('id') id: number, @Body() dto: EditEventoDto) {
+  async editEvento(
+    @Param('id') id: number,
+    @Body() dto: EditEventoDto,
+    @UploadedFile() file,
+  ) {
+    if (file) {
+      dto.foto = file.originalname;
+    }
     let data;
-    data = await this.eventoService.editEvento(id, dto);
+    data = await this.eventoService.editEvento(id, dto, file);
     return { message: 'Evento editada', data };
   }
 
