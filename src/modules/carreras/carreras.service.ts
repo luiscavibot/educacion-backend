@@ -44,24 +44,6 @@ export class CarrerasService {
     ).pipe(map((carreras: Carrera[]) => carreras));
   }
 
-  // carreraPregrado(
-  //   slug: string,
-  //   nombre: string,
-  //   tipo: string,
-  // ): Observable<Carrera> {
-  //   return from(
-  //     this.carreraRepository.findOne({
-  //       where: {
-  //         facultad: {
-  //           slug,
-  //         },
-  //         slug: nombre,
-  //         tipo,
-  //       },
-  //     }),
-  //   ).pipe(map((carreras: Carrera) => carreras));
-  // }
-
   async getMany() {
     return await this.carreraRepository.find();
   }
