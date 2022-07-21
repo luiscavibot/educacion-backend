@@ -8,6 +8,8 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -21,6 +23,7 @@ import { CreateCarreraDto } from './dtos/create-carrera.dto';
 import { CarrerasService } from './carreras.service';
 import { Observable } from 'rxjs';
 import { Carrera } from './entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('carreras')
 @ApiTags('carreras')
@@ -33,9 +36,18 @@ export class CarrerasController {
   })
   carreras(
     @Param('slug') slug: string,
+    @Query('nombre') nombre: string,
     @Query('tipo') tipo: string,
   ): Observable<Carrera[]> {
-    return this.carreraService.carrerasPregrado(slug, tipo);
+    return this.carreraService.carrerasPregrado(slug, nombre, tipo);
+  }
+
+  @Get('')
+  @ApiOperation({
+    description: 'Devuelve una carrera por el slug',
+  })
+  carrera(@Query('slug') slug: string): Observable<Carrera> {
+    return this.carreraService.carreraPregrado(slug);
   }
 
   @Get(':id')
@@ -85,8 +97,12 @@ export class CarrerasController {
       },
     },
   })
-  async createCarrera(@Body() dto: CreateCarreraDto) {
-    const data = await this.carreraService.createCarrera({ ...dto });
+  @UseInterceptors(FileInterceptor('file'))
+  async createCarrera(@Body() dto: CreateCarreraDto, @UploadedFile() file) {
+    if (file) {
+      dto.foto = file.originalname;
+    }
+    const data = await this.carreraService.createCarrera({ ...dto }, file);
     return { message: 'Carrera creada', data };
   }
 
