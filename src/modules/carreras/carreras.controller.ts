@@ -42,13 +42,17 @@ export class CarrerasController {
     return this.carreraService.carrerasPregrado(slug, nombre, tipo);
   }
 
-  @Get('')
-  @ApiOperation({
-    description: 'Devuelve una carrera por el slug',
-  })
-  carrera(@Query('slug') slug: string): Observable<Carrera> {
-    return this.carreraService.carreraPregrado(slug);
-  }
+  // @Get(':slug')
+  // @ApiOperation({
+  //   description: 'Devuelve una carrera por el slug',
+  // })
+  // carrera(
+  //   @Param('slug') slug: string,
+  //   @Query('nombre') nombre: string,
+  //   @Query('tipo') tipo: string,
+  // ): Observable<Carrera> {
+  //   return this.carreraService.carreraPregrado(slug, nombre, tipo);
+  // }
 
   @Get(':id')
   @ApiOperation({
