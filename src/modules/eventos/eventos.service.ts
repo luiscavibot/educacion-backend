@@ -91,12 +91,25 @@ export class EventoService {
 
     const nuevoEvento = this.eventoRepository.create(dto);
     const evento = await this.eventoRepository.save(nuevoEvento);
-    await this.storageService.uploadFile(file);
+    if (file) {
+      await this.storageService.uploadFile(file);
+    }
     return { evento };
   }
 
-  async editEvento(id: number, dto: EditEventoDto, eventoEntity?: Evento) {
+  async editEvento(
+    id: number,
+    dto: EditEventoDto,
+    file: any,
+    eventoEntity?: Evento,
+  ) {
     const evento = await this.getById(id, eventoEntity);
+    if (evento.foto != '' && file) {
+      await this.storageService.deleteFile(evento.foto);
+    }
+    if (file) {
+      await this.storageService.uploadFile(file);
+    }
     const eventoEditado = Object.assign(evento, dto);
     return await this.eventoRepository.save(eventoEditado);
   }

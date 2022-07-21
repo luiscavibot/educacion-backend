@@ -104,17 +104,28 @@ export class NoticiasService {
     });
     if (noticiaExiste)
       throw new BadRequestException('Noticia ya registrada con ese nombre');
+
     const nuevaNoticia = this.noticiaRepository.create(dto);
     const noticia = await this.noticiaRepository.save(nuevaNoticia);
-    await this.storageService.uploadFile(file);
+    if (file) {
+      await this.storageService.uploadFile(file);
+    }
 
     return { noticia };
   }
 
-  async editNoticia(id: number, dto: EditNoticiaDto, noticiaEntity?: Noticia) {
+  async editNoticia(
+    id: number,
+    dto: EditNoticiaDto,
+    file: any,
+    noticiaEntity?: Noticia,
+  ) {
     const noticia = await this.getById(id, noticiaEntity);
-    if (noticia.foto != '') {
+    if (noticia.foto != '' && file) {
       await this.storageService.deleteFile(noticia.foto);
+    }
+    if (file) {
+      await this.storageService.uploadFile(file);
     }
     const noticiaEditado = Object.assign(noticia, dto);
     return await this.noticiaRepository.save(noticiaEditado);
