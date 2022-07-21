@@ -18,7 +18,19 @@ export class Carrera {
   nombre!: string;
 
   @Column({ type: 'text', nullable: false })
+  slug: string;
+
+  @Column({ type: 'text', nullable: false })
+  foto: string;
+
+  @Column({ type: 'text', nullable: false })
   descripcion: string;
+
+  @Column({ type: 'text', nullable: false })
+  grado: string;
+
+  @Column({ type: 'text', nullable: false })
+  titulo: string;
 
   @Column({ type: 'text', nullable: false })
   duracion: string;
