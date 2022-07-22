@@ -5,9 +5,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TYPEORM_CONFIG } from './config/constants';
 import databaseConfig from './config/database.config';
-import { DocenteModule } from './modules/docente/docente.module';
+import { DocenteModule } from './modules/docentes/docentes.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { AreasModule } from './modules/areas/areas.module';
+import { FacultadesModule } from './modules/facultades/facultades.module';
+import { NoticiasModule } from './modules/noticias/noticias.module';
+import { EgresadosModule } from './modules/egresados/egresados.module';
+import { CarrerasModule } from './modules/carreras/carreras.module';
+import { StorageModule } from './modules/storage/storage.module';
+import { EventosModule } from './modules/eventos/eventos.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -42,6 +49,13 @@ import * as Joi from '@hapi/joi';
     UsersModule,
     // AccessControlModule.forRoles(roles),
     AuthModule,
+    AreasModule,
+    FacultadesModule,
+    NoticiasModule,
+    EgresadosModule,
+    CarrerasModule,
+    StorageModule,
+    EventosModule,
     // UserModule,
     // PostModule,
   ],
