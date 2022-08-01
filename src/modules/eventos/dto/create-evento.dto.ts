@@ -5,6 +5,9 @@ export class CreateEventoDto {
   @IsString()
   titulo: string;
 
+  @IsString()
+  slug: string;
+
   @IsOptional()
   @IsArray()
   tags: string[];

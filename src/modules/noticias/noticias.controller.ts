@@ -28,7 +28,6 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Noticia } from './entity/noticia.entity';
 import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 
 @Controller('noticias')
 @ApiTags('noticias')

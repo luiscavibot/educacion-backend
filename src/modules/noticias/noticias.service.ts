@@ -11,7 +11,7 @@ import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
-import slugify from 'slugify';
+import { generateSlug } from '../../helpers/generateSlug';
 
 export interface NoticiaFindOne {
   id?: number;
@@ -101,22 +101,23 @@ export class NoticiasService {
   }
 
   async createNoticia(dto: CreateNoticiaDto, file: any) {
-    const noticiaExiste = await this.noticiaRepository.findOne({
-      where: { titulo: dto.titulo, facultadId: dto.facultadId },
-    });
+    const hash = Date.now().toString();
+    // const noticiaExiste = await this.noticiaRepository.findOne({
+    //   where: { titulo: dto.titulo, fecha: dto.fecha },
+    // });
 
-    if (noticiaExiste)
-      throw new BadRequestException('Noticia ya registrada con ese nombre');
+    // if (noticiaExiste)
+    //   throw new BadRequestException('Noticia ya registrada con ese nombre');
 
-    dto.slug = await this.generateSlug(dto.titulo);
+    dto.slug = await generateSlug(dto.titulo, hash);
 
     if (file) {
-      const nombre = fileFilterName(file);
-      dto.foto = nombre;
-      if (!nombre) {
+      const nombre_foto = fileFilterName(file, hash);
+      dto.foto = nombre_foto;
+      if (!nombre_foto) {
         throw new BadRequestException('Archivo no válido');
       }
-      await this.storageService.uploadFile(file, nombre);
+      await this.storageService.uploadFile(file, nombre_foto);
     }
     const nuevaNoticia = this.noticiaRepository.create(dto);
     const noticia = await this.noticiaRepository.save(nuevaNoticia);
@@ -136,12 +137,15 @@ export class NoticiasService {
     }
 
     if (file) {
-      const nombre = fileFilterName(file);
-      dto.foto = nombre;
-      if (nombre) {
-        await this.storageService.uploadFile(file, nombre);
+      const hash = Date.now().toString();
+      const nombre_foto = fileFilterName(file, hash);
+      dto.foto = nombre_foto;
+      if (!nombre_foto) {
+        throw new BadRequestException('Archivo no válido');
       }
+      await this.storageService.uploadFile(file, nombre_foto);
     }
+
     const noticiaEditado = Object.assign(noticia, dto);
     return await this.noticiaRepository.save(noticiaEditado);
   }
@@ -149,10 +153,6 @@ export class NoticiasService {
   async deleteNoticia(id: number, noticiaEntity?: Noticia) {
     const noticia = await this.getById(id, noticiaEntity);
     return await this.noticiaRepository.remove(noticia);
-  }
-
-  async generateSlug(title: string) {
-    return await slugify(title, { lower: true });
   }
 
   async findOne(data: NoticiaFindOne) {

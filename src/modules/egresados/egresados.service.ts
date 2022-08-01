@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { StorageService } from '../storage/storage.service';
 import { CreateEgresadoDto, EditEgresadoDto } from './dtos';
 import { Egresado } from './entity';
+import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 
 @Injectable()
 export class EgresadosService {
@@ -69,11 +70,18 @@ export class EgresadosService {
     if (egresadoExiste)
       throw new BadRequestException('Egresado ya registrado con ese nombre');
 
+    const hash = Date.now().toString();
+    if (file) {
+      const nombre = fileFilterName(file, hash);
+      dto.foto = nombre;
+      if (!nombre) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      await this.storageService.uploadFile(file, nombre);
+    }
+
     const nuevoEgresado = this.egresadoRepository.create(dto);
     const egresado = await this.egresadoRepository.save(nuevoEgresado);
-    // if (file) {
-    //   await this.storageService.uploadFile(file);
-    // }
 
     return { egresado };
   }
@@ -88,9 +96,15 @@ export class EgresadosService {
     if (egresado.foto != '' && file) {
       await this.storageService.deleteFile(egresado.foto);
     }
-    // if (file) {
-    //   await this.storageService.uploadFile(file);
-    // }
+    const hash = Date.now().toString();
+    if (file) {
+      const nombre = fileFilterName(file, hash);
+      dto.foto = nombre;
+      if (!nombre) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      await this.storageService.uploadFile(file, nombre);
+    }
     const egresadoEditado = Object.assign(egresado, dto);
     return await this.egresadoRepository.save(egresadoEditado);
   }
