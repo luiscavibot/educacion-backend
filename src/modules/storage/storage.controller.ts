@@ -13,10 +13,10 @@ import { StorageService } from './storage.service';
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile() file) {
-    let data = await this.storageService.uploadFile(file);
-    return { message: 'Imagen subida', data };
-  }
+  // @Post('upload')
+  // @UseInterceptors(FileInterceptor('file'))
+  // async upload(@UploadedFile() file) {
+  //   let data = await this.storageService.uploadFile(file);
+  //   return { message: 'Imagen subida', data };
+  // }
 }

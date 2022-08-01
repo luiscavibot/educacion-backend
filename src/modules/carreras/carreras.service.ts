@@ -11,6 +11,8 @@ import { EditCarreraDto } from './dtos/edit-carrera.dto';
 import { from, map, Observable, of, switchMap } from 'rxjs';
 import slugify from 'slugify';
 import { StorageService } from '../storage/storage.service';
+import { generateSlug } from '../../helpers/generateSlug';
+import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 
 export interface CarreraFindOne {
   id?: number;
@@ -66,25 +68,23 @@ export class CarrerasService {
     if (carreraExiste)
       throw new BadRequestException('Carrera ya registrada con ese nombre');
 
-    dto.slug = await this.generateSlug(dto.nombre);
+    const hash = Date.now().toString();
+
+    dto.slug = await generateSlug(dto.nombre);
+
+    if (file) {
+      const nombre = fileFilterName(file, hash);
+      dto.foto = nombre;
+      if (!nombre) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      await this.storageService.uploadFile(file, nombre);
+    }
     const nuevaCarrera = this.carreraRepository.create(dto);
     const carrera = await this.carreraRepository.save(nuevaCarrera);
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
 
     return carrera;
   }
-
-  // create(carrera: Carrera): Observable<Carrera> {
-  //   return this.generateSlug(carrera.nombre).pipe(
-  //     switchMap((slug: string) => {
-  //       carrera.slug = slug;
-  //       // return from(carrera);
-  //       return from(this.carreraRepository.save(carrera));
-  //     }),
-  //   );
-  // }
 
   async editCarrera(id: number, dto: EditCarreraDto, carreraEntity?: Carrera) {
     const carrera = await this.getById(id, carreraEntity);
@@ -95,10 +95,6 @@ export class CarrerasService {
   async deleteCarrera(id: number, carreraEntity?: Carrera) {
     const carrera = await this.getById(id, carreraEntity);
     return await this.carreraRepository.remove(carrera);
-  }
-
-  async generateSlug(title: string) {
-    return await slugify(title, { lower: true });
   }
 
   async findOne(data: CarreraFindOne) {

@@ -10,6 +10,8 @@ import { Noticia } from './entity/noticia.entity';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
+import { fileFilterName } from '../../helpers/fileFilerName.helpers';
+import { generateSlug } from '../../helpers/generateSlug';
 
 export interface NoticiaFindOne {
   id?: number;
@@ -99,17 +101,26 @@ export class NoticiasService {
   }
 
   async createNoticia(dto: CreateNoticiaDto, file: any) {
-    const noticiaExiste = await this.noticiaRepository.findOne({
-      where: { titulo: dto.titulo },
-    });
-    if (noticiaExiste)
-      throw new BadRequestException('Noticia ya registrada con ese nombre');
+    const hash = Date.now().toString();
+    // const noticiaExiste = await this.noticiaRepository.findOne({
+    //   where: { titulo: dto.titulo, fecha: dto.fecha },
+    // });
 
+    // if (noticiaExiste)
+    //   throw new BadRequestException('Noticia ya registrada con ese nombre');
+
+    dto.slug = await generateSlug(dto.titulo, hash);
+
+    if (file) {
+      const nombre_foto = fileFilterName(file, hash);
+      dto.foto = nombre_foto;
+      if (!nombre_foto) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      await this.storageService.uploadFile(file, nombre_foto);
+    }
     const nuevaNoticia = this.noticiaRepository.create(dto);
     const noticia = await this.noticiaRepository.save(nuevaNoticia);
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
 
     return { noticia };
   }
@@ -124,9 +135,17 @@ export class NoticiasService {
     if (noticia.foto != '' && file) {
       await this.storageService.deleteFile(noticia.foto);
     }
+
     if (file) {
-      await this.storageService.uploadFile(file);
+      const hash = Date.now().toString();
+      const nombre_foto = fileFilterName(file, hash);
+      dto.foto = nombre_foto;
+      if (!nombre_foto) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      await this.storageService.uploadFile(file, nombre_foto);
     }
+
     const noticiaEditado = Object.assign(noticia, dto);
     return await this.noticiaRepository.save(noticiaEditado);
   }

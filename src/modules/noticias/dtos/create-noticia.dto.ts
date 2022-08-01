@@ -14,6 +14,10 @@ export class CreateNoticiaDto {
 
   @IsOptional()
   @IsString()
+  slug: string;
+
+  @IsOptional()
+  @IsString()
   subtitulo: string;
 
   @IsOptional()
@@ -35,4 +39,7 @@ export class CreateNoticiaDto {
   @IsOptional()
   @IsBoolean()
   destacado: boolean;
+
+  @IsOptional()
+  facultadId: number;
 }

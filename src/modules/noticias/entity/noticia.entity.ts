@@ -43,6 +43,9 @@ export class Noticia extends BaseEntity {
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 
+  @Column({ type: 'int' })
+  facultadId: number;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 
