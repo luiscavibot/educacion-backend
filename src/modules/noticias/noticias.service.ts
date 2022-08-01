@@ -10,6 +10,8 @@ import { Noticia } from './entity/noticia.entity';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
+import { fileFilterName } from '../../helpers/fileFilerName.helpers';
+import slugify from 'slugify';
 
 export interface NoticiaFindOne {
   id?: number;
@@ -100,16 +102,24 @@ export class NoticiasService {
 
   async createNoticia(dto: CreateNoticiaDto, file: any) {
     const noticiaExiste = await this.noticiaRepository.findOne({
-      where: { titulo: dto.titulo },
+      where: { titulo: dto.titulo, facultadId: dto.facultadId },
     });
+
     if (noticiaExiste)
       throw new BadRequestException('Noticia ya registrada con ese nombre');
 
+    dto.slug = await this.generateSlug(dto.titulo);
+
+    if (file) {
+      const nombre = fileFilterName(file);
+      dto.foto = nombre;
+      if (!nombre) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      await this.storageService.uploadFile(file, nombre);
+    }
     const nuevaNoticia = this.noticiaRepository.create(dto);
     const noticia = await this.noticiaRepository.save(nuevaNoticia);
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
 
     return { noticia };
   }
@@ -124,8 +134,13 @@ export class NoticiasService {
     if (noticia.foto != '' && file) {
       await this.storageService.deleteFile(noticia.foto);
     }
+
     if (file) {
-      await this.storageService.uploadFile(file);
+      const nombre = fileFilterName(file);
+      dto.foto = nombre;
+      if (nombre) {
+        await this.storageService.uploadFile(file, nombre);
+      }
     }
     const noticiaEditado = Object.assign(noticia, dto);
     return await this.noticiaRepository.save(noticiaEditado);
@@ -134,6 +149,10 @@ export class NoticiasService {
   async deleteNoticia(id: number, noticiaEntity?: Noticia) {
     const noticia = await this.getById(id, noticiaEntity);
     return await this.noticiaRepository.remove(noticia);
+  }
+
+  async generateSlug(title: string) {
+    return await slugify(title, { lower: true });
   }
 
   async findOne(data: NoticiaFindOne) {

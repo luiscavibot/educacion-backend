@@ -69,9 +69,9 @@ export class CarrerasService {
     dto.slug = await this.generateSlug(dto.nombre);
     const nuevaCarrera = this.carreraRepository.create(dto);
     const carrera = await this.carreraRepository.save(nuevaCarrera);
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
+    // if (file) {
+    //   await this.storageService.uploadFile(file);
+    // }
 
     return carrera;
   }

@@ -4,11 +4,13 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
   Put,
   Query,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -26,6 +28,7 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Noticia } from './entity/noticia.entity';
 import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 
 @Controller('noticias')
 @ApiTags('noticias')
@@ -123,12 +126,25 @@ export class NoticiasController {
     },
   })
   @UseInterceptors(FileInterceptor('file'))
-  async createNoticia(@Body() dto: CreateNoticiaDto, @UploadedFile() file) {
-    if (file) {
-      dto.foto = file.originalname;
+  async createNoticia(
+    @Body() dto: CreateNoticiaDto,
+    @UploadedFile() file,
+    @Res() response,
+  ) {
+    try {
+      const data = await this.noticiaService.createNoticia({ ...dto }, file);
+      response.status(HttpStatus.CREATED).json({
+        status: HttpStatus.CREATED,
+        message: 'Creación exitosa',
+        data,
+      });
+    } catch (error) {
+      response.status(HttpStatus.FORBIDDEN).json({
+        status: HttpStatus.FORBIDDEN,
+        message: 'Hubo un error al crear registro',
+        error: error.message,
+      });
     }
-    const data = await this.noticiaService.createNoticia({ ...dto }, file);
-    return { message: 'Noticia creada', data };
   }
 
   @Put(':id')

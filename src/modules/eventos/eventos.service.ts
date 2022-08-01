@@ -91,9 +91,9 @@ export class EventoService {
 
     const nuevoEvento = this.eventoRepository.create(dto);
     const evento = await this.eventoRepository.save(nuevoEvento);
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
+    // if (file) {
+    //   await this.storageService.uploadFile(file);
+    // }
     return { evento };
   }
 
@@ -107,9 +107,9 @@ export class EventoService {
     if (evento.foto != '' && file) {
       await this.storageService.deleteFile(evento.foto);
     }
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
+    // if (file) {
+    //   await this.storageService.uploadFile(file);
+    // }
     const eventoEditado = Object.assign(evento, dto);
     return await this.eventoRepository.save(eventoEditado);
   }

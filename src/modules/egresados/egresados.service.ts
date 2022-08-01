@@ -71,9 +71,9 @@ export class EgresadosService {
 
     const nuevoEgresado = this.egresadoRepository.create(dto);
     const egresado = await this.egresadoRepository.save(nuevoEgresado);
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
+    // if (file) {
+    //   await this.storageService.uploadFile(file);
+    // }
 
     return { egresado };
   }
@@ -88,9 +88,9 @@ export class EgresadosService {
     if (egresado.foto != '' && file) {
       await this.storageService.deleteFile(egresado.foto);
     }
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
+    // if (file) {
+    //   await this.storageService.uploadFile(file);
+    // }
     const egresadoEditado = Object.assign(egresado, dto);
     return await this.egresadoRepository.save(egresadoEditado);
   }
