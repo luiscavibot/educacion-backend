@@ -28,6 +28,9 @@ export class Noticia extends BaseEntity {
   foto: string;
 
   @Column({ type: 'text' })
+  pie_foto: string;
+
+  @Column({ type: 'text' })
   cuerpo: string;
 
   @Column({ type: 'simple-array' })
@@ -35,6 +38,9 @@ export class Noticia extends BaseEntity {
 
   @Column({ type: 'boolean' })
   destacado: boolean;
+
+  @Column({ type: 'boolean' })
+  estado: boolean;
 
   @Column({ type: 'timestamp' })
   fecha: Date;

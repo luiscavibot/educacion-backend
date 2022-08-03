@@ -35,6 +35,21 @@ export class DocenteService {
     return docente;
   }
 
+  async getByNombre(nombre: string, docenteEntity?: Docente) {
+    const docente = await this.docenteRepository
+      .findOne({ where: { nombre } })
+      .then((d) =>
+        !docenteEntity
+          ? d
+          : !!d && docenteEntity.nombre === d.nombre
+          ? d
+          : null,
+      );
+    if (!docente)
+      throw new NotFoundException('Docente no existe o no está autorizado');
+    return docente;
+  }
+
   async createDocente(dto: CreateDocenteDto) {
     const docenteExiste = await this.docenteRepository.findOne({
       where: { nombre: dto.nombre },

@@ -1,7 +1,9 @@
+import { CarreraDocente } from '../../carreras-docentes/entity/carrera-docente.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,6 +24,12 @@ export class Docente {
 
   @Column({ type: 'text' })
   descripcion: string;
+
+  @OneToMany(
+    () => CarreraDocente,
+    (carrera_docente) => carrera_docente.carreras,
+  )
+  carrera_docente: CarreraDocente[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
