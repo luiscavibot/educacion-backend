@@ -7,6 +7,7 @@ import {
   Body,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -49,6 +50,12 @@ export class DocenteController {
   })
   async getById(@Param('id', ParseIntPipe) id: number) {
     const data = await this.docenteService.getById(id);
+    return { data };
+  }
+
+  @Get('')
+  async getByNombre(@Query('nombre') nombre: string) {
+    const data = await this.docenteService.getByNombre(nombre);
     return { data };
   }
 

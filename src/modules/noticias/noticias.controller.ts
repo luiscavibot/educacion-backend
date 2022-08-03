@@ -4,11 +4,13 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
   Put,
   Query,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -123,12 +125,25 @@ export class NoticiasController {
     },
   })
   @UseInterceptors(FileInterceptor('file'))
-  async createNoticia(@Body() dto: CreateNoticiaDto, @UploadedFile() file) {
-    if (file) {
-      dto.foto = file.originalname;
+  async createNoticia(
+    @Body() dto: CreateNoticiaDto,
+    @UploadedFile() file,
+    @Res() response,
+  ) {
+    try {
+      const data = await this.noticiaService.createNoticia({ ...dto }, file);
+      response.status(HttpStatus.CREATED).json({
+        status: HttpStatus.CREATED,
+        message: 'Creación exitosa',
+        data,
+      });
+    } catch (error) {
+      response.status(HttpStatus.FORBIDDEN).json({
+        status: HttpStatus.FORBIDDEN,
+        message: 'Hubo un error al crear registro',
+        error: error.message,
+      });
     }
-    const data = await this.noticiaService.createNoticia({ ...dto }, file);
-    return { message: 'Noticia creada', data };
   }
 
   @Put(':id')

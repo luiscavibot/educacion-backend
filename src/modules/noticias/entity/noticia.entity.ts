@@ -28,20 +28,29 @@ export class Noticia extends BaseEntity {
   foto: string;
 
   @Column({ type: 'text' })
+  pie_foto: string;
+
+  @Column({ type: 'text' })
   cuerpo: string;
-
-  @Column({ type: 'simple-array' })
-  tags: string[];
-
-  @Column({ type: 'boolean' })
-  destacado: boolean;
 
   @Column({ type: 'timestamp' })
   fecha: Date;
 
+  @Column({ type: 'boolean' })
+  destacado: boolean;
+
+  @Column({ type: 'boolean' })
+  estado: boolean;
+
+  @Column({ type: 'text' })
+  resumen: string;
+
   @ManyToOne(() => Facultad, (facultad) => facultad.noticias, { eager: true })
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
+
+  @Column({ type: 'int' })
+  facultadId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

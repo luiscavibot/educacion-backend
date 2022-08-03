@@ -10,6 +10,8 @@ import { from, map, Observable } from 'rxjs';
 import { Evento } from './entity/evento.entity';
 import { CreateEventoDto, EditEventoDto } from './dto';
 import { StorageService } from '../storage/storage.service';
+import { generateSlug } from '../../helpers/generateSlug';
+import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 
 export interface EventoFindOne {
   id?: number;
@@ -83,17 +85,19 @@ export class EventoService {
   }
 
   async createEvento(dto: CreateEventoDto, file: any) {
-    const eventoExiste = await this.eventoRepository.findOne({
-      where: { titulo: dto.titulo },
-    });
-    if (eventoExiste)
-      throw new BadRequestException('Evento ya registrado con ese nombre');
-
+    const hash = Date.now().toString();
+    dto.slug = await generateSlug(dto.titulo, hash);
+    if (file) {
+      const nombre_foto = fileFilterName(file, hash);
+      dto.foto = nombre_foto;
+      if (!nombre_foto) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      await this.storageService.uploadFile(file, nombre_foto);
+    }
     const nuevoEvento = this.eventoRepository.create(dto);
     const evento = await this.eventoRepository.save(nuevoEvento);
-    if (file) {
-      await this.storageService.uploadFile(file);
-    }
+
     return { evento };
   }
 
@@ -107,9 +111,17 @@ export class EventoService {
     if (evento.foto != '' && file) {
       await this.storageService.deleteFile(evento.foto);
     }
+
     if (file) {
-      await this.storageService.uploadFile(file);
+      const hash = Date.now().toString();
+      const nombre_foto = fileFilterName(file, hash);
+      dto.foto = nombre_foto;
+      if (!nombre_foto) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      await this.storageService.uploadFile(file, nombre_foto);
     }
+
     const eventoEditado = Object.assign(evento, dto);
     return await this.eventoRepository.save(eventoEditado);
   }

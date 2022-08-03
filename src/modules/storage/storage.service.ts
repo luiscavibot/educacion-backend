@@ -9,14 +9,13 @@ export class StorageService {
     secretAccessKey: process.env.AWS_ACCESS_SECRET,
   });
 
-  async uploadFile(file) {
+  async uploadFile(file, nombre) {
     let data;
-    const { originalname } = file;
 
     data = await this.s3_upload(
       file.buffer,
       this.AWS_S3_BUCKET,
-      originalname,
+      nombre,
       file.mimetype,
     );
 
