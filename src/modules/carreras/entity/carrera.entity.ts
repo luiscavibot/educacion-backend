@@ -1,10 +1,12 @@
 import { Facultad } from '../../facultades/entity/facultad.entity';
+import { CarreraDocente } from '../../carreras-docentes/entity/carrera-docente.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -24,9 +26,6 @@ export class Carrera {
   foto: string;
 
   @Column({ type: 'text', nullable: false })
-  descripcion: string;
-
-  @Column({ type: 'text', nullable: false })
   grado: string;
 
   @Column({ type: 'text', nullable: false })
@@ -36,7 +35,7 @@ export class Carrera {
   duracion: string;
 
   @Column({ type: 'text', nullable: false })
-  objetivos: string;
+  descripcion: string;
 
   @Column({ type: 'text', nullable: false })
   perfil_ingresante: string;
@@ -45,10 +44,10 @@ export class Carrera {
   perfil_graduado: string;
 
   @Column({ type: 'text', nullable: false })
-  mision: string;
+  campo_laboral: string;
 
   @Column({ type: 'text', nullable: false })
-  vision: string;
+  objetivos: string;
 
   @Column({ type: 'float', nullable: false })
   credito: number;
@@ -68,6 +67,15 @@ export class Carrera {
   @ManyToOne(() => Facultad, (facultad) => facultad.carreras, { eager: true })
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
+
+  @Column({ type: 'int' })
+  facultadId: number;
+
+  @OneToMany(
+    () => CarreraDocente,
+    (carrera_docente) => carrera_docente.carreras,
+  )
+  carrera_docente: CarreraDocente[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
