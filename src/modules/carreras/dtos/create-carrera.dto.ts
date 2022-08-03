@@ -23,15 +23,11 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
-  descripcion: string;
-
-  @IsOptional()
-  @IsString()
   duracion: string;
 
   @IsOptional()
   @IsString()
-  objetivos: string;
+  descripcion: string;
 
   @IsOptional()
   @IsString()
@@ -43,11 +39,11 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
-  mision: string;
+  campo_laboral: string;
 
   @IsOptional()
   @IsString()
-  vision: string;
+  objetivos: string;
 
   @IsOptional()
   @IsNumber()
@@ -64,4 +60,7 @@ export class CreateCarreraDto {
   @IsOptional()
   @IsString()
   tipo_maestria: string;
+
+  @IsOptional()
+  facultadId: number;
 }

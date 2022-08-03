@@ -33,6 +33,10 @@ export class CreateNoticiaDto {
   foto: string;
 
   @IsOptional()
+  @IsString()
+  pie_foto: string;
+
+  @IsOptional()
   @IsDate()
   fecha: Date;
 
@@ -42,4 +46,7 @@ export class CreateNoticiaDto {
 
   @IsOptional()
   facultadId: number;
+
+  @IsOptional()
+  estado: boolean;
 }

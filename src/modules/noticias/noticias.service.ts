@@ -65,7 +65,7 @@ export class NoticiasService {
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
         order: { id: 'ASC' },
-        select: ['id', 'titulo'],
+        select: ['id', 'titulo', 'estado'],
         where: {
           facultad: {
             slug,
