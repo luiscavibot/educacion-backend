@@ -11,6 +11,8 @@ export class AuthService {
   ) {}
 
   async validateUser(correo: string, pass: string): Promise<any> {
+    console.log('correo: ', correo, 'pass: ', pass);
+
     const user = await this.usersService.findOne(correo);
     if (user && (await Hashing.compare(pass, user.password))) {
       const { password, ...result } = user;
@@ -23,6 +25,7 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
       message: 'Login exitoso',
+      ok: true,
     };
   }
 }
