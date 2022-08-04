@@ -3,6 +3,7 @@ import { Noticia } from '../../noticias/entity';
 import { Carrera } from '../../carreras/entity';
 import { Evento } from '../../eventos/entity';
 import { Egresado } from '../../egresados/entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -36,6 +37,9 @@ export class Facultad {
 
   @OneToMany(() => Egresado, (egresado) => egresado.facultad)
   egresados: Egresado[];
+
+  @OneToMany(() => User, (user) => user.facultad)
+  users: User[];
 
   @ManyToOne(() => Area, (area) => area.facultades)
   @JoinColumn({ name: 'areaId' })
