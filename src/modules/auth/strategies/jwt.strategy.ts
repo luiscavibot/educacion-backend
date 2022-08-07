@@ -14,6 +14,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    return { id: payload.sub, correo: payload.username };
+    return {
+      ok: true,
+      message: 'El certificado es válido',
+      id: payload.sub,
+      correo: payload.username,
+    };
   }
 }

@@ -14,19 +14,11 @@ export class CreateNoticiaDto {
 
   @IsOptional()
   @IsString()
-  slug: string;
-
-  @IsOptional()
-  @IsString()
   subtitulo: string;
 
   @IsOptional()
-  @IsArray()
-  tags: string[];
-
-  @IsOptional()
   @IsString()
-  cuerpo: string;
+  slug: string;
 
   @IsOptional()
   @IsString()
@@ -37,6 +29,10 @@ export class CreateNoticiaDto {
   pie_foto: string;
 
   @IsOptional()
+  @IsString()
+  cuerpo: string;
+
+  @IsOptional()
   @IsDate()
   fecha: Date;
 
@@ -45,8 +41,11 @@ export class CreateNoticiaDto {
   destacado: boolean;
 
   @IsOptional()
-  facultadId: number;
+  estado: boolean;
 
   @IsOptional()
-  estado: boolean;
+  resumen: string;
+
+  @IsOptional()
+  facultadId: number;
 }
