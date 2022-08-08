@@ -1,4 +1,5 @@
 import { Facultad } from '../../facultades/entity/facultad.entity';
+import { Carrera } from '../../carreras/entity/carrera.entity';
 import {
   BaseEntity,
   Column,
@@ -30,18 +31,21 @@ export class Egresado extends BaseEntity {
   @Column({ type: 'text', nullable: false })
   frase: string;
 
-  @Column({ type: 'text', nullable: false })
+  @Column({ type: 'text' })
   url_twitter: string;
 
-  @Column({ type: 'text', nullable: false })
+  @Column({ type: 'text' })
   url_facebook: string;
 
-  @Column({ type: 'text', nullable: false })
+  @Column({ type: 'text' })
   url_linkedin: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.egresados, { eager: true })
-  @JoinColumn({ name: 'facultadId' })
-  facultad: Facultad;
+  @ManyToOne(() => Carrera, (carrera) => carrera.egresados)
+  @JoinColumn({ name: 'carreraId' })
+  carrera: Carrera;
+
+  @Column({ type: 'int', nullable: false })
+  carreraId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

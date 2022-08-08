@@ -1,4 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -13,4 +20,8 @@ export class CreateUserDto {
   @IsString()
   @MaxLength(255)
   nombre: string;
+
+  @IsInt()
+  @IsOptional()
+  programas: number;
 }
