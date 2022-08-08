@@ -35,9 +35,6 @@ export class Facultad {
   @OneToMany(() => Carrera, (carrera) => carrera.facultad)
   carreras: Carrera[];
 
-  @OneToMany(() => Egresado, (egresado) => egresado.facultad)
-  egresados: Egresado[];
-
   @OneToMany(() => User, (user) => user.facultad)
   users: User[];
 

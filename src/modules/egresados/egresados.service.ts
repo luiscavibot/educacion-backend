@@ -11,6 +11,7 @@ import { StorageService } from '../storage/storage.service';
 import { CreateEgresadoDto, EditEgresadoDto } from './dtos';
 import { Egresado } from './entity';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
+import { generateSlug } from '../../helpers/generateSlug';
 
 @Injectable()
 export class EgresadosService {
@@ -30,7 +31,7 @@ export class EgresadosService {
         take: Number(options.limit) || 3,
         order: { id: 'ASC' },
         where: {
-          facultad: {
+          carrera: {
             slug,
           },
         },
@@ -61,6 +62,39 @@ export class EgresadosService {
     if (!egresado)
       throw new NotFoundException('Egresado no existe o no está autorizado');
     return egresado;
+  }
+
+  paginacionEgresados(
+    options: IPaginationOptions,
+    slug: string,
+  ): Observable<Pagination<Egresado>> {
+    return from(
+      this.egresadoRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        order: { id: 'ASC' },
+        select: ['id', 'nombre', 'cargo', 'grado', 'frase', 'foto'],
+        where: {
+          carrera: {
+            slug,
+          },
+        },
+      }),
+    ).pipe(
+      map(([egresados, totalEgresados]) => {
+        const egresadosPageable: Pagination<Egresado> = {
+          items: egresados,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: egresados.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalEgresados,
+            totalPages: Math.ceil(totalEgresados / Number(options.limit)),
+          },
+        };
+        return egresadosPageable;
+      }),
+    );
   }
 
   async createEgresado(dto: CreateEgresadoDto, file: any) {
