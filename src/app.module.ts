@@ -17,6 +17,7 @@ import { StorageModule } from './modules/storage/storage.module';
 import { EventosModule } from './modules/eventos/eventos.module';
 import { CarrerasDocentesModule } from './modules/carreras-docentes/carreras-docentes.module';
 import { AsignaturasModule } from './modules/asignaturas/asignaturas.module';
+import { DirectoriosModule } from './modules/directorios/directorios.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -60,6 +61,7 @@ import * as Joi from '@hapi/joi';
     EventosModule,
     CarrerasDocentesModule,
     AsignaturasModule,
+    DirectoriosModule,
     // UserModule,
     // PostModule,
   ],
