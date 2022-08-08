@@ -2,10 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserRole } from '../consts';
+import { Facultad } from '../../facultades/entity/';
 
 @Entity('users')
 export class User {
@@ -27,6 +31,13 @@ export class User {
     default: [UserRole.ADMIN],
   })
   roles: UserRole[];
+
+  @ManyToOne(() => Facultad, (facultad) => facultad.users)
+  @JoinColumn({ name: 'proyecto' })
+  facultad: Facultad;
+
+  @Column({ type: 'int', nullable: true })
+  proyecto: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

@@ -1,5 +1,6 @@
 import { Facultad } from '../../facultades/entity/facultad.entity';
 import { CarreraDocente } from '../../carreras-docentes/entity/carrera-docente.entity';
+import { Egresado } from '../../egresados/entity/egresado.entity';
 import {
   Column,
   CreateDateColumn,
@@ -70,6 +71,9 @@ export class Carrera {
 
   @Column({ type: 'int' })
   facultadId: number;
+
+  @OneToMany(() => Egresado, (egresado) => egresado.carrera)
+  egresados: Egresado[];
 
   @OneToMany(
     () => CarreraDocente,
