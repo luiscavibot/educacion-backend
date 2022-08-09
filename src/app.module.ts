@@ -18,6 +18,7 @@ import { EventosModule } from './modules/eventos/eventos.module';
 import { CarrerasDocentesModule } from './modules/carreras-docentes/carreras-docentes.module';
 import { AsignaturasModule } from './modules/asignaturas/asignaturas.module';
 import { DirectoriosModule } from './modules/directorios/directorios.module';
+import { TramitesModule } from './modules/tramites/tramites.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -62,6 +63,7 @@ import * as Joi from '@hapi/joi';
     CarrerasDocentesModule,
     AsignaturasModule,
     DirectoriosModule,
+    TramitesModule,
     // UserModule,
     // PostModule,
   ],
