@@ -37,7 +37,7 @@ export class User {
   facultad: Facultad;
 
   @Column({ type: 'int', nullable: true })
-  proyectos: number;
+  proyecto: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
