@@ -10,18 +10,21 @@ import {
 export class CreateUserDto {
   @IsEmail()
   @IsNotEmpty()
+  @IsOptional()
   correo: string;
 
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
   password: string;
 
   @IsNotEmpty()
   @IsString()
   @MaxLength(255)
+  @IsOptional()
   nombre: string;
 
   @IsInt()
   @IsOptional()
-  programas: number;
+  proyecto: number;
 }
