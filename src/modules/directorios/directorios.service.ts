@@ -44,7 +44,6 @@ export class DirectoriosService {
   directoriosPorFacultad(slug: string): Observable<Directorio[]> {
     return from(
       this.directorioRepository.find({
-        take: 3,
         order: { id: 'DESC' },
         where: {
           facultad: {
@@ -62,8 +61,8 @@ export class DirectoriosService {
     directorioEntity?: Directorio,
   ) {
     const directorio = await this.getById(id, directorioEntity);
-    const egresadoEditado = Object.assign(directorio, dto);
-    return await this.directorioRepository.save(egresadoEditado);
+    const directorioEditado = Object.assign(directorio, dto);
+    return await this.directorioRepository.save(directorioEditado);
   }
 
   async deleteDirectorio(id: number, directorioEntity?: Directorio) {
