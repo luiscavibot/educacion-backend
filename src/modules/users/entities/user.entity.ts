@@ -32,12 +32,12 @@ export class User {
   })
   roles: UserRole[];
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.users)
+  @ManyToOne(() => Facultad, (facultad) => facultad.users, { eager: true })
   @JoinColumn({ name: 'proyecto' })
   facultad: Facultad;
 
   @Column({ type: 'int', nullable: true })
-  proyectos: number;
+  proyecto: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

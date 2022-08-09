@@ -23,5 +23,5 @@ export class CreateUserDto {
 
   @IsInt()
   @IsOptional()
-  proyectos: number;
+  proyecto: number;
 }
