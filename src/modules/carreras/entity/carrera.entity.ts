@@ -1,6 +1,7 @@
 import { Facultad } from '../../facultades/entity/facultad.entity';
 import { CarreraDocente } from '../../carreras-docentes/entity/carrera-docente.entity';
 import { Egresado } from '../../egresados/entity/egresado.entity';
+import { Asignatura } from '../../asignaturas/entity/asignatura.entity';
 import {
   Column,
   CreateDateColumn,
@@ -74,6 +75,12 @@ export class Carrera {
 
   @OneToMany(() => Egresado, (egresado) => egresado.carrera)
   egresados: Egresado[];
+
+  @Column({ type: 'text' })
+  intro_malla: string;
+
+  @OneToMany(() => Asignatura, (asignatura) => asignatura.carrera)
+  asignaturas: Asignatura[];
 
   @OneToMany(
     () => CarreraDocente,

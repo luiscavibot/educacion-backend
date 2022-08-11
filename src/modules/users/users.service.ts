@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Hashing } from '../auth/helpers/bcrypt';
@@ -12,6 +16,18 @@ export class UsersService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+
+  async getById(id: number, userEntity?: User) {
+    const user = await this.userRepository
+      .findOne({ where: { id } })
+      .then((d) =>
+        !userEntity ? d : !!d && userEntity.id === d.id ? d : null,
+      );
+    if (!user)
+      throw new NotFoundException('Usuario no existe o no está autorizado');
+    return user;
+  }
+
   async create(createUserDto: CreateUserDto) {
     const usuarioExiste = await this.userRepository.findOne({
       where: { nombre: createUserDto.nombre },
@@ -32,6 +48,18 @@ export class UsersService {
     return this.userRepository.findOne({
       where: { correo },
     });
+  }
+
+  async editUser(id: number, dto: UpdateUserDto, userEntity?: User) {
+    const user = await this.getById(id, userEntity);
+
+    const userEditado = Object.assign(user, dto);
+    return await this.userRepository.save(userEditado);
+  }
+
+  async deleteUser(id: number, userEntity?: User) {
+    const noticia = await this.getById(id, userEntity);
+    return await this.userRepository.remove(noticia);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

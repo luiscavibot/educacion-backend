@@ -46,16 +46,12 @@ export class Noticia extends BaseEntity {
   @Column({ type: 'text' })
   resumen: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.noticias, { eager: true })
+  @ManyToOne(() => Facultad, (facultad) => facultad.noticias)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 
   @Column({ type: 'int' })
   facultadId: number;
-
-  // @ManyToOne(() => User, (user) => user.noticias)
-  // @JoinColumn({ name: 'usuario_id' })
-  // user: Facultad;
 
   @Column({ type: 'int' })
   usuario_id: number;

@@ -35,8 +35,10 @@ export class UsersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  async update(@Param('id') id: number, @Body() dto: UpdateUserDto) {
+    let data;
+    data = await this.usersService.editUser(id, dto);
+    return { message: 'User editado', data };
   }
 
   @Delete(':id')
