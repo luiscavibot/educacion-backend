@@ -19,6 +19,8 @@ import { CarrerasDocentesModule } from './modules/carreras-docentes/carreras-doc
 import { AsignaturasModule } from './modules/asignaturas/asignaturas.module';
 import { DirectoriosModule } from './modules/directorios/directorios.module';
 import { TramitesModule } from './modules/tramites/tramites.module';
+import { DocumentosOficialesModule } from './modules/documentos-oficiales/documentos-oficiales.module';
+import { ActasConsejoModule } from './modules/actas-consejo/actas-consejo.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -64,6 +66,8 @@ import * as Joi from '@hapi/joi';
     AsignaturasModule,
     DirectoriosModule,
     TramitesModule,
+    DocumentosOficialesModule,
+    ActasConsejoModule,
     // UserModule,
     // PostModule,
   ],
