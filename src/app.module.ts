@@ -21,6 +21,8 @@ import { DirectoriosModule } from './modules/directorios/directorios.module';
 import { TramitesModule } from './modules/tramites/tramites.module';
 import { DocumentosOficialesModule } from './modules/documentos-oficiales/documentos-oficiales.module';
 import { ActasConsejoModule } from './modules/actas-consejo/actas-consejo.module';
+import { ResolucionesDecanalesModule } from './modules/resoluciones-decanales/resoluciones-decanales.module';
+import { MemoriasModule } from './modules/memorias/memorias.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -68,6 +70,8 @@ import * as Joi from '@hapi/joi';
     TramitesModule,
     DocumentosOficialesModule,
     ActasConsejoModule,
+    ResolucionesDecanalesModule,
+    MemoriasModule,
     // UserModule,
     // PostModule,
   ],
