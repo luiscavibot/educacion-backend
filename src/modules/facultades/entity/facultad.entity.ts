@@ -6,6 +6,7 @@ import { Egresado } from '../../egresados/entity';
 import { User } from '../../users/entities/user.entity';
 import { Directorio } from '../../directorios/entity/directorio.entity';
 import { Tramite } from '../../tramites/entity/tramite.entity';
+import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-oficial.entity';
 import {
   Column,
   CreateDateColumn,
@@ -42,6 +43,12 @@ export class Facultad {
 
   @OneToMany(() => Carrera, (carrera) => carrera.facultad)
   carreras: Carrera[];
+
+  @OneToMany(
+    () => DocumentoOficial,
+    (documentoOficial) => documentoOficial.facultad,
+  )
+  documentosOficiales: DocumentoOficial[];
 
   @OneToMany(() => User, (user) => user.facultad)
   users: User[];
