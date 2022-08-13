@@ -19,7 +19,10 @@ export class UsersService {
 
   async getById(id: number, userEntity?: User) {
     const user = await this.userRepository
-      .findOne({ where: { id } })
+      .findOne({
+        select: ['id', 'nombre', 'correo', 'proyecto', 'facultad', 'roles'],
+        where: { id },
+      })
       .then((d) =>
         !userEntity ? d : !!d && userEntity.id === d.id ? d : null,
       );
