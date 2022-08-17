@@ -22,7 +22,9 @@ export class CarreraDocente {
   @Column({ type: 'int' })
   carreraId: number;
 
-  @ManyToOne(() => Docente, (docente) => docente.carrera_docente)
+  @ManyToOne(() => Docente, (docente) => docente.carrera_docente, {
+    eager: true,
+  })
   @JoinColumn({ name: 'docenteId' })
   docentes: Docente;
 

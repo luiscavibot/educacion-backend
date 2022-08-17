@@ -48,4 +48,7 @@ export class CreateNoticiaDto {
 
   @IsOptional()
   facultadId: number;
+
+  @IsOptional()
+  usuario_id: number;
 }

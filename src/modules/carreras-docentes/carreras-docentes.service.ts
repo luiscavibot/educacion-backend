@@ -3,16 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCarreraDocenteDto, EditCarreraDocenteDto } from './dtos';
 import { CarreraDocente } from './entity';
+import { Observable, from, map } from 'rxjs';
 
 @Injectable()
 export class CarrerasDocentesService {
   constructor(
     @InjectRepository(CarreraDocente)
-    private readonly carreraRepository: Repository<CarreraDocente>,
+    private readonly carreraDocenteRepository: Repository<CarreraDocente>,
   ) {}
 
   async getById(id: number, carrera_docenteEntity?: CarreraDocente) {
-    const carrera_docente = await this.carreraRepository
+    const carrera_docente = await this.carreraDocenteRepository
       .findOne({ where: { id } })
       .then((d) =>
         !carrera_docenteEntity
@@ -29,14 +30,14 @@ export class CarrerasDocentesService {
   }
 
   async createCarreraDocente(dto: CreateCarreraDocenteDto) {
-    // const carreraExiste = await this.carreraRepository.findOne({
+    // const carreraExiste = await this.carreraDocenteRepository.findOne({
     //   where: { nombre: dto.nombre },
     // });
     // if (carreraExiste)
     //   throw new BadRequestException('Carrera ya registrada con ese nombre');
 
-    const nuevaCarreraDocente = this.carreraRepository.create(dto);
-    const carrera_docente = await this.carreraRepository.save(
+    const nuevaCarreraDocente = this.carreraDocenteRepository.create(dto);
+    const carrera_docente = await this.carreraDocenteRepository.save(
       nuevaCarreraDocente,
     );
 
@@ -50,7 +51,7 @@ export class CarrerasDocentesService {
   ) {
     const carrera_docente = await this.getById(id, carrera_docenteEntity);
     const carreraEditado = Object.assign(carrera_docente, dto);
-    return await this.carreraRepository.save(carreraEditado);
+    return await this.carreraDocenteRepository.save(carreraEditado);
   }
 
   async deleteCarreraDocente(
@@ -58,6 +59,16 @@ export class CarrerasDocentesService {
     carrera_docenteEntity?: CarreraDocente,
   ) {
     const carrera_docente = await this.getById(id, carrera_docenteEntity);
-    return await this.carreraRepository.remove(carrera_docente);
+    return await this.carreraDocenteRepository.remove(carrera_docente);
+  }
+  directoresXCarrera(id: number): Observable<CarreraDocente[]> {
+    return from(
+      this.carreraDocenteRepository.find({
+        where: {
+          carreraId: id,
+          director: true,
+        },
+      }),
+    ).pipe(map((directorios: CarreraDocente[]) => directorios));
   }
 }
