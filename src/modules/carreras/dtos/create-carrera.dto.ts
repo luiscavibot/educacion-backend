@@ -63,4 +63,7 @@ export class CreateCarreraDto {
 
   @IsOptional()
   facultadId: number;
+
+  @IsOptional()
+  en_proceso: boolean;
 }

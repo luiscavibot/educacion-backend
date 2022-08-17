@@ -8,6 +8,10 @@ import {
   Put,
   Delete,
   Query,
+  UploadedFile,
+  Res,
+  HttpStatus,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -19,6 +23,7 @@ import {
 
 import { DocenteService } from './docentes.service';
 import { CreateDocenteDto, EditDocenteDto } from './dtos';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('docentes')
 @ApiTags('docentes')
@@ -93,9 +98,26 @@ export class DocenteController {
       },
     },
   })
-  async createDocente(@Body() dto: CreateDocenteDto) {
-    const data = await this.docenteService.createDocente({ ...dto });
-    return { message: 'Docente creado', data };
+  @UseInterceptors(FileInterceptor('file'))
+  async createDocente(
+    @Body() dto: CreateDocenteDto,
+    @UploadedFile() file,
+    @Res() response,
+  ) {
+    try {
+      const data = await this.docenteService.createDocente({ ...dto }, file);
+      response.status(HttpStatus.CREATED).json({
+        status: HttpStatus.CREATED,
+        message: 'Creación exitosa',
+        data,
+      });
+    } catch (error) {
+      response.status(HttpStatus.FORBIDDEN).json({
+        status: HttpStatus.FORBIDDEN,
+        message: 'Hubo un error al crear registro',
+        error: error.message,
+      });
+    }
   }
 
   @Put(':id')
@@ -134,9 +156,13 @@ export class DocenteController {
       },
     },
   })
-  async editDocente(@Param('id') id: number, @Body() dto: EditDocenteDto) {
+  async editDocente(
+    @Param('id') id: number,
+    @Body() dto: EditDocenteDto,
+    @UploadedFile() file,
+  ) {
     let data;
-    data = await this.docenteService.editDocente(id, dto);
+    data = await this.docenteService.editDocente(id, dto, file);
     return { message: 'Docente editado', data };
   }
 

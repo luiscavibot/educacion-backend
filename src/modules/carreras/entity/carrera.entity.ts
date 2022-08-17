@@ -82,6 +82,9 @@ export class Carrera {
   @OneToMany(() => Asignatura, (asignatura) => asignatura.carrera)
   asignaturas: Asignatura[];
 
+  @Column({ type: Boolean })
+  en_proceso: boolean;
+
   @OneToMany(
     () => CarreraDocente,
     (carrera_docente) => carrera_docente.carreras,

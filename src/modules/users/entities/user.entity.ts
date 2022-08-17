@@ -33,7 +33,7 @@ export class User {
   })
   roles: UserRole[];
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.users)
+  @ManyToOne(() => Facultad, (facultad) => facultad.users, { eager: true })
   @JoinColumn({ name: 'proyecto' })
   facultad: Facultad;
 

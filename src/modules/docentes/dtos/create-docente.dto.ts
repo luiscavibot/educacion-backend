@@ -1,17 +1,20 @@
-import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateDocenteDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(255)
   nombre: string;
 
-  @IsEmail()
-  correo: string;
-
+  @IsOptional()
   @IsString()
   grado: string;
 
+  @IsOptional()
   @IsString()
   descripcion: string;
+
+  @IsOptional()
+  @IsString()
+  foto: string;
 }
