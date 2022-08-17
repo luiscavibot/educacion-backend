@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateDocenteDto {
   @IsNotEmpty()
@@ -6,12 +12,19 @@ export class CreateDocenteDto {
   @MaxLength(255)
   nombre: string;
 
+  @IsOptional()
   @IsEmail()
   correo: string;
 
+  @IsOptional()
   @IsString()
   grado: string;
 
+  @IsOptional()
   @IsString()
   descripcion: string;
+
+  @IsOptional()
+  @IsString()
+  foto: string;
 }
