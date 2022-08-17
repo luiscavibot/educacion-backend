@@ -16,8 +16,8 @@ export class Docente {
   @Column({ type: 'varchar', nullable: false, length: 150 })
   nombre!: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  correo: string;
+  @Column({ type: 'simple-array' })
+  correos: string[];
 
   @Column({ type: 'varchar' })
   foto: string;

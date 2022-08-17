@@ -11,6 +11,7 @@ import {
   UploadedFile,
   Res,
   HttpStatus,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -22,6 +23,7 @@ import {
 
 import { DocenteService } from './docentes.service';
 import { CreateDocenteDto, EditDocenteDto } from './dtos';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('docentes')
 @ApiTags('docentes')
@@ -96,6 +98,7 @@ export class DocenteController {
       },
     },
   })
+  @UseInterceptors(FileInterceptor('file'))
   async createDocente(
     @Body() dto: CreateDocenteDto,
     @UploadedFile() file,
@@ -153,9 +156,13 @@ export class DocenteController {
       },
     },
   })
-  async editDocente(@Param('id') id: number, @Body() dto: EditDocenteDto) {
+  async editDocente(
+    @Param('id') id: number,
+    @Body() dto: EditDocenteDto,
+    @UploadedFile() file,
+  ) {
     let data;
-    data = await this.docenteService.editDocente(id, dto);
+    data = await this.docenteService.editDocente(id, dto, file);
     return { message: 'Docente editado', data };
   }
 

@@ -81,8 +81,31 @@ export class DocenteService {
     return docente;
   }
 
-  async editDocente(id: number, dto: EditDocenteDto, docenteEntity?: Docente) {
+  async editDocente(
+    id: number,
+    dto: EditDocenteDto,
+    file: any,
+    docenteEntity?: Docente,
+  ) {
     const docente = await this.getById(id, docenteEntity);
+    if (docente.foto != '' && file) {
+      await this.storageService.deleteFile(docente.foto);
+    }
+
+    if (file) {
+      const hash = Date.now().toString();
+      const nombre_foto = fileFilterName(file, hash);
+
+      if (!nombre_foto) {
+        throw new BadRequestException('Archivo no válido');
+      }
+      let { Location } = await this.storageService.uploadFile(
+        file,
+        nombre_foto,
+      );
+      dto.foto = Location;
+    }
+
     const docenteEditado = Object.assign(docente, dto);
     return await this.docenteRepository.save(docenteEditado);
   }
