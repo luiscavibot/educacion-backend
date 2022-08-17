@@ -8,6 +8,9 @@ import {
   Put,
   Delete,
   Query,
+  UploadedFile,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -93,9 +96,25 @@ export class DocenteController {
       },
     },
   })
-  async createDocente(@Body() dto: CreateDocenteDto) {
-    const data = await this.docenteService.createDocente({ ...dto });
-    return { message: 'Docente creado', data };
+  async createDocente(
+    @Body() dto: CreateDocenteDto,
+    @UploadedFile() file,
+    @Res() response,
+  ) {
+    try {
+      const data = await this.docenteService.createDocente({ ...dto }, file);
+      response.status(HttpStatus.CREATED).json({
+        status: HttpStatus.CREATED,
+        message: 'Creación exitosa',
+        data,
+      });
+    } catch (error) {
+      response.status(HttpStatus.FORBIDDEN).json({
+        status: HttpStatus.FORBIDDEN,
+        message: 'Hubo un error al crear registro',
+        error: error.message,
+      });
+    }
   }
 
   @Put(':id')

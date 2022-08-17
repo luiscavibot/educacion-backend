@@ -19,6 +19,9 @@ export class Docente {
   @Column({ type: 'varchar', length: 255 })
   correo: string;
 
+  @Column({ type: 'varchar' })
+  foto: string;
+
   @Column({ type: 'varchar', length: 200 })
   grado: string;
 
