@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -8,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { CarrerasDocentesService } from './carreras-docentes.service';
 import { CreateCarreraDocenteDto, EditCarreraDocenteDto } from './dtos';
+import { Observable } from 'rxjs';
+import { CarreraDocente } from './entity';
 
 @Controller('carreras-docentes')
 export class CarrerasDocentesController {
@@ -90,5 +93,10 @@ export class CarrerasDocentesController {
         error: error.message,
       });
     }
+  }
+
+  @Get('directores/:id')
+  directores(@Param('id') id: number): Observable<CarreraDocente[]> {
+    return this.carreraService.directoresXCarrera(id);
   }
 }
