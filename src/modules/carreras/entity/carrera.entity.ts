@@ -51,6 +51,9 @@ export class Carrera {
   @Column({ type: 'text', nullable: false })
   objetivos: string;
 
+  @Column({ type: 'text' })
+  fecha_inicio: string;
+
   @Column({ type: 'float', nullable: false })
   credito: number;
 

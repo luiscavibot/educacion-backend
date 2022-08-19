@@ -15,4 +15,10 @@ export class CreateDocumentoOficialDto {
 
   @IsOptional()
   facultadId: number;
+
+  @IsOptional()
+  estado: boolean;
+
+  @IsOptional()
+  fecha: Date;
 }

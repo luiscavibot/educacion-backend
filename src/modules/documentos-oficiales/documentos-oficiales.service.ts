@@ -26,10 +26,10 @@ export class DocumentosOficialesService {
         take: 3,
         order: { created_at: 'DESC' },
         where: {
-          //   facultad: {
-          //     slug,
-          //   },
-          //   destacado: true,
+          facultad: {
+            slug,
+          },
+          estado: true,
         },
       }),
     ).pipe(
@@ -58,13 +58,13 @@ export class DocumentosOficialesService {
     const hash = Date.now().toString();
 
     if (file) {
-      const nombre_foto = fileFilterName(file, hash);
-      if (!nombre_foto) {
+      const nombre_archivo = fileFilterName(file, hash);
+      if (!nombre_archivo) {
         throw new BadRequestException('Archivo no válido');
       }
       let { Location } = await this.storageService.uploadFile(
         file,
-        nombre_foto,
+        nombre_archivo,
       );
       dto.archivo = Location;
     }
