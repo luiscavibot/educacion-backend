@@ -30,6 +30,12 @@ export class DocumentoOficial {
   @Column({ type: 'int', nullable: false })
   facultadId: number;
 
+  @Column({ type: 'timestamp' })
+  fecha: Date;
+
+  @Column({ type: 'boolean' })
+  estado: boolean;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 

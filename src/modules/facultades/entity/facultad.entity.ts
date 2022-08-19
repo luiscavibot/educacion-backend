@@ -7,6 +7,7 @@ import { User } from '../../users/entities/user.entity';
 import { Directorio } from '../../directorios/entity/directorio.entity';
 import { Tramite } from '../../tramites/entity/tramite.entity';
 import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-oficial.entity';
+import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
 import {
   Column,
   CreateDateColumn,
@@ -49,6 +50,12 @@ export class Facultad {
     (documentoOficial) => documentoOficial.facultad,
   )
   documentosOficiales: DocumentoOficial[];
+
+  @OneToMany(
+    () => ResolucionDecanal,
+    (resolucionDecanal) => resolucionDecanal.facultad,
+  )
+  resolucionesDecanales: ResolucionDecanal[];
 
   @OneToMany(() => User, (user) => user.facultad)
   users: User[];
