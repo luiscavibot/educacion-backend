@@ -66,4 +66,7 @@ export class CreateCarreraDto {
 
   @IsOptional()
   en_proceso: boolean;
+
+  @IsOptional()
+  fecha_inicio: string;
 }
