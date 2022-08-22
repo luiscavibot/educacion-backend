@@ -73,7 +73,17 @@ export class EgresadosService {
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
         order: { id: 'ASC' },
-        select: ['id', 'nombre', 'cargo', 'grado', 'frase', 'foto'],
+        select: [
+          'id',
+          'nombre',
+          'cargo',
+          'grado',
+          'frase',
+          'foto',
+          'url_facebook',
+          'url_linkedin',
+          'url_twitter',
+        ],
         where: {
           carrera: {
             slug,
