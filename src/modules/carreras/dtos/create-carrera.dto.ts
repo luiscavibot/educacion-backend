@@ -69,4 +69,7 @@ export class CreateCarreraDto {
 
   @IsOptional()
   fecha_inicio: string;
+
+  @IsOptional()
+  cierre_inscripciones: string;
 }
