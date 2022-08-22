@@ -1,16 +1,19 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
   HttpStatus,
   Param,
   ParseIntPipe,
+  Query,
   Res,
 } from '@nestjs/common';
 import { CarrerasDocentesService } from './carreras-docentes.service';
 import { CreateCarreraDocenteDto, EditCarreraDocenteDto } from './dtos';
 import { Observable } from 'rxjs';
 import { CarreraDocente } from './entity';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('carreras-docentes')
 export class CarrerasDocentesController {
@@ -98,5 +101,20 @@ export class CarrerasDocentesController {
   @Get('directores/:id')
   directores(@Param('id') id: number): Observable<CarreraDocente[]> {
     return this.carreraService.directoresXCarrera(id);
+  }
+
+  @Get('docentes/:id')
+  docentes(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
+    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
+    @Param('id') id: number,
+  ): Observable<Pagination<CarreraDocente>> {
+    return this.carreraService.docentesXCarrera(
+      {
+        limit,
+        page,
+      },
+      id,
+    );
   }
 }
