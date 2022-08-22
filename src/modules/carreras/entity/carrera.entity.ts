@@ -54,6 +54,9 @@ export class Carrera {
   @Column({ type: 'text' })
   fecha_inicio: string;
 
+  @Column({ type: 'text' })
+  cierre_inscripciones: string;
+
   @Column({ type: 'float', nullable: false })
   credito: number;
 
