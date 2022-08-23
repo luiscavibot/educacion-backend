@@ -28,7 +28,6 @@ export class ResolucionesDecanalesController {
     @Param('slug') slug: string,
     @Query('year', ParseIntPipe) year?: number,
   ): Observable<ResolucionDecanal[]> {
-    console.log('jj');
     return this.resolucionDecanalService.resolucionDecanalPorFacultad(
       slug,
       year,
