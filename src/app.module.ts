@@ -23,6 +23,7 @@ import { DocumentosOficialesModule } from './modules/documentos-oficiales/docume
 import { ActasConsejoModule } from './modules/actas-consejo/actas-consejo.module';
 import { ResolucionesDecanalesModule } from './modules/resoluciones-decanales/resoluciones-decanales.module';
 import { MemoriasModule } from './modules/memorias/memorias.module';
+import { GruposInvestigacionModule } from './modules/grupos-investigacion/grupos-investigacion.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -72,6 +73,7 @@ import * as Joi from '@hapi/joi';
     ActasConsejoModule,
     ResolucionesDecanalesModule,
     MemoriasModule,
+    GruposInvestigacionModule,
     // UserModule,
     // PostModule,
   ],

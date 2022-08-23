@@ -8,6 +8,7 @@ import { Directorio } from '../../directorios/entity/directorio.entity';
 import { Tramite } from '../../tramites/entity/tramite.entity';
 import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-oficial.entity';
 import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
+import { GrupoInvestigacion } from '../../grupos-investigacion/entity/grupo-investigacion.entity';
 import {
   Column,
   CreateDateColumn,
@@ -59,6 +60,12 @@ export class Facultad {
 
   @OneToMany(() => User, (user) => user.facultad)
   users: User[];
+
+  @OneToMany(
+    () => GrupoInvestigacion,
+    (grupoInvestigacion) => grupoInvestigacion.facultad,
+  )
+  grupos_investigacion: GrupoInvestigacion[];
 
   @ManyToOne(() => Area, (area) => area.facultades)
   @JoinColumn({ name: 'areaId' })
