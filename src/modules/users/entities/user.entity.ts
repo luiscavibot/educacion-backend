@@ -11,6 +11,7 @@ import {
 import { UserRole } from '../consts';
 import { Facultad } from '../../facultades/entity';
 import { Noticia } from '../../noticias/entity';
+import { Evento } from '../../eventos/entity/evento.entity';
 
 @Entity('users')
 export class User {
@@ -39,6 +40,9 @@ export class User {
 
   @OneToMany(() => Noticia, (noticia) => noticia.user)
   noticias: Noticia[];
+
+  @OneToMany(() => Evento, (evento) => evento.user)
+  eventos: Evento[];
 
   @Column({ type: 'int', nullable: true })
   proyecto: number;

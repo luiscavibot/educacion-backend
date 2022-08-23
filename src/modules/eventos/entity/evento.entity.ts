@@ -1,4 +1,5 @@
 import { Facultad } from '../../facultades/entity/facultad.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   BaseEntity,
   Column,
@@ -39,6 +40,22 @@ export class Evento extends BaseEntity {
   @ManyToOne(() => Facultad, (facultad) => facultad.eventos, { eager: true })
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
+
+  @Column({ type: 'int' })
+  facultadId: number;
+
+  @ManyToOne(() => User, (user) => user.eventos, { eager: true })
+  @JoinColumn({ name: 'usuario_id' })
+  user: User;
+
+  @Column({ type: 'int' })
+  usuario_id: number;
+
+  @Column({ type: 'int' })
+  last_updated_by: number;
+
+  @Column({ type: 'boolean' })
+  estado: boolean;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
