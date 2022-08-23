@@ -24,7 +24,6 @@ export class ResolucionesDecanalesService {
     slug: string,
     year?: number,
   ): Observable<ResolucionDecanal[]> {
-    console.log(year);
     return from(
       this.resolucionDecanalRepository.find({
         order: { created_at: 'DESC' },
