@@ -1,3 +1,4 @@
+import { EventoTipo } from '../consts/EventoTipo';
 import {
   IsArray,
   IsDate,
