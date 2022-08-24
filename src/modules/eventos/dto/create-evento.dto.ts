@@ -5,6 +5,7 @@ export class CreateEventoDto {
   @IsString()
   titulo: string;
 
+  @IsOptional()
   @IsString()
   slug: string;
 
@@ -31,7 +32,7 @@ export class CreateEventoDto {
   @IsOptional()
   estado: boolean;
 
-  @IsOptional()
+  @IsNotEmpty()
   facultadId: number;
 
   @IsNotEmpty()

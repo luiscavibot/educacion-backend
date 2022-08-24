@@ -48,6 +48,9 @@ export class Evento extends BaseEntity {
   @JoinColumn({ name: 'usuario_id' })
   user: User;
 
+  @Column({ type: 'text' })
+  slug: string;
+
   @Column({ type: 'int' })
   usuario_id: number;
 
