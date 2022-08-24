@@ -4,13 +4,15 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Docente } from '../../docentes/entity/docente.entity';
 import { Facultad } from '../../facultades/entity/facultad.entity';
 
-@Entity('memorias')
-export class Memoria {
+@Entity('grupos_investigacion')
+export class GrupoInvestigacion {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,20 +23,23 @@ export class Memoria {
   descripcion: string;
 
   @Column({ type: 'text' })
-  documento: string;
+  resolucion: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.documentosOficiales)
+  @OneToOne(() => Docente, (docente) => docente.grupoInvestigacion, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'docenteId' })
+  docente: Docente;
+
+  @Column({ type: 'int', nullable: false })
+  docenteId: number;
+
+  @ManyToOne(() => Facultad, (facultad) => facultad.grupos_investigacion)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: false })
   facultadId: number;
-
-  @Column({ type: 'date' })
-  fecha: Date;
-
-  @Column({ type: 'boolean' })
-  estado: boolean;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

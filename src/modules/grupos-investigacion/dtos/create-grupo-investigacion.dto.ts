@@ -1,6 +1,6 @@
 import { IsOptional } from 'class-validator';
 
-export class CreateMemoriaDto {
+export class CreateGrupoInvestigacionDto {
   @IsOptional()
   nombre: string;
 
@@ -8,14 +8,11 @@ export class CreateMemoriaDto {
   descripcion: string;
 
   @IsOptional()
-  documento: string;
+  resolucion: string;
+
+  @IsOptional()
+  docenteId: number;
 
   @IsOptional()
   facultadId: number;
-
-  @IsOptional()
-  fecha: Date;
-
-  @IsOptional()
-  estado: boolean;
 }

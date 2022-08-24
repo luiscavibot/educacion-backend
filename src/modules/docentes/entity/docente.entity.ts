@@ -1,9 +1,11 @@
 import { CarreraDocente } from '../../carreras-docentes/entity/carrera-docente.entity';
+import { GrupoInvestigacion } from '../../grupos-investigacion/entity/grupo-investigacion.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -33,6 +35,12 @@ export class Docente {
     (carrera_docente) => carrera_docente.carreras,
   )
   carrera_docente: CarreraDocente[];
+
+  @OneToOne(
+    () => GrupoInvestigacion,
+    (grupoInvestigacion) => grupoInvestigacion.docente,
+  )
+  grupoInvestigacion: GrupoInvestigacion;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

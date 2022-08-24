@@ -27,4 +27,13 @@ export class CreateEventoDto {
   @IsOptional()
   @IsString()
   foto: string;
+
+  @IsOptional()
+  estado: boolean;
+
+  @IsOptional()
+  facultadId: number;
+
+  @IsNotEmpty()
+  usuario_id: number;
 }

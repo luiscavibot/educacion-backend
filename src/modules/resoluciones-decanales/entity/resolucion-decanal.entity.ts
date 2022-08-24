@@ -23,7 +23,7 @@ export class ResolucionDecanal {
   @Column({ type: 'text' })
   documento: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.documentosOficiales)
+  @ManyToOne(() => Facultad, (facultad) => facultad.memorias)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateCarreraDocenteDto, EditCarreraDocenteDto } from './dtos';
 import { CarreraDocente } from './entity';
 import { Observable, from, map } from 'rxjs';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class CarrerasDocentesService {
@@ -70,5 +71,35 @@ export class CarrerasDocentesService {
         },
       }),
     ).pipe(map((directorios: CarreraDocente[]) => directorios));
+  }
+
+  docentesXCarrera(
+    options: IPaginationOptions,
+    id: number,
+  ): Observable<Pagination<CarreraDocente>> {
+    return from(
+      this.carreraDocenteRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        select: ['id'],
+        where: {
+          carreraId: id,
+        },
+      }),
+    ).pipe(
+      map(([carreraDocentes, totalCarreraDocentes]) => {
+        const carreraDocentePageable: Pagination<CarreraDocente> = {
+          items: carreraDocentes,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: carreraDocentes.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalCarreraDocentes,
+            totalPages: Math.ceil(totalCarreraDocentes / Number(options.limit)),
+          },
+        };
+        return carreraDocentePageable;
+      }),
+    );
   }
 }
