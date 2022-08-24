@@ -12,6 +12,7 @@ import { CreateEventoDto, EditEventoDto } from './dto';
 import { StorageService } from '../storage/storage.service';
 import { generateSlug } from '../../helpers/generateSlug';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
+import { EventoTipo } from './consts/EventoTipo';
 
 export interface EventoFindOne {
   id?: number;
@@ -137,5 +138,9 @@ export class EventoService {
       .where(data)
       .addSelect('evento.titulo')
       .getOne();
+  }
+
+  tipoEventos() {
+    return Object.values(EventoTipo);
   }
 }
