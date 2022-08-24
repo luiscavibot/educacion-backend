@@ -29,7 +29,10 @@ export class Evento extends BaseEntity {
   foto: string;
 
   @Column({ type: 'timestamp' })
-  fecha: string;
+  fecha_inicio: Date;
+
+  @Column({ type: 'timestamp' })
+  fecha_final: Date;
 
   @Column({ type: 'text' })
   cuerpo: string;
