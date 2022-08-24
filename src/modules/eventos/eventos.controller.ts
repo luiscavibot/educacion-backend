@@ -86,8 +86,8 @@ export class EventosController {
 
   @Get('tipos/tipos-eventos')
   getTipos() {
-    const data = this.eventoService.tipoEventos();
-    return { data };
+    const tipos = this.eventoService.tipoEventos();
+    return { tipos };
   }
 
   @Post()

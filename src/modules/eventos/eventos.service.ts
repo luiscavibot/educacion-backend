@@ -141,6 +141,9 @@ export class EventoService {
   }
 
   tipoEventos() {
-    return Object.values(EventoTipo);
+    return Object.keys(EventoTipo).map((key) => ({
+      value: key,
+      label: EventoTipo[key],
+    }));
   }
 }
