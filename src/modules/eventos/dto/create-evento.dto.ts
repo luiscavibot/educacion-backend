@@ -34,6 +34,6 @@ export class CreateEventoDto {
   @IsOptional()
   facultadId: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   usuario_id: number;
 }
