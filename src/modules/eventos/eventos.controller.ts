@@ -84,6 +84,12 @@ export class EventosController {
     return { data };
   }
 
+  @Get('tipos/tipos-eventos')
+  getTipos() {
+    const data = this.eventoService.tipoEventos();
+    return { data };
+  }
+
   @Post()
   @ApiOperation({
     description: 'Crea una nueva evento',
