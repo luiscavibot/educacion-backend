@@ -141,6 +141,6 @@ export class EventoService {
   }
 
   tipoEventos() {
-    return EventoTipo;
+    return Object.values(EventoTipo);
   }
 }
