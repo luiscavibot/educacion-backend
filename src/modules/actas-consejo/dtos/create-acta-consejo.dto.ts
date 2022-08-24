@@ -1,4 +1,4 @@
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateActaConsejoDto {
   @IsOptional()
@@ -15,4 +15,7 @@ export class CreateActaConsejoDto {
 
   @IsOptional()
   video: string;
+
+  @IsNotEmpty()
+  facultadId: number;
 }

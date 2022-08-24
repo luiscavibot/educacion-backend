@@ -10,6 +10,7 @@ import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-of
 import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
 import { GrupoInvestigacion } from '../../grupos-investigacion/entity/grupo-investigacion.entity';
 import { Memoria } from '../../memorias/entity/memoria.entity';
+import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
 import {
   Column,
   CreateDateColumn,
@@ -67,6 +68,9 @@ export class Facultad {
     (grupoInvestigacion) => grupoInvestigacion.facultad,
   )
   grupos_investigacion: GrupoInvestigacion[];
+
+  @OneToMany(() => ActaConsejo, (actaConsejo) => actaConsejo.facultad)
+  actas: ActaConsejo[];
 
   @OneToMany(() => Memoria, (memoria) => memoria.facultad)
   memorias: Memoria[];

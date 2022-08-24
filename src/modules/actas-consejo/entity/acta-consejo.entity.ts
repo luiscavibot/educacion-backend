@@ -1,12 +1,15 @@
+import { Facultad } from '../../facultades/entity/facultad.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('actas-consejo')
+@Entity('actas_consejo')
 export class ActaConsejo {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,6 +28,13 @@ export class ActaConsejo {
 
   @Column({ type: 'text' })
   video: string;
+
+  @ManyToOne(() => Facultad, (facultad) => facultad.actas)
+  @JoinColumn({ name: 'facultadId' })
+  facultad: Facultad;
+
+  @Column({ type: 'int' })
+  facultadId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
