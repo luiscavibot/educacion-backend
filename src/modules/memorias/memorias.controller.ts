@@ -63,7 +63,7 @@ export class MemoriasController {
 
   @Put(':id')
   @UseInterceptors(FileInterceptor('file'))
-  async editNoticia(
+  async editMemoria(
     @Param('id') id: number,
     @Body() dto: EditMemoriaDto,
     @UploadedFile() file,
