@@ -61,6 +61,7 @@ export class ActasConsejoService {
   async createActaConsejo(dto: CreateActaConsejoDto, file: any, video: any) {
     const hash = Date.now().toString();
 
+    console.log(video);
     if (file) {
       const nombre_archivo = fileFilterName(file, hash);
       if (!nombre_archivo) {
@@ -85,10 +86,10 @@ export class ActasConsejoService {
       dto.video = Location;
     }
 
-    const nuevaActaConsejo = this.actaConsejoRepository.create(dto);
-    const actaConsejo = await this.actaConsejoRepository.save(nuevaActaConsejo);
+    // const nuevaActaConsejo = this.actaConsejoRepository.create(dto);
+    // const actaConsejo = await this.actaConsejoRepository.save(nuevaActaConsejo);
 
-    return { actaConsejo };
+    return { dto, file };
   }
 
   async editActaConsejo(

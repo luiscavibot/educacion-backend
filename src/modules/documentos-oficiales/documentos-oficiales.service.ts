@@ -29,7 +29,7 @@ export class DocumentosOficialesService {
           facultad: {
             slug,
           },
-          estado: true,
+          // estado: true,
         },
       }),
     ).pipe(
