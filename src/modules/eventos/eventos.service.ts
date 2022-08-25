@@ -94,7 +94,11 @@ export class EventoService {
       if (!nombre_foto) {
         throw new BadRequestException('Archivo no válido');
       }
-      await this.storageService.uploadFile(file, nombre_foto);
+      let { Location } = await this.storageService.uploadFile(
+        file,
+        nombre_foto,
+      );
+      dto.foto = Location;
     }
     const nuevoEvento = this.eventoRepository.create(dto);
     const evento = await this.eventoRepository.save(nuevoEvento);
