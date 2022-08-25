@@ -42,6 +42,7 @@ export class ActasConsejoController {
     return { data };
   }
 
+  // @UseInterceptors(FileInterceptor('file', FileInterceptor('video')))
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -51,9 +52,11 @@ export class ActasConsejoController {
   )
   async createActaConsejo(
     @Body() dto: CreateActaConsejoDto,
-    // @UploadedFiles() files { file:any, video:any},
+    // @UploadedFile() file,
+    // @UploadedFile() video,
     @UploadedFiles() files: { file: any; video: any },
-    @Res() response,
+    @Res()
+    response,
   ) {
     try {
       const data = await this.actaConsejoService.createActaConsejo(
