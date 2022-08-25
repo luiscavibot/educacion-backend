@@ -100,7 +100,7 @@ export class MemoriasService {
   }
 
   async deleteMemoria(id: number, memoriaEntity?: Memoria) {
-    const noticia = await this.getById(id, memoriaEntity);
-    return await this.memoriaRepository.remove(noticia);
+    const memoria = await this.getById(id, memoriaEntity);
+    return await this.memoriaRepository.remove(memoria);
   }
 }

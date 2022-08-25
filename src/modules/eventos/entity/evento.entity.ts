@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { EventoTipo } from '../consts';
 
 @Entity('eventos')
 export class Evento extends BaseEntity {
@@ -19,7 +20,10 @@ export class Evento extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   titulo!: string;
 
-  @Column({ type: 'varchar', nullable: false, length: 150 })
+  @Column({
+    type: 'set',
+    enum: EventoTipo,
+  })
   tipo_evento: string;
 
   @Column({ type: 'varchar', nullable: false, length: 150 })
@@ -29,7 +33,10 @@ export class Evento extends BaseEntity {
   foto: string;
 
   @Column({ type: 'timestamp' })
-  fecha: string;
+  fecha_inicio: Date;
+
+  @Column({ type: 'timestamp' })
+  fecha_final: Date;
 
   @Column({ type: 'text' })
   cuerpo: string;
@@ -47,6 +54,9 @@ export class Evento extends BaseEntity {
   @ManyToOne(() => User, (user) => user.eventos, { eager: true })
   @JoinColumn({ name: 'usuario_id' })
   user: User;
+
+  @Column({ type: 'text' })
+  slug: string;
 
   @Column({ type: 'int' })
   usuario_id: number;

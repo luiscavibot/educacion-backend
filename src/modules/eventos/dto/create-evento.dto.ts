@@ -1,10 +1,18 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { EventoTipo } from '../consts/EventoTipo';
+import {
+  IsArray,
+  IsDate,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateEventoDto {
   @IsNotEmpty()
   @IsString()
   titulo: string;
 
+  @IsOptional()
   @IsString()
   slug: string;
 
@@ -32,6 +40,14 @@ export class CreateEventoDto {
   estado: boolean;
 
   @IsOptional()
+  @IsDate()
+  fecha_inicio: Date;
+
+  @IsOptional()
+  @IsDate()
+  fecha_final: Date;
+
+  @IsNotEmpty()
   facultadId: number;
 
   @IsNotEmpty()
