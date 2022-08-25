@@ -24,7 +24,7 @@ export class DocumentoOficial {
   archivo: string;
 
   @ManyToOne(() => Facultad, (facultad) => facultad.documentosOficiales)
-  @JoinColumn({ name: 'facultaId' })
+  @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 
   @Column({ type: 'int', nullable: false })

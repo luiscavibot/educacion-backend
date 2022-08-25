@@ -11,9 +11,13 @@ import {
   Query,
   Res,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 import { ActasConsejoService } from './actas-consejo.service';
 import { Observable } from 'rxjs';
 import { ActaConsejo } from './entity/acta-consejo.entity';
@@ -39,18 +43,23 @@ export class ActasConsejoController {
   }
 
   @Post()
-  @UseInterceptors(FileInterceptor('file'), FileInterceptor('video'))
-  async createMemoria(
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'file', maxCount: 1 },
+      { name: 'video', maxCount: 1 },
+    ]),
+  )
+  async createActaConsejo(
     @Body() dto: CreateActaConsejoDto,
-    @UploadedFile() file,
-    @UploadedFile() video,
+    // @UploadedFiles() files { file:any, video:any},
+    @UploadedFiles() files: { file: any; video: any },
     @Res() response,
   ) {
     try {
       const data = await this.actaConsejoService.createActaConsejo(
         { ...dto },
-        file,
-        video,
+        files.file,
+        files.video,
       );
       response.status(HttpStatus.CREATED).json({
         status: HttpStatus.CREATED,
