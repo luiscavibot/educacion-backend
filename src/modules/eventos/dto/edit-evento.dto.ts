@@ -1,10 +1,6 @@
-import { PartialType } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { OmitType } from '@nestjs/swagger';
 import { CreateEventoDto } from './create-evento.dto';
-export class EditEventoDto extends PartialType(CreateEventoDto) {
-  @IsOptional()
-  facultadId: number;
-
-  @IsOptional()
-  usuario_id: number;
-}
+export class EditEventoDto extends OmitType(CreateEventoDto, [
+  'facultadId',
+  'usuario_id',
+] as const) {}
