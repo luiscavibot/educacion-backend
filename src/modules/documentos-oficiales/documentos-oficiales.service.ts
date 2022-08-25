@@ -23,13 +23,12 @@ export class DocumentosOficialesService {
   documentosOficialesPorFacultad(slug: string): Observable<DocumentoOficial[]> {
     return from(
       this.documentoOficialRepository.find({
-        take: 3,
         order: { created_at: 'DESC' },
         where: {
           facultad: {
             slug,
           },
-          // estado: true,
+          estado: true,
         },
       }),
     ).pipe(
