@@ -26,6 +26,10 @@ export class CreateEventoDto {
 
   @IsOptional()
   @IsString()
+  organizador: string;
+
+  @IsOptional()
+  @IsString()
   tipo_evento: string;
 
   @IsOptional()

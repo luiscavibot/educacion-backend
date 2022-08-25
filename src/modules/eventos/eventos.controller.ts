@@ -159,6 +159,7 @@ export class EventosController {
       },
     },
   })
+  @UseInterceptors(FileInterceptor('file'))
   async editEvento(
     @Param('id') id: number,
     @Body() dto: EditEventoDto,
