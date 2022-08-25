@@ -114,7 +114,7 @@ export class ResolucionesDecanalesService {
     id: number,
     resolucionDecanalEntity?: ResolucionDecanal,
   ) {
-    const noticia = await this.getById(id, resolucionDecanalEntity);
-    return await this.resolucionDecanalRepository.remove(noticia);
+    const resolucionDecanal = await this.getById(id, resolucionDecanalEntity);
+    return await this.resolucionDecanalRepository.remove(resolucionDecanal);
   }
 }
