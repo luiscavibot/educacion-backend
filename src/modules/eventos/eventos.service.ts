@@ -120,11 +120,14 @@ export class EventoService {
     if (file) {
       const hash = Date.now().toString();
       const nombre_foto = fileFilterName(file, hash);
-      dto.foto = nombre_foto;
       if (!nombre_foto) {
         throw new BadRequestException('Archivo no válido');
       }
-      await this.storageService.uploadFile(file, nombre_foto);
+      let { Location } = await this.storageService.uploadFile(
+        file,
+        nombre_foto,
+      );
+      dto.foto = Location;
     }
 
     const eventoEditado = Object.assign(evento, dto);

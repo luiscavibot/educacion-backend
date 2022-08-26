@@ -18,7 +18,7 @@ export class DocumentoOficial {
   nombre: string;
 
   @Column({ type: 'text' })
-  anio: string;
+  anio: number;
 
   @Column({ type: 'text' })
   archivo: string;
@@ -29,9 +29,6 @@ export class DocumentoOficial {
 
   @Column({ type: 'int', nullable: false })
   facultadId: number;
-
-  @Column({ type: 'timestamp' })
-  fecha: Date;
 
   @Column({ type: 'boolean' })
   estado: boolean;
