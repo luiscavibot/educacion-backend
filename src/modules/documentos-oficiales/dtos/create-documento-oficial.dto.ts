@@ -8,7 +8,7 @@ export class CreateDocumentoOficialDto {
   nombre: string;
 
   @IsOptional()
-  anio: string;
+  anio: number;
 
   @IsOptional()
   archivo: string;
@@ -18,7 +18,4 @@ export class CreateDocumentoOficialDto {
 
   @IsOptional()
   estado: boolean;
-
-  @IsOptional()
-  fecha: Date;
 }

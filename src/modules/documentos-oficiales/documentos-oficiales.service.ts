@@ -11,6 +11,7 @@ import { EditDocumentoOficialDto } from './dtos/edit-documento-oficial.dto';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
 import { Observable, from, map } from 'rxjs';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class DocumentosOficialesService {
@@ -23,17 +24,53 @@ export class DocumentosOficialesService {
   documentosOficialesPorFacultad(slug: string): Observable<DocumentoOficial[]> {
     return from(
       this.documentoOficialRepository.find({
-        take: 3,
-        order: { created_at: 'DESC' },
+        order: { anio: 'DESC' },
         where: {
           facultad: {
             slug,
           },
-          // estado: true,
+          estado: true,
         },
       }),
     ).pipe(
       map((documentosOficiales: DocumentoOficial[]) => documentosOficiales),
+    );
+  }
+
+  paginacionDocumentosOficiales(
+    options: IPaginationOptions,
+    slug: string,
+    sort: string,
+  ): Observable<Pagination<DocumentoOficial>> {
+    let order_by = sort?.split(':')[0] || 'id';
+    let direction = sort?.split(':')[1] || 'DESC';
+    return from(
+      this.documentoOficialRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        order: { [order_by]: direction },
+        where: {
+          facultad: {
+            slug,
+          },
+        },
+      }),
+    ).pipe(
+      map(([documentosOficiales, totalDocumentosOficiales]) => {
+        const documentosOficialesPageable: Pagination<DocumentoOficial> = {
+          items: documentosOficiales,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: documentosOficiales.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalDocumentosOficiales,
+            totalPages: Math.ceil(
+              totalDocumentosOficiales / Number(options.limit),
+            ),
+          },
+        };
+        return documentosOficialesPageable;
+      }),
     );
   }
 

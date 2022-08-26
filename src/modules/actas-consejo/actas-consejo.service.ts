@@ -60,36 +60,34 @@ export class ActasConsejoService {
 
   async createActaConsejo(dto: CreateActaConsejoDto, file: any, video: any) {
     const hash = Date.now().toString();
-
-    console.log(video);
     if (file) {
       const nombre_archivo = fileFilterName(file, hash);
       if (!nombre_archivo) {
-        throw new BadRequestException('Archivo no válido');
+        throw new BadRequestException('Archivo no válido imagen');
       }
       let { Location } = await this.storageService.uploadFile(
-        file,
+        file[0],
         nombre_archivo,
       );
       dto.documento = Location;
     }
 
     if (video) {
-      const nombre_archivo = fileFilterVideo(file, hash);
+      const nombre_archivo = fileFilterVideo(video, hash);
       if (!nombre_archivo) {
-        throw new BadRequestException('Archivo no válido');
+        throw new BadRequestException('Archivo no válido video');
       }
       let { Location } = await this.storageService.uploadFile(
-        video,
+        video[0],
         nombre_archivo,
       );
       dto.video = Location;
     }
 
-    // const nuevaActaConsejo = this.actaConsejoRepository.create(dto);
-    // const actaConsejo = await this.actaConsejoRepository.save(nuevaActaConsejo);
+    const nuevaActaConsejo = this.actaConsejoRepository.create(dto);
+    const actaConsejo = await this.actaConsejoRepository.save(nuevaActaConsejo);
 
-    return { dto, file };
+    return { actaConsejo };
   }
 
   async editActaConsejo(
