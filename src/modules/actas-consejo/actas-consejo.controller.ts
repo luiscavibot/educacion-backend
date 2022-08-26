@@ -42,27 +42,18 @@ export class ActasConsejoController {
     return { data };
   }
 
-  // @UseInterceptors(FileInterceptor('file', FileInterceptor('video')))
   @Post()
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'file', maxCount: 1 },
-      { name: 'video', maxCount: 1 },
-    ]),
-  )
+  @UseInterceptors(FileInterceptor('file'))
   async createActaConsejo(
     @Body() dto: CreateActaConsejoDto,
-    // @UploadedFile() file,
-    // @UploadedFile() video,
-    @UploadedFiles() files: { file: any; video: any },
+    @UploadedFile() file,
     @Res()
     response,
   ) {
     try {
       const data = await this.actaConsejoService.createActaConsejo(
         { ...dto },
-        files.file,
-        files.video,
+        file,
       );
       response.status(HttpStatus.CREATED).json({
         status: HttpStatus.CREATED,
@@ -79,18 +70,17 @@ export class ActasConsejoController {
   }
 
   @Put(':id')
-  @UseInterceptors(FileInterceptor('file'), FileInterceptor('video'))
+  @UseInterceptors(FileInterceptor('file'))
   async editActaConsejo(
     @Param('id') id: number,
     @Body() dto: EditActaConsejoDto,
     @UploadedFile() file,
-    @UploadedFile() video,
   ) {
     if (file) {
       dto.documento = file.originalname;
     }
     let data;
-    data = await this.actaConsejoService.editActaConsejo(id, dto, file, video);
+    data = await this.actaConsejoService.editActaConsejo(id, dto, file);
     return { message: 'Acta consejo editada', data };
   }
 
