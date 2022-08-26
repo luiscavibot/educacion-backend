@@ -1,12 +1,15 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  Query,
   Res,
   UploadedFile,
   UseInterceptors,
@@ -17,6 +20,7 @@ import { DocumentoOficial } from './entity/documento-oficial.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
 import { EditDocumentoOficialDto } from './dtos';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('documentos-oficiales')
 export class DocumentosOficialesController {
@@ -26,9 +30,24 @@ export class DocumentosOficialesController {
 
   @Get(':slug')
   documentosOficialesPorFacultad(
-    @Param('slug') slug: string,
-  ): Observable<DocumentoOficial[]> {
-    return this.documentoOficialService.documentosOficialesPorFacultad(slug);
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    @Param('slug', new DefaultValuePipe('')) slug: string,
+    @Query('sort') sort: string,
+    @Query('anio') anio: string,
+    @Query('query') query: string,
+  ): Observable<Pagination<DocumentoOficial>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.documentoOficialService.paginacionDocumentosOficiales(
+      {
+        limit,
+        page,
+      },
+      slug,
+      sort,
+      anio,
+      query,
+    );
   }
 
   @Post()

@@ -8,7 +8,7 @@ export class CreateDocumentoOficialDto {
   nombre: string;
 
   @IsOptional()
-  anio: number;
+  anio: string;
 
   @IsOptional()
   archivo: string;
