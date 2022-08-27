@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository, Like } from 'typeorm';
 import { DocumentoOficial } from './entity';
 import { StorageService } from '../storage/storage.service';
 import { EditDocumentoOficialDto } from './dtos/edit-documento-oficial.dto';
@@ -41,19 +41,26 @@ export class DocumentosOficialesService {
     options: IPaginationOptions,
     slug: string,
     sort: string,
+    anio: string,
+    query: string,
   ): Observable<Pagination<DocumentoOficial>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<DocumentoOficial> = {
+      facultad: { slug },
+    };
+    if (anio) {
+      _where = { ..._where, anio };
+    }
+    if (query) {
+      _where = { ..._where, nombre: Like(`%${query}%`) };
+    }
     return from(
       this.documentoOficialRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
         order: { [order_by]: direction },
-        where: {
-          facultad: {
-            slug,
-          },
-        },
+        where: _where,
       }),
     ).pipe(
       map(([documentosOficiales, totalDocumentosOficiales]) => {

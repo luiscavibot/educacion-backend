@@ -18,7 +18,7 @@ export class DocumentoOficial {
   nombre: string;
 
   @Column({ type: 'text' })
-  anio: number;
+  anio: string;
 
   @Column({ type: 'text' })
   archivo: string;
