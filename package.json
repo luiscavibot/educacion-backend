@@ -2,7 +2,7 @@
   "name": "educacion-website-backend",
   "version": "0.0.1",
   "description": "",
-  "engine": {
+  "engines": {
     "node": "16.x"
   },
   "author": "",
