@@ -24,6 +24,9 @@ export class DocumentoOficial {
   @Column({ type: 'text' })
   archivo: string;
 
+  @Column({ type: 'text' })
+  fileName: string;
+
   @ManyToOne(() => Facultad, (facultad) => facultad.documentosOficiales)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;

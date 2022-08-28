@@ -50,6 +50,12 @@ export class DocumentosOficialesController {
     );
   }
 
+  @Get('id/:id')
+  async getById(@Param('id', ParseIntPipe) id: number) {
+    const data = await this.documentoOficialService.getById(id);
+    return { data };
+  }
+
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async createDocumentoOficial(
