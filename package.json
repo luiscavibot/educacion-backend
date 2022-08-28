@@ -2,6 +2,9 @@
   "name": "educacion-website-backend",
   "version": "0.0.1",
   "description": "",
+  "engine": {
+    "node": "16.x"
+  },
   "author": "",
   "private": true,
   "license": "UNLICENSED",
