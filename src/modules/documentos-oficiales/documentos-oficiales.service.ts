@@ -106,11 +106,12 @@ export class DocumentosOficialesService {
       if (!nombre_archivo) {
         throw new BadRequestException('Archivo no válido');
       }
-      let { Location } = await this.storageService.uploadFile(
+      let { Location, key } = await this.storageService.uploadFile(
         file,
         nombre_archivo,
       );
       dto.archivo = Location;
+      dto.fileName = key;
     }
     const nuevoDocumentoOficial = this.documentoOficialRepository.create(dto);
     const documentoOficial = await this.documentoOficialRepository.save(
@@ -140,11 +141,12 @@ export class DocumentosOficialesService {
       if (!nombre_foto) {
         throw new BadRequestException('Archivo no válido');
       }
-      let { Location } = await this.storageService.uploadFile(
+      let { Location, key } = await this.storageService.uploadFile(
         file,
         nombre_foto,
       );
       dto.archivo = Location;
+      dto.fileName = key;
     }
 
     const documentoOficialEditado = Object.assign(documentoOficial, dto);
