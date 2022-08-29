@@ -7,10 +7,7 @@ import { ActaConsejo } from './entity';
 import { Between, Repository } from 'typeorm';
 import { map, Observable, from } from 'rxjs';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
-import {
-  fileFilterName,
-  fileFilterVideo,
-} from '../../helpers/fileFilerName.helpers';
+import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StorageService } from '../storage/storage.service';
 import { EditActaConsejoDto } from './dtos/edit-acta-consejo.dto';
@@ -58,7 +55,7 @@ export class ActasConsejoService {
     return actaConsejo;
   }
 
-  async createActaConsejo(dto: CreateActaConsejoDto, file: any, video: any) {
+  async createActaConsejo(dto: CreateActaConsejoDto, file: any) {
     const hash = Date.now().toString();
     if (file) {
       const nombre_archivo = fileFilterName(file, hash);
@@ -66,22 +63,10 @@ export class ActasConsejoService {
         throw new BadRequestException('Archivo no válido imagen');
       }
       let { Location } = await this.storageService.uploadFile(
-        file[0],
+        file,
         nombre_archivo,
       );
       dto.documento = Location;
-    }
-
-    if (video) {
-      const nombre_archivo = fileFilterVideo(video, hash);
-      if (!nombre_archivo) {
-        throw new BadRequestException('Archivo no válido video');
-      }
-      let { Location } = await this.storageService.uploadFile(
-        video[0],
-        nombre_archivo,
-      );
-      dto.video = Location;
     }
 
     const nuevaActaConsejo = this.actaConsejoRepository.create(dto);
@@ -94,19 +79,12 @@ export class ActasConsejoService {
     id: number,
     dto: EditActaConsejoDto,
     file: any,
-    video: any,
     actaConsejoEntity?: ActaConsejo,
   ) {
     const actaConsejo = await this.getById(id, actaConsejoEntity);
     if (actaConsejo.documento != '' && file) {
       if (file) {
         await this.storageService.deleteFile(actaConsejo.documento);
-      }
-    }
-
-    if (actaConsejo.video != '' && video) {
-      if (video) {
-        await this.storageService.deleteFile(actaConsejo.video);
       }
     }
 
@@ -122,20 +100,6 @@ export class ActasConsejoService {
         nombre_documento,
       );
       dto.documento = Location;
-    }
-
-    if (video) {
-      const hash = Date.now().toString();
-      const nombre_documento = fileFilterVideo(video, hash);
-
-      if (!nombre_documento) {
-        throw new BadRequestException('Archivo no válido');
-      }
-      let { Location } = await this.storageService.uploadFile(
-        video,
-        nombre_documento,
-      );
-      dto.video = Location;
     }
 
     const memoriaEditada = Object.assign(actaConsejo, dto);

@@ -44,13 +44,16 @@ export class EventoService {
   paginacionEventos(
     options: IPaginationOptions,
     slug: string,
+    sort: string,
   ): Observable<Pagination<Evento>> {
+    let order_by = sort?.split(':')[0] || 'id';
+    let direction = sort?.split(':')[1] || 'DESC';
     return from(
       this.eventoRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
-        order: { id: 'ASC' },
-        select: ['id', 'titulo'],
+        order: { [order_by]: direction },
+        select: ['id', 'titulo', 'estado'],
         where: {
           facultad: {
             slug,
@@ -120,11 +123,14 @@ export class EventoService {
     if (file) {
       const hash = Date.now().toString();
       const nombre_foto = fileFilterName(file, hash);
-      dto.foto = nombre_foto;
       if (!nombre_foto) {
         throw new BadRequestException('Archivo no válido');
       }
-      await this.storageService.uploadFile(file, nombre_foto);
+      let { Location } = await this.storageService.uploadFile(
+        file,
+        nombre_foto,
+      );
+      dto.foto = Location;
     }
 
     const eventoEditado = Object.assign(evento, dto);

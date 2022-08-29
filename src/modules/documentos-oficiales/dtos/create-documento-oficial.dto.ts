@@ -14,11 +14,11 @@ export class CreateDocumentoOficialDto {
   archivo: string;
 
   @IsOptional()
+  fileName: string;
+
+  @IsOptional()
   facultadId: number;
 
   @IsOptional()
   estado: boolean;
-
-  @IsOptional()
-  fecha: Date;
 }

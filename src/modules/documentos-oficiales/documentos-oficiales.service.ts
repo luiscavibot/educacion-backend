@@ -4,13 +4,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository, Like } from 'typeorm';
 import { DocumentoOficial } from './entity';
 import { StorageService } from '../storage/storage.service';
 import { EditDocumentoOficialDto } from './dtos/edit-documento-oficial.dto';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
 import { Observable, from, map } from 'rxjs';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class DocumentosOficialesService {
@@ -23,7 +24,7 @@ export class DocumentosOficialesService {
   documentosOficialesPorFacultad(slug: string): Observable<DocumentoOficial[]> {
     return from(
       this.documentoOficialRepository.find({
-        order: { created_at: 'DESC' },
+        order: { anio: 'DESC' },
         where: {
           facultad: {
             slug,
@@ -33,6 +34,50 @@ export class DocumentosOficialesService {
       }),
     ).pipe(
       map((documentosOficiales: DocumentoOficial[]) => documentosOficiales),
+    );
+  }
+
+  paginacionDocumentosOficiales(
+    options: IPaginationOptions,
+    slug: string,
+    sort: string,
+    anio: string,
+    query: string,
+  ): Observable<Pagination<DocumentoOficial>> {
+    let order_by = sort?.split(':')[0] || 'id';
+    let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<DocumentoOficial> = {
+      facultad: { slug },
+    };
+    if (anio) {
+      _where = { ..._where, anio };
+    }
+    if (query) {
+      _where = { ..._where, nombre: Like(`%${query}%`) };
+    }
+    return from(
+      this.documentoOficialRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        order: { [order_by]: direction },
+        where: _where,
+      }),
+    ).pipe(
+      map(([documentosOficiales, totalDocumentosOficiales]) => {
+        const documentosOficialesPageable: Pagination<DocumentoOficial> = {
+          items: documentosOficiales,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: documentosOficiales.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalDocumentosOficiales,
+            totalPages: Math.ceil(
+              totalDocumentosOficiales / Number(options.limit),
+            ),
+          },
+        };
+        return documentosOficialesPageable;
+      }),
     );
   }
 
@@ -66,6 +111,7 @@ export class DocumentosOficialesService {
         nombre_archivo,
       );
       dto.archivo = Location;
+      dto.fileName = file.originalname;
     }
     const nuevoDocumentoOficial = this.documentoOficialRepository.create(dto);
     const documentoOficial = await this.documentoOficialRepository.save(
@@ -100,6 +146,7 @@ export class DocumentosOficialesService {
         nombre_foto,
       );
       dto.archivo = Location;
+      dto.fileName = file.originalname;
     }
 
     const documentoOficialEditado = Object.assign(documentoOficial, dto);
