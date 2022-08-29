@@ -163,6 +163,9 @@ export class NoticiasService {
 
   async deleteNoticia(id: number, noticiaEntity?: Noticia) {
     const noticia = await this.getById(id, noticiaEntity);
+    if (noticia.foto != '') {
+      await this.storageService.deleteFile(noticia.foto);
+    }
     return await this.noticiaRepository.remove(noticia);
   }
 

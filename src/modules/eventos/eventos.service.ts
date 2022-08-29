@@ -139,6 +139,9 @@ export class EventoService {
 
   async deleteEvento(id: number, eventoEntity?: Evento) {
     const evento = await this.getById(id, eventoEntity);
+    if (evento.foto != '') {
+      await this.storageService.deleteFile(evento.foto);
+    }
     return await this.eventoRepository.remove(evento);
   }
 
