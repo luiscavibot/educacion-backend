@@ -3,7 +3,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import {
+  FindOptionsSelect,
+  FindOptionsSelectProperty,
+  Repository,
+} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateNoticiaDto, EditNoticiaDto } from './dtos';
 import { Noticia } from './entity/noticia.entity';
@@ -12,6 +16,7 @@ import { from, map, Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { generateSlug } from '../../helpers/generateSlug';
+import { FindOptionsWhere } from 'typeorm';
 
 export interface NoticiaFindOne {
   id?: number;
@@ -60,21 +65,29 @@ export class NoticiasService {
     options: IPaginationOptions,
     slug: string,
     sort: string,
-    // ref: string = 'id',
+    estado: string,
   ): Observable<Pagination<Noticia>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<Noticia> = {
+      facultad: { slug },
+    };
+    let _select: FindOptionsSelect<Noticia> = {
+      id: true,
+      titulo: true,
+      estado: true,
+    };
+    if (estado && estado == 'true') {
+      _select = { ..._select, foto: true, fecha: true };
+      _where = { ..._where, estado: true };
+    }
     return from(
       this.noticiaRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
         order: { [order_by]: direction },
-        select: ['id', 'titulo', 'estado'],
-        where: {
-          facultad: {
-            slug,
-          },
-        },
+        select: _select,
+        where: _where,
       }),
     ).pipe(
       map(([noticias, totalNoticias]) => {
