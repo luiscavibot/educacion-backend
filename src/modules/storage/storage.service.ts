@@ -47,10 +47,12 @@ export class StorageService {
   }
 
   async deleteFile(key: string) {
+    const _key = key.split('/');
+
     return await this.s3
       .deleteObject({
         Bucket: this.AWS_S3_BUCKET,
-        Key: key,
+        Key: _key[_key.length - 1],
       })
       .promise();
   }
