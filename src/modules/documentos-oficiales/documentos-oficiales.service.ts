@@ -128,6 +128,7 @@ export class DocumentosOficialesService {
     documentoOficialEntity?: DocumentoOficial,
   ) {
     const documentoOficial = await this.getById(id, documentoOficialEntity);
+
     if (documentoOficial.archivo != '' && file) {
       if (file) {
         await this.storageService.deleteFile(documentoOficial.archivo);
