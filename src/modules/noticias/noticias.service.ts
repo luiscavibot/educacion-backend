@@ -78,7 +78,7 @@ export class NoticiasService {
       estado: true,
     };
     if (estado && estado == 'true') {
-      _select = { ..._select, foto: true, fecha: true };
+      _select = { ..._select, foto: true, fecha: true, cuerpo: true };
       _where = { ..._where, estado: true };
     }
     return from(
