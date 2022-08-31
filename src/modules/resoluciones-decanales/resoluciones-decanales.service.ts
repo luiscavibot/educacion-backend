@@ -42,6 +42,7 @@ export class ResolucionesDecanalesService {
       id: true,
       nombre: true,
       estado: true,
+      descripcion: true,
     };
     if (estado == 'true') {
       _select = {

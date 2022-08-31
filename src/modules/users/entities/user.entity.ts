@@ -15,6 +15,7 @@ import { Evento } from '../../eventos/entity/evento.entity';
 import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-oficial.entity';
 import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
 import { Memoria } from '../../memorias/entity/memoria.entity';
+import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
 
 @Entity('users')
 export class User {
@@ -55,6 +56,12 @@ export class User {
     (documentoOficial) => documentoOficial.user,
   )
   documentos: DocumentoOficial[];
+
+  @OneToMany(
+    () => ResolucionDecanal,
+    (resolucionDecanal) => resolucionDecanal.user,
+  )
+  resoluciones: ResolucionDecanal[];
 
   @OneToMany(() => Evento, (evento) => evento.user)
   eventos: Evento[];
