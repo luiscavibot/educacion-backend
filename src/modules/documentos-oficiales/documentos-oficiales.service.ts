@@ -128,6 +128,7 @@ export class DocumentosOficialesService {
     documentoOficialEntity?: DocumentoOficial,
   ) {
     const documentoOficial = await this.getById(id, documentoOficialEntity);
+
     if (documentoOficial.archivo != '' && file) {
       if (file) {
         await this.storageService.deleteFile(documentoOficial.archivo);
@@ -157,7 +158,10 @@ export class DocumentosOficialesService {
     id: number,
     documentoOficialEntity?: DocumentoOficial,
   ) {
-    const noticia = await this.getById(id, documentoOficialEntity);
-    return await this.documentoOficialRepository.remove(noticia);
+    const documentoOficial = await this.getById(id, documentoOficialEntity);
+    if (documentoOficial.archivo != '') {
+      await this.storageService.deleteFile(documentoOficial.archivo);
+    }
+    return await this.documentoOficialRepository.remove(documentoOficial);
   }
 }
