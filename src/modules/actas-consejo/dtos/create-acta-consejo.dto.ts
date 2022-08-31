@@ -18,4 +18,13 @@ export class CreateActaConsejoDto {
 
   @IsNotEmpty()
   facultadId: number;
+
+  @IsOptional()
+  usuario_id: number;
+
+  @IsOptional()
+  last_updated_by: number;
+
+  @IsOptional()
+  estado: boolean;
 }

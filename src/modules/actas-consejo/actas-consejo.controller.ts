@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   HttpStatus,
@@ -11,29 +12,35 @@ import {
   Query,
   Res,
   UploadedFile,
-  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  FileFieldsInterceptor,
-  FileInterceptor,
-} from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ActasConsejoService } from './actas-consejo.service';
 import { Observable } from 'rxjs';
 import { ActaConsejo } from './entity/acta-consejo.entity';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
 import { EditActaConsejoDto } from './dtos/edit-acta-consejo.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('actas-consejo')
 export class ActasConsejoController {
   constructor(private readonly actaConsejoService: ActasConsejoService) {}
 
   @Get(':slug')
-  actasConsejoPorFacultad(
+  paginacionActaConsejo(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
+    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug') slug: string,
-    @Query('year', ParseIntPipe) year?: number,
-  ): Observable<ActaConsejo[]> {
-    return this.actaConsejoService.actasConsejoPorFacultad(slug, year);
+    @Query('estado') estado: string,
+  ): Observable<Pagination<ActaConsejo>> {
+    return this.actaConsejoService.paginacionActasConsejo(
+      {
+        limit,
+        page,
+      },
+      slug,
+      estado,
+    );
   }
 
   @Get('id/:id')
