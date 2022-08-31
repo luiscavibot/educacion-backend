@@ -36,6 +36,7 @@ export class ActasConsejoService {
       id: true,
       sesion: true,
       estado: true,
+      fecha: true,
     };
 
     if (estado == 'true') {
@@ -45,6 +46,7 @@ export class ActasConsejoService {
         descripcion: true,
         documento: true,
         video: true,
+        fecha: true,
       };
       _where = { ..._where, estado: true };
     }

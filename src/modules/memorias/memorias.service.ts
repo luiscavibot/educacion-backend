@@ -40,6 +40,7 @@ export class MemoriasService {
     let _select: FindOptionsSelect<Memoria> = {
       id: true,
       nombre: true,
+      descripcion: true,
       estado: true,
     };
     if (estado == 'true') {
