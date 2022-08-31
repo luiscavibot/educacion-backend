@@ -37,7 +37,7 @@ export class DocumentoOficial {
   @Column({ type: 'boolean' })
   estado: boolean;
 
-  @ManyToOne(() => User, (user) => user.documentos, { eager: true })
+  @ManyToOne(() => User, (user) => user.documentos)
   @JoinColumn({ name: 'usuario_id' })
   user: User;
 

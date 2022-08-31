@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Facultad } from '../../facultades/entity/facultad.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('memorias')
 export class Memoria {
@@ -35,6 +36,16 @@ export class Memoria {
 
   @Column({ type: 'boolean' })
   estado: boolean;
+
+  @ManyToOne(() => User, (user) => user.memorias)
+  @JoinColumn({ name: 'usuario_id' })
+  user: User;
+
+  @Column({ type: 'int' })
+  usuario_id: number;
+
+  @Column({ type: 'int' })
+  last_updated_by: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
