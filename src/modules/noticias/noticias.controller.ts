@@ -49,6 +49,7 @@ export class NoticiasController {
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug', new DefaultValuePipe('')) slug: string,
     @Query('sort') sort: string,
+    @Query('estado') estado: string,
     // @Query('ref') ref: string,
   ): Observable<Pagination<Noticia>> {
     limit = limit > 100 ? 100 : limit;
@@ -59,6 +60,7 @@ export class NoticiasController {
       },
       slug,
       sort,
+      estado,
     );
   }
 

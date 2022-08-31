@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Repository, Like } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
@@ -45,20 +45,40 @@ export class EventoService {
     options: IPaginationOptions,
     slug: string,
     sort: string,
+    estado: string,
+    inicio: string,
+    fin: string,
   ): Observable<Pagination<Evento>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<Evento> = {
+      facultad: { slug },
+    };
+    let _select: FindOptionsSelect<Evento> = {
+      id: true,
+      titulo: true,
+      estado: true,
+    };
+    if (estado && estado == 'true') {
+      _select = { ..._select, foto: true, cuerpo: true };
+      _where = { ..._where, estado: true };
+    }
+
+    // if (inicio && fin) {
+    //   _where = {
+    //     ..._where,
+    //     estado: true,
+    //     fecha_inicio: new Date(`${inicio}`),
+    //     fecha_final: new Date(`${fin}`),
+    //   };
+    // }
     return from(
       this.eventoRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
         order: { [order_by]: direction },
-        select: ['id', 'titulo', 'estado'],
-        where: {
-          facultad: {
-            slug,
-          },
-        },
+        select: _select,
+        where: _where,
       }),
     ).pipe(
       map(([eventos, totalEventos]) => {
@@ -139,6 +159,9 @@ export class EventoService {
 
   async deleteEvento(id: number, eventoEntity?: Evento) {
     const evento = await this.getById(id, eventoEntity);
+    if (evento.foto != '') {
+      await this.storageService.deleteFile(evento.foto);
+    }
     return await this.eventoRepository.remove(evento);
   }
 
