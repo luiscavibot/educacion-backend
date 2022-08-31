@@ -13,6 +13,7 @@ import { Facultad } from '../../facultades/entity';
 import { Noticia } from '../../noticias/entity';
 import { Evento } from '../../eventos/entity/evento.entity';
 import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-oficial.entity';
+import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
 
 @Entity('users')
 export class User {
@@ -41,6 +42,9 @@ export class User {
 
   @OneToMany(() => Noticia, (noticia) => noticia.user)
   noticias: Noticia[];
+
+  @OneToMany(() => ActaConsejo, (actaConsejo) => actaConsejo.user)
+  actas: ActaConsejo[];
 
   @OneToMany(
     () => DocumentoOficial,

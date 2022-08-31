@@ -4,13 +4,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ActaConsejo } from './entity';
-import { Between, Repository } from 'typeorm';
+import { Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
 import { map, Observable, from } from 'rxjs';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StorageService } from '../storage/storage.service';
 import { EditActaConsejoDto } from './dtos/edit-acta-consejo.dto';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class ActasConsejoService {
@@ -20,22 +21,57 @@ export class ActasConsejoService {
     private readonly storageService: StorageService,
   ) {}
 
-  actasConsejoPorFacultad(
+  paginacionActasConsejo(
+    options: IPaginationOptions,
     slug: string,
-    year?: number,
-  ): Observable<ActaConsejo[]> {
+    estado?: string,
+    sort?: string,
+  ): Observable<Pagination<ActaConsejo>> {
+    let order_by = sort?.split(':')[0] || 'id';
+    let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<ActaConsejo> = {
+      facultad: { slug },
+    };
+    let _select: FindOptionsSelect<ActaConsejo> = {
+      id: true,
+      sesion: true,
+      estado: true,
+    };
+
+    if (estado == 'true') {
+      _select = {
+        id: true,
+        sesion: true,
+        descripcion: true,
+        documento: true,
+        video: true,
+      };
+      _where = { ..._where, estado: true };
+    }
+
     return from(
-      this.actaConsejoRepository.find({
-        order: { created_at: 'DESC' },
-        where: {
-          facultad: {
-            slug,
-          },
-          fecha: Between(new Date(year, 1, 1), new Date(year, 12, 31)),
-          //   estado: true,
-        },
+      this.actaConsejoRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        order: { [order_by]: direction },
+        select: _select,
+        where: _where,
       }),
-    ).pipe(map((actaConsejo: ActaConsejo[]) => actaConsejo));
+    ).pipe(
+      map(([actasConsejo, totalActasConsejo]) => {
+        const actasConsejoPageable: Pagination<ActaConsejo> = {
+          items: actasConsejo,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: actasConsejo.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalActasConsejo,
+            totalPages: Math.ceil(totalActasConsejo / Number(options.limit)),
+          },
+        };
+        return actasConsejoPageable;
+      }),
+    );
   }
 
   async getById(id: number, actaConsejoEntity?: ActaConsejo) {
