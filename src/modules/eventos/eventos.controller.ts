@@ -46,6 +46,9 @@ export class EventosController {
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Query('sort') sort: string,
+    @Query('estado') estado: string,
+    @Query('inicio') inicio: string,
+    @Query('fin') fin: string,
     @(Param('slug')!) slug: string,
   ): Observable<Pagination<Evento>> {
     limit = limit > 100 ? 100 : limit;
@@ -56,6 +59,9 @@ export class EventosController {
       },
       slug,
       sort,
+      estado,
+      inicio,
+      fin,
     );
   }
 
