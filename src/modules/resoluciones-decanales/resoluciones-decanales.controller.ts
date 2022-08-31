@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
   HttpStatus,
   Param,
@@ -16,6 +17,7 @@ import { Observable } from 'rxjs';
 import { ResolucionDecanal } from './entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateResolucionDecanalDto } from './dtos';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('resoluciones-decanales')
 export class ResolucionesDecanalesController {
@@ -24,13 +26,19 @@ export class ResolucionesDecanalesController {
   ) {}
 
   @Get(':slug')
-  resolucionesDecanalesPorFacultad(
+  paginacionResolucionesDecanales(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
+    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug') slug: string,
-    @Query('year', ParseIntPipe) year?: number,
-  ): Observable<ResolucionDecanal[]> {
-    return this.resolucionDecanalService.resolucionDecanalPorFacultad(
+    @Query('estado') estado: string,
+  ): Observable<Pagination<ResolucionDecanal>> {
+    return this.resolucionDecanalService.paginacionResolucionesDecanales(
+      {
+        limit,
+        page,
+      },
       slug,
-      year,
+      estado,
     );
   }
 
