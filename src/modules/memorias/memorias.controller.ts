@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   HttpStatus,
@@ -19,6 +20,7 @@ import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateMemoriaDto } from './dtos/create-memoria.dto';
 import { EditMemoriaDto } from './dtos/edit-memoria.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('memorias')
 export class MemoriasController {
@@ -26,10 +28,19 @@ export class MemoriasController {
 
   @Get(':slug')
   memoriasPorFacultad(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
+    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug') slug: string,
-    @Query('year', ParseIntPipe) year?: number,
-  ): Observable<Memoria[]> {
-    return this.memoriaService.memoriaPorFacultad(slug, year);
+    @Query('estado') estado: string,
+  ): Observable<Pagination<Memoria>> {
+    return this.memoriaService.paginacionMemoria(
+      {
+        limit,
+        page,
+      },
+      slug,
+      estado,
+    );
   }
 
   @Get('id/:id')

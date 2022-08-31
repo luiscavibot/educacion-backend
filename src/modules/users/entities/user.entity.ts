@@ -14,6 +14,7 @@ import { Noticia } from '../../noticias/entity';
 import { Evento } from '../../eventos/entity/evento.entity';
 import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-oficial.entity';
 import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
+import { Memoria } from '../../memorias/entity/memoria.entity';
 
 @Entity('users')
 export class User {
@@ -45,6 +46,9 @@ export class User {
 
   @OneToMany(() => ActaConsejo, (actaConsejo) => actaConsejo.user)
   actas: ActaConsejo[];
+
+  @OneToMany(() => Memoria, (memoria) => memoria.user)
+  memorias: Memoria[];
 
   @OneToMany(
     () => DocumentoOficial,

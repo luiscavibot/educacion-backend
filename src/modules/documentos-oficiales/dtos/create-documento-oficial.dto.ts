@@ -21,4 +21,10 @@ export class CreateDocumentoOficialDto {
 
   @IsOptional()
   estado: boolean;
+
+  @IsOptional()
+  usuario_id: number;
+
+  @IsOptional()
+  last_updated_by: number;
 }
