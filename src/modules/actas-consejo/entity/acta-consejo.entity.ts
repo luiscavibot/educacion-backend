@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { SesionTipo } from '../consts';
 
 @Entity('actas_consejo')
 export class ActaConsejo {
@@ -18,7 +19,10 @@ export class ActaConsejo {
   @Column({ type: 'timestamp' })
   fecha: Date;
 
-  @Column({ type: 'text' })
+  @Column({
+    type: 'set',
+    enum: SesionTipo,
+  })
   sesion: string;
 
   @Column({ type: 'text' })

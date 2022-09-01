@@ -49,6 +49,12 @@ export class ActasConsejoController {
     return { data };
   }
 
+  @Get('tipos/tipos-sesion')
+  getTipos() {
+    const tipos = this.actaConsejoService.tipoSesion();
+    return { tipos };
+  }
+
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async createActaConsejo(
