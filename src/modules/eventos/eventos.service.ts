@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { FindOptionsSelect, FindOptionsWhere, Repository, Like } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Repository, Raw } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
@@ -51,27 +51,45 @@ export class EventoService {
   ): Observable<Pagination<Evento>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
-    let _where: FindOptionsWhere<Evento> = {
-      facultad: { slug },
-    };
+    let _where: FindOptionsWhere<Evento>[] = [
+      {
+        facultad: { slug },
+      },
+    ];
     let _select: FindOptionsSelect<Evento> = {
       id: true,
       titulo: true,
       estado: true,
+      foto: true,
+      cuerpo: true,
+      fecha_inicio: true,
+      fecha_final: true,
+      facultadId: true,
     };
+
     if (estado && estado == 'true') {
-      _select = { ..._select, foto: true, cuerpo: true };
-      _where = { ..._where, estado: true };
+      _select = {
+        ..._select,
+        foto: true,
+        cuerpo: true,
+        fecha_inicio: true,
+        fecha_final: true,
+      };
+      _where = [
+        {
+          facultad: { slug },
+          estado: true,
+          fecha_inicio: Raw((alias) => `${alias} <= NOW()`),
+          fecha_final: Raw((alias) => `${alias} >= NOW()`),
+        },
+        {
+          facultad: { slug },
+          estado: true,
+          fecha_inicio: Raw((alias) => `${alias} > NOW()`),
+        },
+      ];
     }
 
-    // if (inicio && fin) {
-    //   _where = {
-    //     ..._where,
-    //     estado: true,
-    //     fecha_inicio: new Date(`${inicio}`),
-    //     fecha_final: new Date(`${fin}`),
-    //   };
-    // }
     return from(
       this.eventoRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,

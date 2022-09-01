@@ -47,14 +47,14 @@ export class Evento extends BaseEntity {
   @Column({ type: 'simple-array' })
   tags: string[];
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.eventos, { eager: true })
+  @ManyToOne(() => Facultad, (facultad) => facultad.eventos)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 
   @Column({ type: 'int' })
   facultadId: number;
 
-  @ManyToOne(() => User, (user) => user.eventos, { eager: true })
+  @ManyToOne(() => User, (user) => user.eventos)
   @JoinColumn({ name: 'usuario_id' })
   user: User;
 
