@@ -12,6 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { StorageService } from '../storage/storage.service';
 import { EditActaConsejoDto } from './dtos/edit-acta-consejo.dto';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { SesionTipo } from './consts/SesionTipo';
 
 @Injectable()
 export class ActasConsejoService {
@@ -36,6 +37,7 @@ export class ActasConsejoService {
       id: true,
       sesion: true,
       estado: true,
+      fecha: true,
     };
 
     if (estado == 'true') {
@@ -45,6 +47,7 @@ export class ActasConsejoService {
         descripcion: true,
         documento: true,
         video: true,
+        fecha: true,
       };
       _where = { ..._where, estado: true };
     }
@@ -145,5 +148,12 @@ export class ActasConsejoService {
   async deleteActaConsejo(id: number, actaConsejoEntity?: ActaConsejo) {
     const actaConsejo = await this.getById(id, actaConsejoEntity);
     return await this.actaConsejoRepository.remove(actaConsejo);
+  }
+
+  tipoSesion() {
+    return Object.keys(SesionTipo).map((key) => ({
+      value: key,
+      label: SesionTipo[key],
+    }));
   }
 }

@@ -5,12 +5,19 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResolucionDecanal } from './entity/resolucion-decanal.entity';
-import { Between, Like, Repository } from 'typeorm';
+import {
+  Between,
+  Like,
+  Repository,
+  FindOptionsWhere,
+  FindOptionsSelect,
+} from 'typeorm';
 import { StorageService } from '../storage/storage.service';
 import { from, map, Observable } from 'rxjs';
 import { CreateResolucionDecanalDto } from './dtos/create-resolucion-decanal.dto';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { EditResolucionDecanalDto } from './dtos';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class ResolucionesDecanalesService {
@@ -20,22 +27,59 @@ export class ResolucionesDecanalesService {
     private readonly storageService: StorageService,
   ) {}
 
-  resolucionDecanalPorFacultad(
+  paginacionResolucionesDecanales(
+    options: IPaginationOptions,
     slug: string,
-    year?: number,
-  ): Observable<ResolucionDecanal[]> {
+    estado?: string,
+    sort?: string,
+  ): Observable<Pagination<ResolucionDecanal>> {
+    let order_by = sort?.split(':')[0] || 'id';
+    let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<ResolucionDecanal> = {
+      facultad: { slug },
+    };
+    let _select: FindOptionsSelect<ResolucionDecanal> = {
+      id: true,
+      nombre: true,
+      estado: true,
+      descripcion: true,
+    };
+    if (estado == 'true') {
+      _select = {
+        id: true,
+        nombre: true,
+        descripcion: true,
+        documento: true,
+        fecha: true,
+      };
+      _where = { ..._where, estado: true };
+    }
+
     return from(
-      this.resolucionDecanalRepository.find({
-        order: { created_at: 'DESC' },
-        where: {
-          facultad: {
-            slug,
-          },
-          fecha: Between(new Date(year, 1, 1), new Date(year, 12, 31)),
-          estado: true,
-        },
+      this.resolucionDecanalRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        order: { [order_by]: direction },
+        select: _select,
+        where: _where,
       }),
-    ).pipe(map((resolucionDecanal: ResolucionDecanal[]) => resolucionDecanal));
+    ).pipe(
+      map(([resolucionDecanal, totalResolucionDecanal]) => {
+        const resolucionDecanalPageable: Pagination<ResolucionDecanal> = {
+          items: resolucionDecanal,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: resolucionDecanal.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalResolucionDecanal,
+            totalPages: Math.ceil(
+              totalResolucionDecanal / Number(options.limit),
+            ),
+          },
+        };
+        return resolucionDecanalPageable;
+      }),
+    );
   }
 
   async getById(id: number, resolucionDecanalEntity?: ResolucionDecanal) {

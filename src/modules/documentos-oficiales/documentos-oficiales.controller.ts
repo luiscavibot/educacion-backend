@@ -35,6 +35,7 @@ export class DocumentosOficialesController {
     @Param('slug', new DefaultValuePipe('')) slug: string,
     @Query('sort') sort: string,
     @Query('anio') anio: string,
+    @Query('estado') estado: string,
     @Query('query') query: string,
   ): Observable<Pagination<DocumentoOficial>> {
     limit = limit > 100 ? 100 : limit;
@@ -47,6 +48,7 @@ export class DocumentosOficialesController {
       sort,
       anio,
       query,
+      estado,
     );
   }
 

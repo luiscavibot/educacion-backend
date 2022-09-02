@@ -5,12 +5,18 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Memoria } from './entity';
-import { Repository, Between } from 'typeorm';
+import {
+  Repository,
+  Between,
+  FindOptionsWhere,
+  FindOptionsSelect,
+} from 'typeorm';
 import { StorageService } from '../storage/storage.service';
 import { Observable, from, map } from 'rxjs';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { CreateMemoriaDto } from './dtos/create-memoria.dto';
 import { EditMemoriaDto } from './dtos/edit-memoria.dto';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class MemoriasService {
@@ -20,19 +26,57 @@ export class MemoriasService {
     private readonly storageService: StorageService,
   ) {}
 
-  memoriaPorFacultad(slug: string, year?: number): Observable<Memoria[]> {
+  paginacionMemoria(
+    options: IPaginationOptions,
+    slug: string,
+    estado?: string,
+    sort?: string,
+  ): Observable<Pagination<Memoria>> {
+    let order_by = sort?.split(':')[0] || 'id';
+    let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<Memoria> = {
+      facultad: { slug },
+    };
+    let _select: FindOptionsSelect<Memoria> = {
+      id: true,
+      nombre: true,
+      descripcion: true,
+      estado: true,
+    };
+    if (estado == 'true') {
+      _select = {
+        id: true,
+        nombre: true,
+        descripcion: true,
+        documento: true,
+        fecha: true,
+      };
+      _where = { ..._where, estado: true };
+    }
+
     return from(
-      this.memoriaRepository.find({
-        order: { created_at: 'DESC' },
-        where: {
-          facultad: {
-            slug,
-          },
-          fecha: Between(new Date(year, 1, 1), new Date(year, 12, 31)),
-          estado: true,
-        },
+      this.memoriaRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        order: { [order_by]: direction },
+        select: _select,
+        where: _where,
       }),
-    ).pipe(map((memoria: Memoria[]) => memoria));
+    ).pipe(
+      map(([memorias, totalMemorias]) => {
+        const memoriasPageable: Pagination<Memoria> = {
+          items: memorias,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: memorias.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totalMemorias,
+            totalPages: Math.ceil(totalMemorias / Number(options.limit)),
+          },
+        };
+        return memoriasPageable;
+      }),
+    );
   }
 
   async getById(id: number, memoriaEntity?: Memoria) {
