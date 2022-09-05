@@ -95,6 +95,7 @@ export class NoticiasService {
       _select = {
         ..._select,
         foto: true,
+        pie_foto: true,
         fecha: true,
         cuerpo: true,
         resumen: true,
