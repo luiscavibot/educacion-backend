@@ -31,7 +31,7 @@ export class NoticiasService {
     private readonly storageService: StorageService,
   ) {}
 
-  ultimasNoticias(slug: string): Observable<Noticia[]> {
+  ultimasNoticiasHome(slug: string): Observable<Noticia[]> {
     return from(
       this.noticiaRepository.find({
         take: 3,
@@ -41,6 +41,20 @@ export class NoticiasService {
             slug,
           },
           destacado: false,
+        },
+      }),
+    ).pipe(map((noticias: Noticia[]) => noticias));
+  }
+
+  ultimasNoticias(slug: string): Observable<Noticia[]> {
+    return from(
+      this.noticiaRepository.find({
+        take: 3,
+        order: { fecha: 'DESC' },
+        where: {
+          facultad: {
+            slug,
+          },
         },
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));
@@ -78,7 +92,14 @@ export class NoticiasService {
       estado: true,
     };
     if (estado && estado == 'true') {
-      _select = { ..._select, foto: true, fecha: true, cuerpo: true };
+      _select = {
+        ..._select,
+        foto: true,
+        fecha: true,
+        cuerpo: true,
+        resumen: true,
+        slug: true,
+      };
       _where = { ..._where, estado: true };
     }
     return from(
