@@ -64,6 +64,13 @@ export class NoticiasController {
     );
   }
 
+  @Get(':slug/ultimas-home')
+  @ApiOperation({
+    description: 'Devuelve las ultimas noticias (4)',
+  })
+  ultimasNoticiasHome(@Param('slug') slug: string): Observable<Noticia[]> {
+    return this.noticiaService.ultimasNoticias(slug);
+  }
   @Get(':slug/ultimas')
   @ApiOperation({
     description: 'Devuelve las ultimas noticias (4)',
