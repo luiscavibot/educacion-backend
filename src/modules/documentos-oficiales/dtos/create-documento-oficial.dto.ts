@@ -1,10 +1,11 @@
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateDocumentoOficialDto {
   @IsOptional()
   id: number;
 
-  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
   nombre: string;
 
   @IsOptional()
