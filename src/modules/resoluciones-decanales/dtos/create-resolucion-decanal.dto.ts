@@ -1,10 +1,11 @@
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateResolucionDecanalDto {
   @IsOptional()
   nombre: string;
 
-  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
   descripcion: string;
 
   @IsOptional()
