@@ -1,3 +1,6 @@
 import { CreateActaConsejoDto } from './create-acta-consejo.dto';
-import { PartialType } from '@nestjs/swagger';
-export class EditActaConsejoDto extends PartialType(CreateActaConsejoDto) {}
+import { OmitType } from '@nestjs/swagger';
+export class EditActaConsejoDto extends OmitType(CreateActaConsejoDto, [
+  'facultadId',
+  'usuario_id',
+] as const) {}
