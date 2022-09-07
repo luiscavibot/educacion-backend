@@ -60,11 +60,6 @@ export class EventoService {
       id: true,
       titulo: true,
       estado: true,
-      foto: true,
-      cuerpo: true,
-      fecha_inicio: true,
-      fecha_final: true,
-      facultadId: true,
     };
 
     if (estado && estado == 'true') {
@@ -74,6 +69,8 @@ export class EventoService {
         cuerpo: true,
         fecha_inicio: true,
         fecha_final: true,
+        lugar: true,
+        tipo_evento: true,
       };
       _where = [
         {

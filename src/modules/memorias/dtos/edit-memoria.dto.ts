@@ -1,3 +1,6 @@
 import { CreateMemoriaDto } from './create-memoria.dto';
-import { PartialType } from '@nestjs/swagger';
-export class EditMemoriaDto extends PartialType(CreateMemoriaDto) {}
+import { OmitType } from '@nestjs/swagger';
+export class EditMemoriaDto extends OmitType(CreateMemoriaDto, [
+  'facultadId',
+  'usuario_id',
+] as const) {}
