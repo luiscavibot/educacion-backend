@@ -21,6 +21,9 @@ export class CreateMemoriaDto {
   documento: string;
 
   @IsOptional()
+  fileName: string;
+
+  @IsOptional()
   @IsNumber()
   facultadId: number;
 
