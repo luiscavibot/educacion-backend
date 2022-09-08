@@ -14,6 +14,9 @@ export class CreateActaConsejoDto {
   documento: string;
 
   @IsOptional()
+  fileName: string;
+
+  @IsOptional()
   video: string;
 
   @IsNotEmpty()

@@ -105,6 +105,7 @@ export class MemoriasService {
         nombre_archivo,
       );
       dto.documento = Location;
+      dto.fileName = file.originalname;
     }
     const nuevaMemoria = this.memoriaRepository.create(dto);
     const memoria = await this.memoriaRepository.save(nuevaMemoria);
@@ -137,6 +138,7 @@ export class MemoriasService {
         nombre_documento,
       );
       dto.documento = Location;
+      dto.fileName = file.originalname;
     }
 
     const memoriaEditada = Object.assign(memoria, dto);
