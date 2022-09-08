@@ -103,6 +103,11 @@ export class CarrerasDocentesController {
     return this.carreraService.directoresXCarrera(id);
   }
 
+  @Get('coordinadores/:id')
+  coordinadores(@Param('id') id: number): Observable<CarreraDocente[]> {
+    return this.carreraService.coordinadoresXCarrera(id);
+  }
+
   @Get('docentes/:id')
   docentes(
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,

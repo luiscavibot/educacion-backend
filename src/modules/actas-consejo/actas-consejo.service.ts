@@ -106,6 +106,7 @@ export class ActasConsejoService {
         nombre_archivo,
       );
       dto.documento = Location;
+      dto.fileName = file.originalname;
     }
 
     const nuevaActaConsejo = this.actaConsejoRepository.create(dto);
@@ -139,6 +140,7 @@ export class ActasConsejoService {
         nombre_documento,
       );
       dto.documento = Location;
+      dto.fileName = file.originalname;
     }
 
     const memoriaEditada = Object.assign(actaConsejo, dto);

@@ -44,6 +44,9 @@ export class Memoria {
   @Column({ type: 'int' })
   usuario_id: number;
 
+  @Column({ type: 'text', charset: 'utf8mb4' })
+  fileName: string;
+
   @Column({ type: 'int' })
   last_updated_by: number;
 

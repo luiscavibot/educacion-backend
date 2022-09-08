@@ -37,6 +37,12 @@ export class Carrera {
   duracion: string;
 
   @Column({ type: 'text', nullable: false })
+  link_web: string;
+
+  @Column({ type: 'text', nullable: false })
+  correo: string;
+
+  @Column({ type: 'text', nullable: false })
   descripcion: string;
 
   @Column({ type: 'text', nullable: false })

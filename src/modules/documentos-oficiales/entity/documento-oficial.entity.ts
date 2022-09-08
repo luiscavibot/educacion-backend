@@ -15,7 +15,7 @@ export class DocumentoOficial {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text', charset: 'utf-8' })
+  @Column({ type: 'text', charset: 'utf8mb4' })
   nombre: string;
 
   @Column({ type: 'text' })
@@ -24,7 +24,7 @@ export class DocumentoOficial {
   @Column({ type: 'text' })
   archivo: string;
 
-  @Column({ type: 'text', charset: 'utf-8' })
+  @Column({ type: 'text', charset: 'utf8mb4' })
   fileName: string;
 
   @ManyToOne(() => Facultad, (facultad) => facultad.documentosOficiales)

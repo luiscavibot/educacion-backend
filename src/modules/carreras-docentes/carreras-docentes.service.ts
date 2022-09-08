@@ -73,6 +73,17 @@ export class CarrerasDocentesService {
     ).pipe(map((directorios: CarreraDocente[]) => directorios));
   }
 
+  coordinadoresXCarrera(id: number): Observable<CarreraDocente[]> {
+    return from(
+      this.carreraDocenteRepository.find({
+        where: {
+          carreraId: id,
+          coordinador: true,
+        },
+      }),
+    ).pipe(map((coordinadores: CarreraDocente[]) => coordinadores));
+  }
+
   docentesXCarrera(
     options: IPaginationOptions,
     id: number,
