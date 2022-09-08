@@ -112,6 +112,7 @@ export class ResolucionesDecanalesService {
         nombre_archivo,
       );
       dto.documento = Location;
+      dto.fileName = file.originalname;
     }
     const nuevaResolucionDecanal = this.resolucionDecanalRepository.create(dto);
     const resolucionDecanal = await this.resolucionDecanalRepository.save(
@@ -146,6 +147,7 @@ export class ResolucionesDecanalesService {
         nombre_documento,
       );
       dto.documento = Location;
+      dto.fileName = file.originalname;
     }
 
     const resolucionDecanalEditado = Object.assign(resolucionDecanal, dto);

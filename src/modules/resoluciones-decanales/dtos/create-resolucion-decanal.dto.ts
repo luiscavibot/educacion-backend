@@ -12,6 +12,9 @@ export class CreateResolucionDecanalDto {
   documento: string;
 
   @IsOptional()
+  fileName: string;
+
+  @IsOptional()
   facultadId: number;
 
   @IsOptional()
