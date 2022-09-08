@@ -32,6 +32,7 @@ export class MemoriasController {
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug') slug: string,
     @Query('estado') estado: string,
+    @Query('query') query: string,
   ): Observable<Pagination<Memoria>> {
     return this.memoriaService.paginacionMemoria(
       {
@@ -40,6 +41,7 @@ export class MemoriasController {
       },
       slug,
       estado,
+      query,
     );
   }
 

@@ -10,6 +10,7 @@ import {
   Between,
   FindOptionsWhere,
   FindOptionsSelect,
+  Like,
 } from 'typeorm';
 import { StorageService } from '../storage/storage.service';
 import { Observable, from, map } from 'rxjs';
@@ -31,6 +32,7 @@ export class MemoriasService {
     slug: string,
     estado?: string,
     sort?: string,
+    query?: string,
   ): Observable<Pagination<Memoria>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
@@ -52,6 +54,10 @@ export class MemoriasService {
         fecha: true,
       };
       _where = { ..._where, estado: true };
+    }
+
+    if (query) {
+      _where = { ..._where, nombre: Like(`%${query}%`) };
     }
 
     return from(
