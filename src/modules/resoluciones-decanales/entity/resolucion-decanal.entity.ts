@@ -28,7 +28,7 @@ export class ResolucionDecanal {
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 
-  @Column({ type: 'text', charset: 'utf-8' })
+  @Column({ type: 'text', charset: 'utf8mb4' })
   fileName: string;
 
   @Column({ type: 'int' })
