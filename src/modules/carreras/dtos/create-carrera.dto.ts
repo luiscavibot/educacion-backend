@@ -31,6 +31,14 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
+  link_web: string;
+
+  @IsOptional()
+  @IsString()
+  correo: string;
+
+  @IsOptional()
+  @IsString()
   perfil_ingresante: string;
 
   @IsOptional()

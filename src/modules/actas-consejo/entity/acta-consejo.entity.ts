@@ -16,7 +16,7 @@ export class ActaConsejo {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text', charset: 'utf-8' })
+  @Column({ type: 'text', charset: 'utf8mb4' })
   fileName: string;
 
   @Column({ type: 'timestamp' })
