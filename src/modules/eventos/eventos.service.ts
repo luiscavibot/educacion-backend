@@ -71,6 +71,7 @@ export class EventoService {
         fecha_final: true,
         lugar: true,
         tipo_evento: true,
+        slug: true,
       };
       _where = [
         {
@@ -121,6 +122,17 @@ export class EventoService {
     if (!evento)
       throw new NotFoundException('Evento no existe o no está autorizado');
     return evento;
+  }
+
+  getEventoBySlug(slug: string): Observable<Evento[]> {
+    return from(
+      this.eventoRepository.find({
+        order: { created_at: 'DESC' },
+        where: {
+          slug,
+        },
+      }),
+    ).pipe(map((eventos: Evento[]) => eventos));
   }
 
   async createEvento(dto: CreateEventoDto, file: any) {

@@ -75,6 +75,17 @@ export class NoticiasService {
     ).pipe(map((noticias: Noticia[]) => noticias));
   }
 
+  getNoticiaBySlug(slug: string): Observable<Noticia[]> {
+    return from(
+      this.noticiaRepository.find({
+        order: { created_at: 'DESC' },
+        where: {
+          slug,
+        },
+      }),
+    ).pipe(map((noticias: Noticia[]) => noticias));
+  }
+
   paginacionNoticias(
     options: IPaginationOptions,
     slug: string,
@@ -141,12 +152,6 @@ export class NoticiasService {
 
   async createNoticia(dto: CreateNoticiaDto, file: any) {
     const hash = Date.now().toString();
-    // const noticiaExiste = await this.noticiaRepository.findOne({
-    //   where: { titulo: dto.titulo, fecha: dto.fecha },
-    // });
-
-    // if (noticiaExiste)
-    //   throw new BadRequestException('Noticia ya registrada con ese nombre');
 
     dto.slug = await generateSlug(dto.titulo, hash);
 
