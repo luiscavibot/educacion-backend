@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -72,5 +73,12 @@ export class ResolucionesDecanalesController {
         error: error.message,
       });
     }
+  }
+
+  @Delete(':id')
+  async deleteResolucionDecanal(@Param('id') id: number) {
+    let data;
+    data = await this.resolucionDecanalService.deleteResolucionDecanal(id);
+    return { message: 'Resolucion Decanal eliminada', data };
   }
 }
