@@ -4,7 +4,7 @@ export class CreateResolucionDecanalDto {
   @IsOptional()
   nombre: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   descripcion: string;
 
