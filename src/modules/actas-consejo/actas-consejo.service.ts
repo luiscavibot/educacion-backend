@@ -147,15 +147,18 @@ export class ActasConsejoService {
     return await this.actaConsejoRepository.save(memoriaEditada);
   }
 
-  async deleteActaConsejo(id: number, actaConsejoEntity?: ActaConsejo) {
-    const actaConsejo = await this.getById(id, actaConsejoEntity);
-    return await this.actaConsejoRepository.remove(actaConsejo);
-  }
-
   tipoSesion() {
     return Object.keys(SesionTipo).map((key) => ({
       value: key,
       label: SesionTipo[key],
     }));
+  }
+
+  async deleteActaConsejo(id: number, actaConsejoEntity?: ActaConsejo) {
+    const actaConsejo = await this.getById(id, actaConsejoEntity);
+    if (actaConsejo.documento != '') {
+      await this.storageService.deleteFile(actaConsejo.documento);
+    }
+    return await this.actaConsejoRepository.remove(actaConsejo);
   }
 }
