@@ -161,6 +161,9 @@ export class ResolucionesDecanalesService {
     resolucionDecanalEntity?: ResolucionDecanal,
   ) {
     const resolucionDecanal = await this.getById(id, resolucionDecanalEntity);
+    if (resolucionDecanal.documento != '') {
+      await this.storageService.deleteFile(resolucionDecanal.documento);
+    }
     return await this.resolucionDecanalRepository.remove(resolucionDecanal);
   }
 }

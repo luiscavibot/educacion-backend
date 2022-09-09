@@ -92,6 +92,11 @@ export class EventosController {
     return { data };
   }
 
+  @Get('url/:slug')
+  getEventoBySlug(@Param('slug') slug: string): Observable<Evento[]> {
+    return this.eventoService.getEventoBySlug(slug);
+  }
+
   @Get('tipos/tipos-eventos')
   getTipos() {
     const tipos = this.eventoService.tipoEventos();

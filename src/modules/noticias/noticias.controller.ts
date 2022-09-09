@@ -106,6 +106,11 @@ export class NoticiasController {
     return { data };
   }
 
+  @Get('url/:slug')
+  getNoticiaBySlug(@Param('slug') slug: string): Observable<Noticia[]> {
+    return this.noticiaService.getNoticiaBySlug(slug);
+  }
+
   @Post()
   @ApiOperation({
     description: 'Crea una nueva noticia',
