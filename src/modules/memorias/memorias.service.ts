@@ -153,6 +153,9 @@ export class MemoriasService {
 
   async deleteMemoria(id: number, memoriaEntity?: Memoria) {
     const memoria = await this.getById(id, memoriaEntity);
+    if (memoria.documento != '') {
+      await this.storageService.deleteFile(memoria.documento);
+    }
     return await this.memoriaRepository.remove(memoria);
   }
 }
