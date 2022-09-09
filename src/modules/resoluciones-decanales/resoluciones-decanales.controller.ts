@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   Res,
   UploadedFile,
@@ -76,6 +77,7 @@ export class ResolucionesDecanalesController {
     }
   }
 
+  @Put(':id')
   @UseInterceptors(FileInterceptor('file'))
   async editResolucionDecanal(
     @Param('id') id: number,
