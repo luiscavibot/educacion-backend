@@ -2,11 +2,13 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
   HttpStatus,
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   Res,
   UploadedFile,
@@ -18,6 +20,7 @@ import { ResolucionDecanal } from './entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateResolucionDecanalDto } from './dtos';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { EditResolucionDecanalDto } from './dtos/edit-resolucion-decanal.dto';
 
 @Controller('resoluciones-decanales')
 export class ResolucionesDecanalesController {
@@ -72,5 +75,28 @@ export class ResolucionesDecanalesController {
         error: error.message,
       });
     }
+  }
+
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('file'))
+  async editResolucionDecanal(
+    @Param('id') id: number,
+    @Body() dto: EditResolucionDecanalDto,
+    @UploadedFile() file,
+  ) {
+    let data;
+    data = await this.resolucionDecanalService.editResolucionDecanal(
+      id,
+      dto,
+      file,
+    );
+    return { message: 'Resolucion decanal editada', data };
+  }
+
+  @Delete(':id')
+  async deleteResolucionDecanal(@Param('id') id: number) {
+    let data;
+    data = await this.resolucionDecanalService.deleteResolucionDecanal(id);
+    return { message: 'Resolucion Decanal eliminada', data };
   }
 }
