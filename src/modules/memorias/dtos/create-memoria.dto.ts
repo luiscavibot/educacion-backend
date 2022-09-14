@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 
 export class CreateMemoriaDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   nombre: string;
 
