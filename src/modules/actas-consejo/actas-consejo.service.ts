@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ActaConsejo } from './entity';
-import { Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
+import { Repository, FindOptionsWhere, FindOptionsSelect, In } from 'typeorm';
 import { map, Observable, from } from 'rxjs';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
