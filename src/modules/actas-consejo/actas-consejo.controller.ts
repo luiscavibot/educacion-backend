@@ -103,4 +103,15 @@ export class ActasConsejoController {
     data = await this.actaConsejoService.deleteActaConsejo(id);
     return { message: 'Acta consejo eliminada', data };
   }
+
+  @Delete('eliminar')
+  async deleteActasConsejos(@Body() arreglo: number[]) {
+    let data;
+    if ((arreglo.length = 0)) return { message: 'Arreglo vacio' };
+    data = arreglo.map((acta) => {
+      this.actaConsejoService.deleteActaConsejo(acta);
+    });
+
+    return { message: 'Actas de consejo eliminadas' };
+  }
 }
