@@ -43,7 +43,7 @@ export class Carrera {
   correo: string;
 
   @Column({ type: 'text', nullable: false })
-  descripcion: string;
+  presentacion: string;
 
   @Column({ type: 'text', nullable: false })
   perfil_ingresante: string;
@@ -55,7 +55,7 @@ export class Carrera {
   campo_laboral: string;
 
   @Column({ type: 'text', nullable: false })
-  objetivos: string;
+  porQueEstudiarConNosotros: string;
 
   @Column({ type: 'text' })
   fecha_inicio: string;
