@@ -41,6 +41,7 @@ export class NoticiasService {
             slug,
           },
           destacado: false,
+          estado: true,
         },
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));
@@ -55,6 +56,7 @@ export class NoticiasService {
           facultad: {
             slug,
           },
+          estado: true,
         },
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));
@@ -70,6 +72,7 @@ export class NoticiasService {
             slug,
           },
           destacado: true,
+          estado: true,
         },
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));
