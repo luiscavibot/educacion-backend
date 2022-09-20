@@ -36,7 +36,48 @@ export class EventoService {
           facultad: {
             slug,
           },
+          estado: true,
         },
+      }),
+    ).pipe(map((eventos: Evento[]) => eventos));
+  }
+
+  ultimosEventosVigentes(slug: string): Observable<Evento[]> {
+    let _where: FindOptionsWhere<Evento>[] = [
+      {
+        facultad: { slug },
+        estado: true,
+        fecha_inicio: Raw((alias) => `${alias} <= NOW()`),
+        fecha_final: Raw((alias) => `${alias} >= NOW()`),
+      },
+      {
+        facultad: { slug },
+        estado: true,
+        fecha_inicio: Raw((alias) => `${alias} > NOW()`),
+      },
+    ];
+    return from(
+      this.eventoRepository.find({
+        take: 3,
+        order: { fecha_inicio: 'DESC' },
+        where: _where,
+      }),
+    ).pipe(map((eventos: Evento[]) => eventos));
+  }
+
+  ultimosEventosNoVigentes(slug: string): Observable<Evento[]> {
+    let _where: FindOptionsWhere<Evento>[] = [
+      {
+        facultad: { slug },
+        estado: true,
+        fecha_final: Raw((alias) => `${alias} < NOW()`),
+      },
+    ];
+    return from(
+      this.eventoRepository.find({
+        take: 3,
+        order: { created_at: 'DESC' },
+        where: _where,
       }),
     ).pipe(map((eventos: Evento[]) => eventos));
   }
@@ -48,6 +89,7 @@ export class EventoService {
     estado: string,
     inicio: string,
     fin: string,
+    vigentes: string,
   ): Observable<Pagination<Evento>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
@@ -73,6 +115,8 @@ export class EventoService {
         tipo_evento: true,
         slug: true,
       };
+    }
+    if (vigentes == 'true') {
       _where = [
         {
           facultad: { slug },
@@ -84,6 +128,16 @@ export class EventoService {
           facultad: { slug },
           estado: true,
           fecha_inicio: Raw((alias) => `${alias} > NOW()`),
+        },
+      ];
+    }
+
+    if (vigentes == 'false') {
+      _where = [
+        {
+          facultad: { slug },
+          estado: true,
+          fecha_final: Raw((alias) => `${alias} < NOW()`),
         },
       ];
     }
