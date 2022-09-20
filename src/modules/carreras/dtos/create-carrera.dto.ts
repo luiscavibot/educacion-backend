@@ -27,7 +27,7 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
-  descripcion: string;
+  presentacion: string;
 
   @IsOptional()
   @IsString()
@@ -51,7 +51,7 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
-  objetivos: string;
+  porQueEstudiarConNosotros: string;
 
   @IsOptional()
   @IsNumber()

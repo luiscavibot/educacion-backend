@@ -29,12 +29,6 @@ export class DirectoriosService {
   }
 
   async CreateDirectorio(dto: CreateDirectorioDto) {
-    const directorioExiste = await this.directorioRepository.findOne({
-      where: { nombre: dto.nombre },
-    });
-    if (directorioExiste)
-      throw new BadRequestException('Directorio ya registrado con ese nombre');
-
     const nuevoDirectorio = this.directorioRepository.create(dto);
     const directorio = await this.directorioRepository.save(nuevoDirectorio);
 
