@@ -20,7 +20,7 @@ export class Directorio {
   @Column({ type: 'varchar', length: 150 })
   cargo: string;
 
-  @Column({ type: 'text', nullable: false })
+  @Column({ type: 'text' })
   nombre!: string;
 
   @Column({ type: 'simple-array' })

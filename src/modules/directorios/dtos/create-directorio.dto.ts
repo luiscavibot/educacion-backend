@@ -7,7 +7,7 @@ export class CreateDirectorioDto {
   @IsString()
   cargo: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   nombre: string;
 
