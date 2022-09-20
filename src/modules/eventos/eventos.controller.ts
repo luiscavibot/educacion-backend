@@ -49,6 +49,7 @@ export class EventosController {
     @Query('estado') estado: string,
     @Query('inicio') inicio: string,
     @Query('fin') fin: string,
+    @Query('vigentes') vigentes: string,
     @(Param('slug')!) slug: string,
   ): Observable<Pagination<Evento>> {
     limit = limit > 100 ? 100 : limit;
@@ -62,6 +63,7 @@ export class EventosController {
       estado,
       inicio,
       fin,
+      vigentes,
     );
   }
 
@@ -71,6 +73,21 @@ export class EventosController {
   })
   ultimasEventos(@Param('slug') slug: string): Observable<Evento[]> {
     return this.eventoService.ultimosEventos(slug);
+  }
+  @Get(':slug/ultimos-vigentes')
+  @ApiOperation({
+    description: 'Devuelve los ultimos 3 eventos vigentes',
+  })
+  ultimasEventosVigentes(@Param('slug') slug: string): Observable<Evento[]> {
+    return this.eventoService.ultimosEventosVigentes(slug);
+  }
+
+  @Get(':slug/ultimos-no-vigentes')
+  @ApiOperation({
+    description: 'Devuelve los ultimos 3 eventos no vigentes',
+  })
+  ultimasEventosNoVigentes(@Param('slug') slug: string): Observable<Evento[]> {
+    return this.eventoService.ultimosEventosNoVigentes(slug);
   }
 
   @Get('id/:id')
