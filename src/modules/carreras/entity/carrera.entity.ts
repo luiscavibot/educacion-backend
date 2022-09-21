@@ -2,6 +2,7 @@ import { Facultad } from '../../facultades/entity/facultad.entity';
 import { CarreraDocente } from '../../carreras-docentes/entity/carrera-docente.entity';
 import { Egresado } from '../../egresados/entity/egresado.entity';
 import { Asignatura } from '../../asignaturas/entity/asignatura.entity';
+import { AsignaturaCarrera } from '../../asignaturas-carreras/entity/asignatura-carrera.entity';
 import {
   Column,
   CreateDateColumn,
@@ -91,8 +92,11 @@ export class Carrera {
   @Column({ type: 'text' })
   intro_malla: string;
 
-  @OneToMany(() => Asignatura, (asignatura) => asignatura.carrera)
-  asignaturas: Asignatura[];
+  @OneToMany(
+    () => AsignaturaCarrera,
+    (asignatura_carrera) => asignatura_carrera.carrera,
+  )
+  asignatura_carrera: AsignaturaCarrera[];
 
   @Column({ type: Boolean })
   en_proceso: boolean;
