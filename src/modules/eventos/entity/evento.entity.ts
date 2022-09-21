@@ -33,6 +33,12 @@ export class Evento extends BaseEntity {
   foto: string;
 
   @Column({ type: 'text' })
+  adjuntos: string;
+
+  @Column({ type: 'text' })
+  calendario: string;
+
+  @Column({ type: 'text' })
   organizador: string;
 
   @Column({ type: 'timestamp' })

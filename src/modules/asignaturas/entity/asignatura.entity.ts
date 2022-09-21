@@ -1,4 +1,6 @@
 import { Carrera } from '../../carreras/entity/carrera.entity';
+import { AsignaturaCarrera } from '../../asignaturas-carreras/entity/asignatura-carrera.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   BaseEntity,
   Column,
@@ -6,6 +8,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,24 +21,21 @@ export class Asignatura extends BaseEntity {
   @Column({ type: 'text', nullable: false })
   nombre: string;
 
-  @Column({ type: 'varchar', length: '10' })
-  semestre: string;
+  @OneToMany(
+    () => AsignaturaCarrera,
+    (asignatura_carrera) => asignatura_carrera.asignatura,
+  )
+  asignatura_carrera: AsignaturaCarrera[];
 
-  @Column({ type: 'text' })
-  anio: string;
-
-  @Column({ type: 'float' })
-  credito: number;
-
-  @Column({ type: 'boolean' })
-  tipo: boolean;
-
-  @ManyToOne(() => Carrera, (carrera) => carrera.asignaturas)
-  @JoinColumn({ name: 'carreraId' })
-  carrera: Carrera;
+  @ManyToOne(() => User, (user) => user.asignaturas)
+  @JoinColumn({ name: 'usuario_id' })
+  user: User;
 
   @Column({ type: 'int' })
-  carreraId: number;
+  usuario_id: number;
+
+  @Column({ type: 'int' })
+  last_updated_by: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

@@ -18,10 +18,10 @@ import { Asignatura } from './entity/asignatura.entity';
 export class AsignaturasController {
   constructor(private readonly asignaturaService: AsignaturasService) {}
 
-  @Get(':slug')
-  carreras(@Param('slug') slug: string): Observable<Asignatura[]> {
-    return this.asignaturaService.asignaturaPorCarrera(slug);
-  }
+  // @Get(':slug')
+  // carreras(@Param('slug') slug: string): Observable<Asignatura[]> {
+  //   return this.asignaturaService.asignaturaPorCarrera(slug);
+  // }
 
   @Post()
   async createCarrera(@Body() dto: CreateAsignaturaDto) {
