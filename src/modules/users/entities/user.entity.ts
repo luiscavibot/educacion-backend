@@ -16,6 +16,7 @@ import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-of
 import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
 import { Memoria } from '../../memorias/entity/memoria.entity';
 import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
+import { Asignatura } from '../../asignaturas/entity/asignatura.entity';
 
 @Entity('users')
 export class User {
@@ -44,6 +45,9 @@ export class User {
 
   @OneToMany(() => Noticia, (noticia) => noticia.user)
   noticias: Noticia[];
+
+  @OneToMany(() => Asignatura, (asignatura) => asignatura.user)
+  asignaturas: Noticia[];
 
   @OneToMany(() => ActaConsejo, (actaConsejo) => actaConsejo.user)
   actas: ActaConsejo[];

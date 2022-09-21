@@ -41,6 +41,14 @@ export class CreateEventoDto {
   foto: string;
 
   @IsOptional()
+  @IsString()
+  adjuntos: string;
+
+  @IsOptional()
+  @IsString()
+  calendario: string;
+
+  @IsOptional()
   estado: boolean;
 
   @IsOptional()

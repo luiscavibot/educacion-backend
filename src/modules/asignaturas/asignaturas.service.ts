@@ -17,18 +17,18 @@ export class AsignaturasService {
     private readonly asignaturaRepository: Repository<Asignatura>,
   ) {}
 
-  asignaturaPorCarrera(slug: string): Observable<Asignatura[]> {
-    return from(
-      this.asignaturaRepository.find({
-        order: { created_at: 'ASC' },
-        where: {
-          carrera: {
-            slug,
-          },
-        },
-      }),
-    ).pipe(map((asignaturas: Asignatura[]) => asignaturas));
-  }
+  // asignaturaPorCarrera(slug: string): Observable<Asignatura[]> {
+  //   return from(
+  //     this.asignaturaRepository.find({
+  //       order: { created_at: 'ASC' },
+  //       where: {
+  //         carrera: {
+  //           slug,
+  //         },
+  //       },
+  //     }),
+  //   ).pipe(map((asignaturas: Asignatura[]) => asignaturas));
+  // }
 
   async getById(id: number, asignaturaEntity?: Asignatura) {
     const carrera = await this.asignaturaRepository
