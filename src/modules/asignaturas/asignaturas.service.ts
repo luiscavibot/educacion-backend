@@ -42,12 +42,6 @@ export class AsignaturasService {
   }
 
   async createAsignatura(dto: CreateAsignaturaDto) {
-    const asignaturaExiste = await this.asignaturaRepository.findOne({
-      where: { nombre: dto.nombre },
-    });
-    if (asignaturaExiste)
-      throw new BadRequestException('Asignatura ya registrada con ese nombre');
-
     const nuevaAsignatura = this.asignaturaRepository.create(dto);
     const asignatura = await this.asignaturaRepository.save(nuevaAsignatura);
 
