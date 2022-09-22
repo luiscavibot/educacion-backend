@@ -31,7 +31,9 @@ export class ActasConsejoController {
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug') slug: string,
+    @Query('sort') sort: string,
     @Query('estado') estado: string,
+    @Query('query') query: string,
   ): Observable<Pagination<ActaConsejo>> {
     return this.actaConsejoService.paginacionActasConsejo(
       {
@@ -39,7 +41,9 @@ export class ActasConsejoController {
         page,
       },
       slug,
+      sort,
       estado,
+      query,
     );
   }
 
