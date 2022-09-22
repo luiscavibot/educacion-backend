@@ -4,7 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ActaConsejo } from './entity';
-import { Repository, FindOptionsWhere, FindOptionsSelect, In } from 'typeorm';
+import {
+  Repository,
+  FindOptionsWhere,
+  FindOptionsSelect,
+  In,
+  Like,
+} from 'typeorm';
 import { map, Observable, from } from 'rxjs';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
@@ -25,8 +31,9 @@ export class ActasConsejoService {
   paginacionActasConsejo(
     options: IPaginationOptions,
     slug: string,
-    estado?: string,
-    sort?: string,
+    sort: string,
+    estado: string,
+    query: string,
   ): Observable<Pagination<ActaConsejo>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
@@ -50,6 +57,9 @@ export class ActasConsejoService {
         fecha: true,
       };
       _where = { ..._where, estado: true };
+    }
+    if (query) {
+      _where = { ..._where, descripcion: Like(`%${query}%`) };
     }
 
     return from(

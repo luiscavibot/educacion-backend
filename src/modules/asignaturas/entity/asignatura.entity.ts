@@ -32,6 +32,9 @@ export class Asignatura extends BaseEntity {
   @Column({ type: 'boolean' })
   electivo: boolean;
 
+  @Column({ type: 'boolean' })
+  estado: boolean;
+
   @ManyToOne(() => Carrera, (carrera) => carrera.asignaturas)
   @JoinColumn({ name: 'carreraId' })
   carrera: Carrera;
