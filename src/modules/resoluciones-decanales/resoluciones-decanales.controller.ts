@@ -34,6 +34,8 @@ export class ResolucionesDecanalesController {
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug') slug: string,
     @Query('estado') estado: string,
+    @Query('sort') sort: string,
+    @Query('query') query: string,
   ): Observable<Pagination<ResolucionDecanal>> {
     return this.resolucionDecanalService.paginacionResolucionesDecanales(
       {
@@ -42,6 +44,8 @@ export class ResolucionesDecanalesController {
       },
       slug,
       estado,
+      sort,
+      query,
     );
   }
 
