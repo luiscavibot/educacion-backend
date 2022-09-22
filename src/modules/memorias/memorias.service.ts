@@ -30,9 +30,9 @@ export class MemoriasService {
   paginacionMemoria(
     options: IPaginationOptions,
     slug: string,
-    estado?: string,
-    sort?: string,
-    query?: string,
+    estado: string,
+    sort: string,
+    query: string,
   ): Observable<Pagination<Memoria>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
@@ -57,7 +57,7 @@ export class MemoriasService {
     }
 
     if (query) {
-      _where = { ..._where, nombre: Like(`%${query}%`) };
+      _where = { ..._where, descripcion: Like(`%${query}%`) };
     }
 
     return from(
