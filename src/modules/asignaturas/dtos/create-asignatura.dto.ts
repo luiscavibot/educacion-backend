@@ -14,8 +14,11 @@ export class CreateAsignaturaDto {
   credito: number;
 
   @IsOptional()
-  tipo: boolean;
+  electivo: boolean;
 
   @IsOptional()
   carreraId: number;
+
+  @IsOptional()
+  usuario_id: number;
 }

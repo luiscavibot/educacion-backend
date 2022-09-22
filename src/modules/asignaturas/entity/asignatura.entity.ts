@@ -1,5 +1,4 @@
 import { Carrera } from '../../carreras/entity/carrera.entity';
-import { AsignaturaCarrera } from '../../asignaturas-carreras/entity/asignatura-carrera.entity';
 import { User } from '../../users/entities/user.entity';
 import {
   BaseEntity,
@@ -21,11 +20,24 @@ export class Asignatura extends BaseEntity {
   @Column({ type: 'text', nullable: false })
   nombre: string;
 
-  @OneToMany(
-    () => AsignaturaCarrera,
-    (asignatura_carrera) => asignatura_carrera.asignatura,
-  )
-  asignatura_carrera: AsignaturaCarrera[];
+  @Column({ type: 'varchar', length: '10' })
+  semestre: string;
+
+  @Column({ type: 'text' })
+  anio: string;
+
+  @Column({ type: 'float' })
+  credito: number;
+
+  @Column({ type: 'boolean' })
+  electivo: boolean;
+
+  @ManyToOne(() => Carrera, (carrera) => carrera.asignaturas)
+  @JoinColumn({ name: 'carreraId' })
+  carrera: Carrera;
+
+  @Column({ type: 'int' })
+  carreraId: number;
 
   @ManyToOne(() => User, (user) => user.asignaturas)
   @JoinColumn({ name: 'usuario_id' })
