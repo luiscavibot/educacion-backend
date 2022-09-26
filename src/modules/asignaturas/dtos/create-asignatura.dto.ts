@@ -8,6 +8,9 @@ export class CreateAsignaturaDto {
   semestre: string;
 
   @IsOptional()
+  estado: boolean;
+
+  @IsOptional()
   anio: string;
 
   @IsOptional()

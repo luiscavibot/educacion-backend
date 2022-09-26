@@ -5,13 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResolucionDecanal } from './entity/resolucion-decanal.entity';
-import {
-  Between,
-  Like,
-  Repository,
-  FindOptionsWhere,
-  FindOptionsSelect,
-} from 'typeorm';
+import { Like, Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
 import { StorageService } from '../storage/storage.service';
 import { from, map, Observable } from 'rxjs';
 import { CreateResolucionDecanalDto } from './dtos/create-resolucion-decanal.dto';
@@ -30,8 +24,9 @@ export class ResolucionesDecanalesService {
   paginacionResolucionesDecanales(
     options: IPaginationOptions,
     slug: string,
-    estado?: string,
-    sort?: string,
+    estado: string,
+    sort: string,
+    query: string,
   ): Observable<Pagination<ResolucionDecanal>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
@@ -53,6 +48,10 @@ export class ResolucionesDecanalesService {
         fecha: true,
       };
       _where = { ..._where, estado: true };
+    }
+
+    if (query) {
+      _where = { ..._where, descripcion: Like(`%${query}%`) };
     }
 
     return from(
