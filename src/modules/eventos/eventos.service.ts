@@ -28,17 +28,26 @@ export class EventoService {
   ) {}
 
   ultimosEventos(slug: string, _id: number): Observable<Evento[]> {
+    let _where: FindOptionsWhere<Evento>[] = [
+      {
+        facultad: { slug },
+        id: Not(_id),
+        estado: true,
+        fecha_inicio: Raw((alias) => `${alias} <= NOW()`),
+        fecha_final: Raw((alias) => `${alias} >= NOW()`),
+      },
+      {
+        facultad: { slug },
+        id: Not(_id),
+        estado: true,
+        fecha_inicio: Raw((alias) => `${alias} > NOW()`),
+      },
+    ];
     return from(
       this.eventoRepository.find({
         take: 3,
         order: { created_at: 'DESC' },
-        where: {
-          id: Not(_id),
-          facultad: {
-            slug,
-          },
-          estado: true,
-        },
+        where: _where
       }),
     ).pipe(map((eventos: Evento[]) => eventos));
   }
