@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { FindOptionsSelect, FindOptionsWhere, Repository, Raw } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Repository, Raw, Not } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
@@ -27,12 +27,13 @@ export class EventoService {
     private readonly storageService: StorageService,
   ) {}
 
-  ultimosEventos(slug: string): Observable<Evento[]> {
+  ultimosEventos(slug: string, _id: number): Observable<Evento[]> {
     return from(
       this.eventoRepository.find({
         take: 3,
         order: { created_at: 'DESC' },
         where: {
+          id: Not(_id),
           facultad: {
             slug,
           },
