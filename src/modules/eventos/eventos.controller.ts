@@ -67,7 +67,7 @@ export class EventosController {
     );
   }
 
-  @Get(':slug/ultimos')
+  @Get(':slug/:_id/ultimos')
   @ApiOperation({
     description: 'Devuelve los ultimos 4 eventos',
   })
