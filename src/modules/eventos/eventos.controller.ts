@@ -71,8 +71,8 @@ export class EventosController {
   @ApiOperation({
     description: 'Devuelve los ultimos 4 eventos',
   })
-  ultimasEventos(@Param('slug') slug: string): Observable<Evento[]> {
-    return this.eventoService.ultimosEventos(slug);
+  ultimasEventos(@Param('slug') slug: string, @Param('_id') _id: number): Observable<Evento[]> {
+    return this.eventoService.ultimosEventos(slug, _id);
   }
   @Get(':slug/ultimos-vigentes')
   @ApiOperation({
