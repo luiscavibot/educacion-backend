@@ -201,6 +201,9 @@ export class EventoService {
 
   async createEvento(dto: CreateEventoDto, file: any) {
     const hash = Date.now().toString();
+    if(dto.tipo_evento){
+      dto.tipo_evento = EventoTipo[dto.tipo_evento];
+    }
     dto.slug = await generateSlug(dto.titulo, hash);
     if (file) {
       const nombre_foto = fileFilterName(file, hash);
@@ -229,6 +232,10 @@ export class EventoService {
     const evento = await this.getById(id, eventoEntity);
     if (evento.foto != '' && file) {
       await this.storageService.deleteFile(evento.foto);
+    }
+
+    if(dto.tipo_evento){
+      dto.tipo_evento = EventoTipo[dto.tipo_evento];
     }
 
     if (file) {
