@@ -3,7 +3,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { FindOptionsSelect, FindOptionsWhere, Repository, Raw, Not } from 'typeorm';
+import {
+  FindOptionsSelect,
+  FindOptionsWhere,
+  Repository,
+  Raw,
+  Not,
+} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
@@ -47,7 +53,7 @@ export class EventoService {
       this.eventoRepository.find({
         take: 3,
         order: { created_at: 'DESC' },
-        where: _where
+        where: _where,
       }),
     ).pipe(map((eventos: Evento[]) => eventos));
   }
@@ -201,9 +207,9 @@ export class EventoService {
 
   async createEvento(dto: CreateEventoDto, file: any) {
     const hash = Date.now().toString();
-    if(dto.tipo_evento){
-      dto.tipo_evento = EventoTipo[dto.tipo_evento];
-    }
+    // if(dto.tipo_evento){
+    //   dto.tipo_evento = EventoTipo[dto.tipo_evento];
+    // }
     dto.slug = await generateSlug(dto.titulo, hash);
     if (file) {
       const nombre_foto = fileFilterName(file, hash);
@@ -234,9 +240,9 @@ export class EventoService {
       await this.storageService.deleteFile(evento.foto);
     }
 
-    if(dto.tipo_evento){
-      dto.tipo_evento = EventoTipo[dto.tipo_evento];
-    }
+    // if(dto.tipo_evento){
+    //   dto.tipo_evento = EventoTipo[dto.tipo_evento];
+    // }
 
     if (file) {
       const hash = Date.now().toString();

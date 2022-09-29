@@ -20,9 +20,13 @@ export class Evento extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   titulo!: string;
 
+  // @Column({
+  //   type: 'set',
+  //   enum: EventoTipo,
+  // })
+  // tipo_evento: string;
   @Column({
-    type: 'set',
-    enum: EventoTipo,
+    type: 'text',
   })
   tipo_evento: string;
 
