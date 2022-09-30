@@ -38,7 +38,7 @@ export class DirectoriosService {
   directoriosPorFacultad(slug: string): Observable<Directorio[]> {
     return from(
       this.directorioRepository.find({
-        order: { id: 'DESC' },
+        order: { id: 'ASC' },
         where: {
           facultad: {
             slug,

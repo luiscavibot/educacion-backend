@@ -17,7 +17,7 @@ export class DirectoriosController {
   constructor(private readonly directorioService: DirectoriosService) {}
 
   @Get(':slug')
-  destacadasNoticias(@Param('slug') slug: string): Observable<Directorio[]> {
+  directoriosPorFacultad(@Param('slug') slug: string): Observable<Directorio[]> {
     return this.directorioService.directoriosPorFacultad(slug);
   }
 
