@@ -55,7 +55,12 @@ export class EventoService {
         order: { created_at: 'DESC' },
         where: _where,
       }),
-    ).pipe(map((eventos: Evento[]) => eventos));
+    ).pipe(map((eventos: Evento[]) => {
+      eventos.forEach(evento => {
+        evento['tipo'] = { "label": evento.tipo_evento, "valor": EventoTipo[evento.tipo_evento]  };
+      });
+      return eventos;
+    }));
   }
 
   ultimosEventosVigentes(slug: string): Observable<Evento[]> {
@@ -78,7 +83,14 @@ export class EventoService {
         order: { fecha_inicio: 'DESC' },
         where: _where,
       }),
-    ).pipe(map((eventos: Evento[]) => eventos));
+    ).pipe(map((eventos: Evento[]) => {
+      eventos.forEach(evento => {
+        evento['tipo'] = { "label": evento.tipo_evento, "valor": EventoTipo[evento.tipo_evento]  };
+      });
+      return eventos;
+    })
+      
+    );
   }
 
   ultimosEventosNoVigentes(slug: string): Observable<Evento[]> {
@@ -95,7 +107,12 @@ export class EventoService {
         order: { created_at: 'DESC' },
         where: _where,
       }),
-    ).pipe(map((eventos: Evento[]) => eventos));
+    ).pipe(map((eventos: Evento[]) =>{
+      eventos.forEach(evento => {
+        evento['tipo'] = { "label": evento.tipo_evento, "valor": EventoTipo[evento.tipo_evento]  };
+      });
+      return eventos;
+    }));
   }
 
   paginacionEventos(
@@ -168,7 +185,10 @@ export class EventoService {
       }),
     ).pipe(
       map(([eventos, totalEventos]) => {
-        const eventosPageable: Pagination<Evento> = {
+        eventos.forEach(evento => {
+            evento['tipo'] = { "label": evento.tipo_evento, "valor": EventoTipo[evento.tipo_evento]  };
+        });
+        const eventosPageable: Pagination<any> = {
           items: eventos,
           meta: {
             currentPage: Number(options.page),
@@ -202,14 +222,16 @@ export class EventoService {
           slug,
         },
       }),
-    ).pipe(map((eventos: Evento[]) => eventos));
+    ).pipe(map((eventos: Evento[]) => {
+      eventos.forEach(evento => {
+        evento['tipo'] = { "label": evento.tipo_evento, "valor": EventoTipo[evento.tipo_evento]  };
+      });
+      return eventos;
+    }));
   }
 
   async createEvento(dto: CreateEventoDto, file: any) {
     const hash = Date.now().toString();
-    // if(dto.tipo_evento){
-    //   dto.tipo_evento = EventoTipo[dto.tipo_evento];
-    // }
     dto.slug = await generateSlug(dto.titulo, hash);
     if (file) {
       const nombre_foto = fileFilterName(file, hash);
@@ -239,11 +261,6 @@ export class EventoService {
     if (evento.foto != '' && file) {
       await this.storageService.deleteFile(evento.foto);
     }
-
-    // if(dto.tipo_evento){
-    //   dto.tipo_evento = EventoTipo[dto.tipo_evento];
-    // }
-
     if (file) {
       const hash = Date.now().toString();
       const nombre_foto = fileFilterName(file, hash);
