@@ -12,6 +12,10 @@ export class CreateCarreraDto {
   @IsOptional()
   @IsString()
   foto: string;
+  
+  @IsOptional()
+  @IsString()
+  bluredFoto: string;
 
   @IsOptional()
   @IsString()
