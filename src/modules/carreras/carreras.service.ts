@@ -27,7 +27,7 @@ export class CarrerasService {
     private readonly storageService: StorageService,
   ) {}
 
-  carrerasPregrado(
+  carrerasPorFacultad(
     slug: string,
     nombre: string,
     tipo: string,
