@@ -30,14 +30,15 @@ export class ResolucionesDecanalesService {
   ): Observable<Pagination<ResolucionDecanal>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
-    let _where: FindOptionsWhere<ResolucionDecanal> = {
+    let _where: FindOptionsWhere<ResolucionDecanal>[] = [{
       facultad: { slug },
-    };
+    }];
     let _select: FindOptionsSelect<ResolucionDecanal> = {
       id: true,
       nombre: true,
       estado: true,
       descripcion: true,
+      palabras_claves: true,
     };
     if (estado == 'true') {
       _select = {
@@ -46,12 +47,18 @@ export class ResolucionesDecanalesService {
         descripcion: true,
         documento: true,
         fecha: true,
+        palabras_claves: true,
       };
-      _where = { ..._where, estado: true };
+      _where = [{ facultad: { slug }, estado: true }];
     }
 
     if (query) {
-      _where = { ..._where, descripcion: Like(`%${query}%`) };
+      _where = [
+        {  facultad: { slug }, estado: true, nombre: Like(`%${query}%`) },
+        {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`) },
+        {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`) },
+  
+      ]
     }
 
     return from(

@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsDate,
   IsNotEmpty,
@@ -13,8 +14,8 @@ export class CreateMemoriaDto {
   nombre: string;
 
   @IsString()
-  @IsOptional()
-  descripcion: string;
+  @IsArray()
+  palabras_clave: string[];
 
   @IsString()
   @IsOptional()

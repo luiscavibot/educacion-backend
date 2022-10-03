@@ -37,14 +37,15 @@ export class ActasConsejoService {
   ): Observable<Pagination<ActaConsejo>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
-    let _where: FindOptionsWhere<ActaConsejo> = {
+    let _where: FindOptionsWhere<ActaConsejo>[] = [{
       facultad: { slug },
-    };
+    }];
     let _select: FindOptionsSelect<ActaConsejo> = {
       id: true,
       sesion: true,
       estado: true,
       fecha: true,
+      palabras_claves:true
     };
 
     if (estado == 'true') {
@@ -55,11 +56,16 @@ export class ActasConsejoService {
         documento: true,
         video: true,
         fecha: true,
+        palabras_claves:true
       };
-      _where = { ..._where, estado: true };
+      _where = [{ facultad: { slug }, estado: true }];
     }
     if (query) {
-      _where = { ..._where, descripcion: Like(`%${query}%`) };
+      _where = [
+        {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`) },
+        {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`) },
+  
+      ]
     }
 
     return from(

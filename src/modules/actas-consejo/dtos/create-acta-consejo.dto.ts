@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateActaConsejoDto {
   @IsOptional()
@@ -9,6 +9,10 @@ export class CreateActaConsejoDto {
 
   @IsOptional()
   descripcion: string;
+
+  @IsOptional()
+  @IsArray()
+  palabras_claves: string[];
 
   @IsOptional()
   documento: string;
