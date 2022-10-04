@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResolucionDecanal } from './entity/resolucion-decanal.entity';
-import { Like, Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
+import { Like, Repository, FindOptionsWhere, FindOptionsSelect, Between } from 'typeorm';
 import { StorageService } from '../storage/storage.service';
 import { from, map, Observable } from 'rxjs';
 import { CreateResolucionDecanalDto } from './dtos/create-resolucion-decanal.dto';
@@ -26,6 +26,8 @@ export class ResolucionesDecanalesService {
     slug: string,
     estado: string,
     sort: string,
+    fecha_inicio: string,
+    fecha_fin: string,
     query: string,
   ): Observable<Pagination<ResolucionDecanal>> {
     let order_by = sort?.split(':')[0] || 'id';
@@ -57,7 +59,14 @@ export class ResolucionesDecanalesService {
         {  facultad: { slug }, estado: true, nombre: Like(`%${query}%`) },
         {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`) },
         {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`) },
-  
+      ]
+    }
+
+    if(fecha_inicio && fecha_fin){
+      _where = [
+        {  facultad: { slug }, estado: true, nombre: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)), },
+        {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)), },
+        {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)) },
       ]
     }
 
