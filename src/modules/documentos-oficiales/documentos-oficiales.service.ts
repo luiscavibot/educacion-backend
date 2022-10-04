@@ -42,14 +42,14 @@ export class DocumentosOficialesService {
     slug: string,
     sort: string,
     anio: string,
-    query: string,
     estado: string,
+    query: string,
   ): Observable<Pagination<DocumentoOficial>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
-    let _where: FindOptionsWhere<DocumentoOficial> = {
+    let _where: FindOptionsWhere<DocumentoOficial>[] = [{
       facultad: { slug },
-    };
+    }];
 
     let _select: FindOptionsSelect<DocumentoOficial> = {
       id: true,
@@ -64,14 +64,18 @@ export class DocumentosOficialesService {
         archivo: true,
         anio: true,
       };
-      _where = { ..._where, estado: true };
+      _where = [{ facultad: { slug }, estado: true }];
     }
 
     if (anio) {
-      _where = { ..._where, anio };
+      _where = [{ facultad: { slug }, estado: true, anio }];
     }
     if (query) {
-      _where = { ..._where, nombre: Like(`%${query}%`) };
+      _where = [{ facultad: { slug }, estado: true, nombre: Like(`%${query}%`) }];
+    }
+
+    if(anio && query){
+      _where = [{ facultad: { slug }, estado: true,anio, nombre: Like(`%${query}%`) }];
     }
 
     return from(

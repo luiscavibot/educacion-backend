@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateDocumentoOficialDto {
   @IsOptional()
@@ -7,6 +7,10 @@ export class CreateDocumentoOficialDto {
   @IsNotEmpty()
   @IsString()
   nombre: string;
+
+  @IsString()
+  @IsArray()
+  palabras_claves: string[];;
 
   @IsOptional()
   anio: string;

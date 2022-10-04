@@ -36,28 +36,32 @@ export class MemoriasService {
   ): Observable<Pagination<Memoria>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
-    let _where: FindOptionsWhere<Memoria> = {
+    let _where: FindOptionsWhere<Memoria>[] = [{
       facultad: { slug },
-    };
+    }];
     let _select: FindOptionsSelect<Memoria> = {
       id: true,
       nombre: true,
-      descripcion: true,
       estado: true,
+      palabras_claves: true,
+      
     };
     if (estado == 'true') {
       _select = {
         id: true,
         nombre: true,
-        descripcion: true,
         documento: true,
         fecha: true,
+        palabras_claves: true,
       };
-      _where = { ..._where, estado: true };
+      _where = [{ facultad: { slug }, estado: true }];
     }
 
     if (query) {
-      _where = { ..._where, descripcion: Like(`%${query}%`) };
+      _where = [
+        {  facultad: { slug }, estado: true, nombre: Like(`%${query}%`) },
+        {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`) },
+      ]
     }
 
     return from(

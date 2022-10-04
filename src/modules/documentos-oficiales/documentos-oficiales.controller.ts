@@ -47,8 +47,8 @@ export class DocumentosOficialesController {
       slug,
       sort,
       anio,
-      query,
       estado,
+      query,
     );
   }
 
