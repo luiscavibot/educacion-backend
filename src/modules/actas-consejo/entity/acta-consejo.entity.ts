@@ -31,6 +31,9 @@ export class ActaConsejo {
   @Column({ type: 'text' })
   descripcion: string;
 
+  @Column({ type: 'simple-array' })
+  palabras_claves: string[];
+
   @Column({ type: 'text' })
   documento: string;
 

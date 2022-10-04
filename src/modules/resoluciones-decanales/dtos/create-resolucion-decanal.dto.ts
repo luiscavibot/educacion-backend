@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateResolucionDecanalDto {
   @IsOptional()
@@ -7,6 +7,10 @@ export class CreateResolucionDecanalDto {
   @IsOptional()
   @IsString()
   descripcion: string;
+
+  @IsOptional()
+  @IsArray()
+  palabras_claves: string[];
 
   @IsOptional()
   documento: string;
