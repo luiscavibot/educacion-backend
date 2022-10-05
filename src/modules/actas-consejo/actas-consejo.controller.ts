@@ -33,7 +33,9 @@ export class ActasConsejoController {
     @Param('slug') slug: string,
     @Query('sort') sort: string,
     @Query('estado') estado: string,
-    @Query('query') query: string,
+    @Query('fecha_inicio') fecha_incio: string,
+    @Query('fecha_fin') fecha_fin: string,
+    @Query('query') query: string ='',
   ): Observable<Pagination<ActaConsejo>> {
     return this.actaConsejoService.paginacionActasConsejo(
       {
@@ -43,6 +45,8 @@ export class ActasConsejoController {
       slug,
       sort,
       estado,
+      fecha_incio,
+      fecha_fin,
       query,
     );
   }

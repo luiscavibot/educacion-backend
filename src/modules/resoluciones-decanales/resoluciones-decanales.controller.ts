@@ -35,7 +35,9 @@ export class ResolucionesDecanalesController {
     @Param('slug') slug: string,
     @Query('estado') estado: string,
     @Query('sort') sort: string,
-    @Query('query') query: string,
+    @Query('fecha_inicio') fecha_incio: string,
+    @Query('fecha_fin') fecha_fin: string,
+    @Query('query') query: string = '',
   ): Observable<Pagination<ResolucionDecanal>> {
     return this.resolucionDecanalService.paginacionResolucionesDecanales(
       {
@@ -45,6 +47,8 @@ export class ResolucionesDecanalesController {
       slug,
       estado,
       sort,
+      fecha_incio,
+      fecha_fin,
       query,
     );
   }

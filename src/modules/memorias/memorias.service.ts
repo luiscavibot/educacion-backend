@@ -32,6 +32,8 @@ export class MemoriasService {
     slug: string,
     estado: string,
     sort: string,
+    fecha_inicio: string,
+    fecha_fin: string,
     query: string,
   ): Observable<Pagination<Memoria>> {
     let order_by = sort?.split(':')[0] || 'id';
@@ -61,6 +63,13 @@ export class MemoriasService {
       _where = [
         {  facultad: { slug }, estado: true, nombre: Like(`%${query}%`) },
         {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`) },
+      ]
+    }
+
+    if(fecha_inicio && fecha_fin){
+      _where = [
+        {  facultad: { slug }, estado: true, nombre: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)), },
+        {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)), },
       ]
     }
 

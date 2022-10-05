@@ -19,7 +19,7 @@ export class ActaConsejo {
   @Column({ type: 'text', charset: 'utf8mb4' })
   fileName: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'datetime'  })
   fecha: Date;
 
   @Column({

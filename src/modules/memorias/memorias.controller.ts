@@ -33,7 +33,9 @@ export class MemoriasController {
     @Param('slug') slug: string,
     @Query('estado') estado: string,
     @Query('sort') sort: string,
-    @Query('query') query: string,
+    @Query('fecha_inicio') fecha_inicio: string,
+    @Query('fecha_fin') fecha_fin: string,
+    @Query('query') query: string = '',
   ): Observable<Pagination<Memoria>> {
     return this.memoriaService.paginacionMemoria(
       {
@@ -43,6 +45,8 @@ export class MemoriasController {
       slug,
       estado,
       sort,
+      fecha_inicio,
+      fecha_fin,
       query,
     );
   }

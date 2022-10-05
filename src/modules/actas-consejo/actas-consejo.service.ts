@@ -8,8 +8,8 @@ import {
   Repository,
   FindOptionsWhere,
   FindOptionsSelect,
-  In,
   Like,
+  Between,
 } from 'typeorm';
 import { map, Observable, from } from 'rxjs';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
@@ -33,6 +33,8 @@ export class ActasConsejoService {
     slug: string,
     sort: string,
     estado: string,
+    fecha_inicio: string,
+    fecha_fin: string,
     query: string,
   ): Observable<Pagination<ActaConsejo>> {
     let order_by = sort?.split(':')[0] || 'id';
@@ -60,13 +62,20 @@ export class ActasConsejoService {
       };
       _where = [{ facultad: { slug }, estado: true }];
     }
-    if (query) {
+    if (query.length>=1) {
       _where = [
         {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`) },
         {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`) },
-  
       ]
     }
+    
+    if(fecha_inicio && fecha_fin){
+      _where = [
+        {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)), },
+        {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)) },
+      ]
+    }
+
 
     return from(
       this.actaConsejoRepository.findAndCount({
