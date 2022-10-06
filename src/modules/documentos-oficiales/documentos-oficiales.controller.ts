@@ -31,7 +31,7 @@ export class DocumentosOficialesController {
   @Get(':slug')
   documentosOficialesPorFacultad(
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 3,
     @Param('slug', new DefaultValuePipe('')) slug: string,
     @Query('sort') sort: string,
     @Query('anio') anio: string,
@@ -50,6 +50,11 @@ export class DocumentosOficialesController {
       estado,
       query,
     );
+  }
+
+  @Get(':slug/years')
+  yearsDocumentosOficiales(@Param('slug', new DefaultValuePipe('')) slug: string): Observable<any> {
+    return this.documentoOficialService.yearsDocumentosOficiales(slug);
   }
 
   @Get('id/:id')
