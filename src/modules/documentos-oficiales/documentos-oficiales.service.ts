@@ -10,7 +10,7 @@ import { StorageService } from '../storage/storage.service';
 import { EditDocumentoOficialDto } from './dtos/edit-documento-oficial.dto';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, distinct } from 'rxjs';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
@@ -37,6 +37,28 @@ export class DocumentosOficialesService {
     );
   }
 
+  yearsDocumentosOficiales(slug: string){
+    return from(
+      this.documentoOficialRepository.find({
+        order: { anio: 'DESC' },
+        where: {
+          facultad: {
+            slug,
+          },
+          estado: true,
+        },
+      }),
+    ).pipe(map(( documentosOficiales ) => {
+      let _years = new Set();
+      documentosOficiales.forEach( (d) =>{
+        _years.add(`${d.anio}`)
+      })
+      let years = [..._years]
+      return years.sort();
+    })
+    );
+  }
+  
   paginacionDocumentosOficiales(
     options: IPaginationOptions,
     slug: string,
