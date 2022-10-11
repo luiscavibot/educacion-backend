@@ -1,3 +1,4 @@
+import { UserRole } from '../consts/UserRole';
 import {
   IsEmail,
   IsInt,
@@ -27,4 +28,7 @@ export class CreateUserDto {
   @IsInt()
   @IsOptional()
   proyecto: number;
+
+  @IsOptional()
+  roles: UserRole[];
 }
