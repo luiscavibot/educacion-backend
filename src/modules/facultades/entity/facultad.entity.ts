@@ -30,6 +30,9 @@ export class Facultad {
   @Column({ type: 'varchar', nullable: false, length: 300 })
   nombre!: string;
 
+  @Column({ type: 'text' })
+  frontendDomain: string;
+
   @Column({ type: 'varchar', nullable: false, length: 300 })
   slug!: string;
 
