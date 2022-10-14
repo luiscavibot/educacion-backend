@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateFacultadDto {
   @IsNotEmpty()
@@ -9,4 +9,11 @@ export class CreateFacultadDto {
   @IsNotEmpty()
   @IsNumber()
   areaId!: number;
+
+  @IsOptional()
+  frontendDomain: string;
+  
+  @IsOptional()
+  slug: string;
+
 }
