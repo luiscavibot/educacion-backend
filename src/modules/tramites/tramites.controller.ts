@@ -28,7 +28,9 @@ export class TramitesController {
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug', new DefaultValuePipe('')) slug: string,
-  ): Observable<Pagination<Tramite>> {
+    @Query('sort') sort: string,
+    @Query('estado') estado: string,
+    ): Observable<Pagination<Tramite>> {
     limit = limit > 100 ? 100 : limit;
     return this.tramiteService.paginacionTramites(
       {
@@ -36,6 +38,8 @@ export class TramitesController {
         page,
       },
       slug,
+      sort,
+      estado,
     );
   }
 
