@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Repository } from 'typeorm';
 import { CreateTramiteDto, EditTramiteDto } from './dtos';
 import { Tramite } from './entity';
 import { from, map, Observable } from 'rxjs';
@@ -44,19 +44,35 @@ export class TramitesService {
   paginacionTramites(
     options: IPaginationOptions,
     slug: string,
+    sort: string,
+    estado: string,
   ): Observable<Pagination<Tramite>> {
+    let order_by = sort?.split(':')[0] || 'id';
+    let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<Tramite> = {
+      facultad: { slug },
+    };
+    let _select: FindOptionsSelect<Tramite> = {
+      id: true,
+      titulo: true,
+      estado: true,
+    };
+    if (estado && estado == 'true') {
+      _select = {
+        ..._select,
+        descripcion:true,
+        dirigido:true,
+        fecha: true,
+      };
+      _where = { ..._where, estado: true };
+    }
     return from(
       this.tramiteRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
         order: { id: 'ASC' },
-        select: ['id', 'titulo', 'descripcion'],
-        where: {
-          facultad: {
-            slug,
-          },
-          estado: true,
-        },
+        select: _select,
+        where: _where
       }),
     ).pipe(
       map(([tramites, totalTramites]) => {
