@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TramiteTipo } from '../conts';
 
 @Entity('tramites')
 export class Tramite extends BaseEntity {
@@ -18,13 +19,14 @@ export class Tramite extends BaseEntity {
   @Column({ type: 'text' })
   titulo!: string;
 
-  @Column({ type: 'simple-array' })
-  dirigido: string[];
-
+  
   @Column({ type: 'text' })
   descripcion: string;
-
-  @Column({ type: 'timestamp' })
+  
+  @Column({ type: 'set', enum: TramiteTipo })
+  dirigido: TramiteTipo[];
+  
+  @Column({ type: 'datetime' })
   fecha: Date;
 
   @Column({ type: 'text' })
