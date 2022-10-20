@@ -18,6 +18,7 @@ import { EditTramiteDto } from './dtos/edit-tramite.dto';
 import { Observable } from 'rxjs';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Tramite } from './entity';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller('tramites')
 export class TramitesController {
@@ -59,6 +60,25 @@ export class TramitesController {
         error: error.message,
       });
     }
+  }
+
+  @Get('id/:id')
+  @ApiOperation({
+    description: 'Devuelve un tramite dado un id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Se ha devuelto la información correctamente',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id de un tramite',
+  })
+  async getById(@Param('id', ParseIntPipe) id: number) {
+    const data = await this.tramiteService.getById(id);
+    return { data };
   }
 
   @Put(':id')
