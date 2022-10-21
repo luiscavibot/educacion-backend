@@ -1,5 +1,5 @@
 export enum TramiteTipo {
-    "INGRESANTES" = "Ingresante",
+    "INGRESANTE" = "Ingresante",
     "PREGRADO" = "Pregrado",
     "POSGRADO" = "Posgrado",
     "EGRESADOS" = "Egresado",
