@@ -17,6 +17,7 @@ import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
 import { Memoria } from '../../memorias/entity/memoria.entity';
 import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
 import { Asignatura } from '../../asignaturas/entity/asignatura.entity';
+import { Tramite } from '../../tramites/entity';
 
 @Entity('users')
 export class User {
@@ -47,7 +48,10 @@ export class User {
   noticias: Noticia[];
 
   @OneToMany(() => Asignatura, (asignatura) => asignatura.user)
-  asignaturas: Noticia[];
+  asignaturas: Asignatura[];
+
+  @OneToMany(() => Tramite, (tramite) => tramite.user)
+  tramites: Tramite[];
 
   @OneToMany(() => ActaConsejo, (actaConsejo) => actaConsejo.user)
   actas: ActaConsejo[];
