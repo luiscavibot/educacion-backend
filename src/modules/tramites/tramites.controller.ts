@@ -88,6 +88,12 @@ export class TramitesController {
     return { message: 'Tramite editado', data };
   }
 
+  @Get('tipos/tipos-tramites')
+  getTipos() {
+    const tipos = this.tramiteService.tipoTramite();
+    return { tipos };
+  }
+
   @Delete(':id')
   async deleteNoticia(@Param('id') id: number) {
     let data;

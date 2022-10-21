@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { TramiteTipo } from '../conts';
+import { User } from '../../users/entities';
 
 @Entity('tramites')
 export class Tramite extends BaseEntity {
@@ -23,8 +24,8 @@ export class Tramite extends BaseEntity {
   @Column({ type: 'text' })
   descripcion: string;
   
-  @Column({ type: 'set', enum: TramiteTipo })
-  dirigido: TramiteTipo[];
+  @Column({ type: 'text'})
+  dirigido: string[];
   
   @Column({ type: 'datetime' })
   fecha: Date;
@@ -38,12 +39,19 @@ export class Tramite extends BaseEntity {
   @Column({ type: 'text' })
   correo: string;
 
-  @Column({ type: 'text' })
-  telefono: string;
+  @Column({ type: 'varchar', length: 5 })
+  anexo: string;
 
   @ManyToOne(() => Facultad, (facultad) => facultad.tramites)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
+
+  @ManyToOne(() => User, (user) => user.tramites)
+  @JoinColumn({ name: 'usuario_id' })
+  user: User;
+
+  @Column({ type: 'int', nullable: false })
+  usuario_id: number;
 
   @Column({ type: 'int', nullable: false })
   facultadId: number;

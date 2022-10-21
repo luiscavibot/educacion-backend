@@ -1,5 +1,4 @@
 import { IsOptional, IsString } from 'class-validator';
-import { TramiteTipo } from '../conts';
 
 export class CreateTramiteDto {
   @IsOptional()
@@ -7,7 +6,7 @@ export class CreateTramiteDto {
   titulo!: string;
 
   @IsOptional()
-  dirigido: TramiteTipo[];
+  dirigido: string[];
 
   @IsOptional()
   @IsString()
@@ -30,8 +29,11 @@ export class CreateTramiteDto {
 
   @IsOptional()
   @IsString()
-  telefono: string;
+  anexo: string;
 
   @IsOptional()
   estado: boolean;
+
+  @IsOptional()
+  usuario_id: number;
 }
