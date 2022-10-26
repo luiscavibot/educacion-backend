@@ -30,12 +30,6 @@ export class TramitesService {
   }
 
   async createTramite(dto: CreateTramiteDto) {
-    const tramiteExiste = await this.tramiteRepository.findOne({
-      where: { titulo: dto.titulo },
-    });
-    if (tramiteExiste)
-      throw new BadRequestException('Tramite ya registrado con ese nombre');
-
     const nuevoTramite = this.tramiteRepository.create(dto);
     const tramite = await this.tramiteRepository.save(nuevoTramite);
 
