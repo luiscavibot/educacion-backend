@@ -18,8 +18,8 @@ export class DocumentoOficial {
   @Column({ type: 'text', charset: 'utf8mb4' })
   nombre: string;
 
-  @Column({ type: 'simple-array' })
-  palabras_claves: string[];
+  @Column({ type:'text' })
+  palabras_claves: string;
 
   @Column({ type: 'text' })
   anio: string;
