@@ -8,9 +8,9 @@ export class CreateDocumentoOficialDto {
   @IsString()
   nombre: string;
 
+  @IsOptional()
   @IsString()
-  @IsArray()
-  palabras_claves: string[];;
+  palabras_claves: string;
 
   @IsOptional()
   anio: string;
