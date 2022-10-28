@@ -233,6 +233,9 @@ export class EventoService {
   async createEvento(dto: CreateEventoDto, file: any) {
     const hash = Date.now().toString();
     dto.slug = await generateSlug(dto.titulo, hash);
+    if(dto.fecha_final){
+      dto.fecha_final = new Date(`${dto.fecha_final} 23:59:00`);
+    }
     if (file) {
       const nombre_foto = fileFilterName(file, hash);
       dto.foto = nombre_foto;
@@ -258,6 +261,9 @@ export class EventoService {
     eventoEntity?: Evento,
   ) {
     const evento = await this.getById(id, eventoEntity);
+    if(dto.fecha_final){
+      dto.fecha_final = new Date(`${dto.fecha_final} 23:59:00`);
+    }
     if (evento.foto != '' && file) {
       await this.storageService.deleteFile(evento.foto);
     }
