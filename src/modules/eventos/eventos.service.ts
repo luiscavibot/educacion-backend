@@ -39,14 +39,14 @@ export class EventoService {
         facultad: { slug },
         id: Not(_id),
         estado: true,
-        fecha_inicio: Raw((alias) => `${alias} <= NOW()`),
-        fecha_final: Raw((alias) => `${alias} >= NOW()`),
+        fecha_inicio: Raw((alias) => `${alias} <= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
+        fecha_final: Raw((alias) => `${alias} >= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
       {
         facultad: { slug },
         id: Not(_id),
         estado: true,
-        fecha_inicio: Raw((alias) => `${alias} > NOW()`),
+        fecha_inicio: Raw((alias) => `${alias} > DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
     ];
     return from(
@@ -68,19 +68,19 @@ export class EventoService {
       {
         facultad: { slug },
         estado: true,
-        fecha_inicio: Raw((alias) => `${alias} <= NOW()`),
-        fecha_final: Raw((alias) => `${alias} >= NOW()`),
+        fecha_inicio: Raw((alias) => `${alias} <= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
+        fecha_final: Raw((alias) => `${alias} >= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
       {
         facultad: { slug },
         estado: true,
-        fecha_inicio: Raw((alias) => `${alias} > NOW()`),
+        fecha_inicio: Raw((alias) => `${alias} > DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
     ];
     return from(
       this.eventoRepository.find({
         take: 3,
-        order: { fecha_inicio: 'DESC' },
+        order: { created_at: 'DESC' },
         where: _where,
       }),
     ).pipe(map((eventos: Evento[]) => {
@@ -98,7 +98,7 @@ export class EventoService {
       {
         facultad: { slug },
         estado: true,
-        fecha_final: Raw((alias) => `${alias} < NOW()`),
+        fecha_final: Raw((alias) => `${alias} < DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
     ];
     return from(
@@ -154,13 +154,13 @@ export class EventoService {
         {
           facultad: { slug },
           estado: true,
-          fecha_inicio: Raw((alias) => `${alias} <= NOW()`),
-          fecha_final: Raw((alias) => `${alias} >= NOW()`),
+          fecha_inicio: Raw((alias) => `${alias} <= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
+          fecha_final: Raw((alias) => `${alias} >= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         },
         {
           facultad: { slug },
           estado: true,
-          fecha_inicio: Raw((alias) => `${alias} > NOW()`),
+          fecha_inicio: Raw((alias) => `${alias} > DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         },
       ];
     }
@@ -170,7 +170,7 @@ export class EventoService {
         {
           facultad: { slug },
           estado: true,
-          fecha_final: Raw((alias) => `${alias} < NOW()`),
+          fecha_final: Raw((alias) => `${alias} < DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         },
       ];
     }
