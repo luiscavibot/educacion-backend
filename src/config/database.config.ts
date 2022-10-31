@@ -13,6 +13,7 @@ function typeormModuleOptions(): TypeOrmModuleOptions {
     database: process.env.DATABASE_NAME,
     entities: [join(__dirname, '../**/**/*entity{.ts,.js}')],
     autoLoadEntities: true,
+    timezone: 'Z',
 
     // Implementaremos Migrations.
     /** Recursos
