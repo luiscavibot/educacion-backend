@@ -52,6 +52,9 @@ export class CreateEventoDto {
   estado: boolean;
 
   @IsOptional()
+  destacado: boolean;
+
+  @IsOptional()
   @IsDate()
   fecha_inicio: Date;
 

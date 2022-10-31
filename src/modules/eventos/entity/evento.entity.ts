@@ -79,6 +79,9 @@ export class Evento extends BaseEntity {
 
   @Column({ type: 'boolean' })
   estado: boolean;
+  
+  @Column({ type: 'boolean', default: false })
+  destacado: boolean;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
