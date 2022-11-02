@@ -33,6 +33,37 @@ export class EventoService {
     private readonly storageService: StorageService,
   ) {}
 
+
+  ultimosEventosDestacados(slug: string): Observable<Evento[]>{
+    let _where: FindOptionsWhere<Evento>[] = [
+      {
+        facultad: { slug },
+        estado: true,
+        destacado: true,
+        fecha_inicio: Raw((alias) => `${alias} <= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
+        fecha_final: Raw((alias) => `${alias} >= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
+      },
+      {
+        facultad: { slug },
+        estado: true,
+        destacado: true,
+        fecha_inicio: Raw((alias) => `${alias} > DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
+      },
+    ];
+    return from(
+      this.eventoRepository.find({
+        take: 3,
+        order: { created_at: 'DESC' },
+        where: _where,
+      }),
+    ).pipe(map((eventos: Evento[]) => {
+      eventos.forEach(evento => {
+        evento['tipo'] = { "label": evento.tipo_evento, "valor": EventoTipo[evento.tipo_evento]  };
+      });
+      return eventos;
+    }));
+  }
+
   ultimosEventos(slug: string, _id: number): Observable<Evento[]> {
     let _where: FindOptionsWhere<Evento>[] = [
       {
