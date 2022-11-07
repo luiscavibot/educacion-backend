@@ -7,9 +7,6 @@ export class CreateEnlaceIntereslDto {
     
     @IsOptional()
     link: string;
-    
-    @IsOptional()
-    estado: boolean;
 
     @IsOptional()
     usuario_id: number;
