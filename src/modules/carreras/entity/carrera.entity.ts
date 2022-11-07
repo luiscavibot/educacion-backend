@@ -31,6 +31,12 @@ export class Carrera {
   telefono: string;
 
   @Column({ type: 'text', nullable: false })
+  direccion: string;
+
+  @Column({ type: 'text', nullable: false })
+  horario: string;
+
+  @Column({ type: 'text', nullable: false })
   bluredFoto: string;
 
   @Column({ type: 'text', nullable: false })
