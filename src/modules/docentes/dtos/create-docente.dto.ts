@@ -12,6 +12,10 @@ export class CreateDocenteDto {
 
   @IsOptional()
   @IsString()
+  hojaDeVida: string;
+
+  @IsOptional()
+  @IsString()
   descripcion: string;
 
   @IsOptional()

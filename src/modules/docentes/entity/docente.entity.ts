@@ -24,6 +24,9 @@ export class Docente {
   @Column({ type: 'varchar' })
   foto: string;
 
+  @Column({ type: 'text', nullable: false })
+  hojaDeVida: string;
+
   @Column({ type: 'varchar', length: 200 })
   grado: string;
 
