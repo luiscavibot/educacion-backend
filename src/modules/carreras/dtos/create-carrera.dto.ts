@@ -11,6 +11,10 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
+  hojaDeVida: string;
+
+  @IsOptional()
+  @IsString()
   foto: string;
   
   @IsOptional()
