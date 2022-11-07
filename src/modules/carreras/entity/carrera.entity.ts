@@ -65,9 +65,6 @@ export class Carrera {
   perfil_graduado: string;
 
   @Column({ type: 'text', nullable: false })
-  hojaDeVida: string;
-
-  @Column({ type: 'text', nullable: false })
   campo_laboral: string;
 
   @Column({ type: 'text', nullable: false })
