@@ -28,6 +28,9 @@ export class Carrera {
   foto: string;
 
   @Column({ type: 'text', nullable: false })
+  telefono: string;
+
+  @Column({ type: 'text', nullable: false })
   bluredFoto: string;
 
   @Column({ type: 'text', nullable: false })
