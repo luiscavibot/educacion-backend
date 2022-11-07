@@ -12,21 +12,4 @@ export class EnlacesInteresService {
      private readonly enlaceInteresRepository: Repository<EnlaceInteres>
     ){}
 
-    enlacesDeInteresPorCarrera(slug: string): Observable<EnlaceInteres[]> {
-        return from(
-          this.enlaceInteresRepository.find({
-            order: { id: 'DESC' },
-            select: ['label','link'],
-            where: {
-              carrera: {
-                slug,
-              },
-              estado: true,
-            },
-          }),
-        ).pipe(
-          map((enlacesInteres: EnlaceInteres[]) => enlacesInteres),
-        );
-    }
-
 }
