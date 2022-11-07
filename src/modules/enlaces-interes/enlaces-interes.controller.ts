@@ -9,11 +9,5 @@ export class EnlacesInteresController {
         private readonly enlaceInteresService: EnlacesInteresService,
       ) {}
 
-    @Get(':slug')
-      enlacesDeInteresPorFacultad(
-        @Param('slug', new DefaultValuePipe('')) slug: string,
-    ): Observable<EnlaceInteres[]>{
-        return this.enlaceInteresService.enlacesDeInteresPorCarrera(slug);
-    }
 
 }

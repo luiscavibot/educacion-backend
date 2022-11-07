@@ -21,9 +21,6 @@ export class EnlaceInteres {
   @Column({ type: 'text'})
   link: string;
 
-  @Column({ type: 'boolean' })
-  estado: boolean;
-
   @ManyToOne(() => User, (user) => user.enlaces_interes)
   @JoinColumn({ name: 'usuario_id' })
   user: User;
