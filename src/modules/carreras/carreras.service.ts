@@ -34,6 +34,9 @@ export class CarrerasService {
   ): Observable<Carrera[]> {
     return from(
       this.carreraRepository.find({
+        relations: {
+          enlaces_interes: true,
+        },
         order: { created_at: 'ASC' },
         where: {
           facultad: {

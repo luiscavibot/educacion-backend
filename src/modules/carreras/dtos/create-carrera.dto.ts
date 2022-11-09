@@ -71,6 +71,18 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
+  telefono: string;
+
+  @IsOptional()
+  @IsString()
+  direccion: string;
+  
+  @IsOptional()
+  @IsString()
+  horario: string;
+
+  @IsOptional()
+  @IsString()
   tipo_maestria: string;
 
   @IsOptional()

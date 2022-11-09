@@ -18,6 +18,7 @@ import { Memoria } from '../../memorias/entity/memoria.entity';
 import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
 import { Asignatura } from '../../asignaturas/entity/asignatura.entity';
 import { Tramite } from '../../tramites/entity';
+import { EnlaceInteres } from '../../enlaces-interes/entity/enlace-interes.entity';
 
 @Entity('users')
 export class User {
@@ -46,6 +47,9 @@ export class User {
 
   @OneToMany(() => Noticia, (noticia) => noticia.user)
   noticias: Noticia[];
+
+  @OneToMany(() => EnlaceInteres, (enlace) => enlace.user)
+  enlaces_interes: EnlaceInteres[];
 
   @OneToMany(() => Asignatura, (asignatura) => asignatura.user)
   asignaturas: Asignatura[];
