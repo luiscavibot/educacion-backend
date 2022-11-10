@@ -63,6 +63,13 @@ export class DocumentosOficialesController {
     return { data };
   }
 
+  @Get('years/years-documentos-oficiales')
+  getYears() {
+    const years = this.documentoOficialService.yearsDocumentosOfiales();
+    return { years };
+  }
+
+
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async createDocumentoOficial(
