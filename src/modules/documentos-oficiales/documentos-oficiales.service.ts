@@ -12,6 +12,7 @@ import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
 import { Observable, from, map, distinct } from 'rxjs';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { YearsDocumentosOfiales } from './const';
 
 @Injectable()
 export class DocumentosOficialesService {
@@ -209,5 +210,9 @@ export class DocumentosOficialesService {
       await this.storageService.deleteFile(documentoOficial.archivo);
     }
     return await this.documentoOficialRepository.remove(documentoOficial);
+  }
+
+  yearsDocumentosOfiales() {
+    return YearsDocumentosOfiales.map( year => year );
   }
 }
