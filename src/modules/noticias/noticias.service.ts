@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import {
   FindOptionsSelect,
-  FindOptionsSelectProperty,
+  FindOptionsWhere,
+  Not,
   Repository,
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,7 +17,6 @@ import { from, map, Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { generateSlug } from '../../helpers/generateSlug';
-import { FindOptionsWhere } from 'typeorm';
 
 export interface NoticiaFindOne {
   id?: number;
@@ -47,17 +47,21 @@ export class NoticiasService {
     ).pipe(map((noticias: Noticia[]) => noticias));
   }
 
-  ultimasNoticias(slug: string): Observable<Noticia[]> {
+  ultimasNoticias(slug: string, id: number): Observable<Noticia[]> {
+    let _where: FindOptionsWhere<Noticia> = {
+      facultad: {
+        slug,
+      },
+      estado: true,
+    };
+    if(id){
+      _where = { ..._where, id: Not(id)};
+    }
     return from(
       this.noticiaRepository.find({
         take: 3,
         order: { fecha: 'DESC' },
-        where: {
-          facultad: {
-            slug,
-          },
-          estado: true,
-        },
+        where: _where
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));
   }
