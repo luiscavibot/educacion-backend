@@ -75,8 +75,8 @@ export class NoticiasController {
   @ApiOperation({
     description: 'Devuelve las ultimas noticias (3)',
   })
-  ultimasNoticias(@Param('slug') slug: string): Observable<Noticia[]> {
-    return this.noticiaService.ultimasNoticias(slug);
+  ultimasNoticias(@Param('slug') slug: string,  @Query('id') id: number,): Observable<Noticia[]> {
+    return this.noticiaService.ultimasNoticias(slug, id);
   }
 
   @Get(':slug/destacadas')
