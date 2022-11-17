@@ -27,6 +27,10 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
+  objetivos: string;
+
+  @IsOptional()
+  @IsString()
   duracion: string;
 
   @IsOptional()
