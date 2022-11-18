@@ -32,6 +32,12 @@ export class Carrera {
   telefono: string;
 
   @Column({ type: 'text', nullable: false })
+  objetivos: string;
+
+  @Column({ type: 'text', nullable: false })
+  politicaProteccion: string;
+
+  @Column({ type: 'text', nullable: false })
   direccion: string;
 
   @Column({ type: 'text', nullable: false })
