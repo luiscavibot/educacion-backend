@@ -6,9 +6,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository, Like, FindOptionsSelect } from 'typeorm';
 import { DocumentoOficial } from './entity';
-import { StorageService } from '../storage/storage.service';
+import { StorageService } from '../../storage/storage.service';
 import { EditDocumentoOficialDto } from './dtos/edit-documento-oficial.dto';
-import { fileFilterName } from '../../helpers/fileFilerName.helpers';
+import { fileFilterName } from '../../../helpers/fileFilerName.helpers';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
 import { Observable, from, map, distinct } from 'rxjs';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';

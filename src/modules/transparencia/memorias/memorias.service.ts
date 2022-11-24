@@ -12,9 +12,9 @@ import {
   FindOptionsSelect,
   Like,
 } from 'typeorm';
-import { StorageService } from '../storage/storage.service';
+import { StorageService } from '../../storage/storage.service';
 import { Observable, from, map } from 'rxjs';
-import { fileFilterName } from '../../helpers/fileFilerName.helpers';
+import { fileFilterName } from '../../../helpers/fileFilerName.helpers';
 import { CreateMemoriaDto } from './dtos/create-memoria.dto';
 import { EditMemoriaDto } from './dtos/edit-memoria.dto';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
