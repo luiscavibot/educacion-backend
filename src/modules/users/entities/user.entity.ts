@@ -11,14 +11,15 @@ import {
 import { UserRole } from '../consts';
 import { Facultad } from '../../facultades/entity';
 import { Noticia } from '../../noticias/entity';
-import { Evento } from '../../eventos/entity/evento.entity';
-import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-oficial.entity';
-import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
-import { Memoria } from '../../memorias/entity/memoria.entity';
-import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
-import { Asignatura } from '../../asignaturas/entity/asignatura.entity';
+import { Evento } from '../../eventos/entity';
+import { DocumentoOficial } from '../../documentos-oficiales/entity';
+import { ActaConsejo } from '../../actas-consejo/entity';
+import { Memoria } from '../../memorias/entity';
+import { ResolucionDecanal } from '../../resoluciones-decanales/entity';
+import { Asignatura } from '../../asignaturas/entity';
 import { Tramite } from '../../tramites/entity';
-import { EnlaceInteres } from '../../enlaces-interes/entity/enlace-interes.entity';
+import { EnlaceInteres } from '../../enlaces-interes/entity';
+import { Comunicado } from '../../comunicados/entity';
 
 @Entity('users')
 export class User {
@@ -47,6 +48,9 @@ export class User {
 
   @OneToMany(() => Noticia, (noticia) => noticia.user)
   noticias: Noticia[];
+
+  @OneToMany(() => Comunicado, (comunicado) => comunicado.user)
+  comunicados: Comunicado[];
 
   @OneToMany(() => EnlaceInteres, (enlace) => enlace.user)
   enlaces_interes: EnlaceInteres[];

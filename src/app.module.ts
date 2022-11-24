@@ -25,6 +25,8 @@ import { ResolucionesDecanalesModule } from './modules/resoluciones-decanales/re
 import { MemoriasModule } from './modules/memorias/memorias.module';
 import { GruposInvestigacionModule } from './modules/grupos-investigacion/grupos-investigacion.module';
 import { EnlacesInteresModule } from './modules/enlaces-interes/enlaces-interes.module';
+import { DepartamentoAcademicoModule } from './modules/departamento-academico/departamento-academico.module';
+import { ComunicadosModule } from './modules/comunicados/comunicados.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -76,6 +78,8 @@ import * as Joi from '@hapi/joi';
     MemoriasModule,
     GruposInvestigacionModule,
     EnlacesInteresModule,
+    DepartamentoAcademicoModule,
+    ComunicadosModule,
     // UserModule,
     // PostModule,
   ],

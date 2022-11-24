@@ -11,6 +11,7 @@ import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucio
 import { GrupoInvestigacion } from '../../grupos-investigacion/entity/grupo-investigacion.entity';
 import { Memoria } from '../../memorias/entity/memoria.entity';
 import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
+import { Comunicado} from '../../comunicados/entity/';
 import {
   Column,
   CreateDateColumn,
@@ -50,6 +51,9 @@ export class Facultad {
 
   @OneToMany(() => Carrera, (carrera) => carrera.facultad)
   carreras: Carrera[];
+
+  @OneToMany(() => Comunicado, (comunicado) => comunicado.facultad)
+  comunicados: Comunicado[];
 
   @OneToMany(
     () => DocumentoOficial,
