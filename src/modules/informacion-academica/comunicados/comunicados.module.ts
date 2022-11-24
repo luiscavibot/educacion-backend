@@ -3,7 +3,7 @@ import { ComunicadosController } from './comunicados.controller';
 import { ComunicadosService } from './comunicados.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Comunicado } from './entity';
-import { StorageService } from '../storage/storage.service';
+import { StorageService } from '../../storage/storage.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Comunicado])],

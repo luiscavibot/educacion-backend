@@ -12,14 +12,14 @@ import { UserRole } from '../consts';
 import { Facultad } from '../../facultades/entity';
 import { Noticia } from '../../noticias/entity';
 import { Evento } from '../../eventos/entity';
-import { DocumentoOficial } from '../../documentos-oficiales/entity';
-import { ActaConsejo } from '../../actas-consejo/entity';
-import { Memoria } from '../../memorias/entity';
-import { ResolucionDecanal } from '../../resoluciones-decanales/entity';
+import { DocumentoOficial } from '../../transparencia/documentos-oficiales/entity';
+import { ActaConsejo } from '../../transparencia/actas-consejo/entity';
+import { Memoria } from '../../transparencia/memorias/entity';
+import { ResolucionDecanal } from '../../transparencia/resoluciones-decanales/entity';
 import { Asignatura } from '../../asignaturas/entity';
 import { Tramite } from '../../tramites/entity';
 import { EnlaceInteres } from '../../enlaces-interes/entity';
-import { Comunicado } from '../../comunicados/entity';
+import { Comunicado } from '../../informacion-academica/comunicados/entity';
 
 @Entity('users')
 export class User {

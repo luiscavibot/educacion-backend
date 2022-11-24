@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Facultad } from '../../facultades/entity';
-import { User } from '../../users/entities';
+import { Facultad } from '../../../facultades/entity';
+import { User } from '../../../users/entities';
 
 @Entity('comunicados')
 export class Comunicado {
