@@ -13,9 +13,9 @@ import {
 } from 'typeorm';
 import { map, Observable, from } from 'rxjs';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
-import { fileFilterName } from '../../helpers/fileFilerName.helpers';
+import { fileFilterName } from '../../../helpers/fileFilerName.helpers';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StorageService } from '../storage/storage.service';
+import { StorageService } from '../../storage/storage.service';
 import { EditActaConsejoDto } from './dtos/edit-acta-consejo.dto';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { SesionTipo } from './consts/SesionTipo';

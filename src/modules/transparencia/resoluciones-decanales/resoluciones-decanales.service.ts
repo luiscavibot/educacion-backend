@@ -6,10 +6,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResolucionDecanal } from './entity/resolucion-decanal.entity';
 import { Like, Repository, FindOptionsWhere, FindOptionsSelect, Between } from 'typeorm';
-import { StorageService } from '../storage/storage.service';
+import { StorageService } from '../../storage/storage.service';
 import { from, map, Observable } from 'rxjs';
 import { CreateResolucionDecanalDto } from './dtos/create-resolucion-decanal.dto';
-import { fileFilterName } from '../../helpers/fileFilerName.helpers';
+import { fileFilterName } from '../../../helpers/fileFilerName.helpers';
 import { EditResolucionDecanalDto } from './dtos';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 

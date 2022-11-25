@@ -6,11 +6,12 @@ import { Egresado } from '../../egresados/entity';
 import { User } from '../../users/entities/user.entity';
 import { Directorio } from '../../directorios/entity/directorio.entity';
 import { Tramite } from '../../tramites/entity/tramite.entity';
-import { DocumentoOficial } from '../../documentos-oficiales/entity/documento-oficial.entity';
-import { ResolucionDecanal } from '../../resoluciones-decanales/entity/resolucion-decanal.entity';
+import { DocumentoOficial } from '../../transparencia/documentos-oficiales/entity/documento-oficial.entity';
+import { ResolucionDecanal } from '../../transparencia/resoluciones-decanales/entity/resolucion-decanal.entity';
 import { GrupoInvestigacion } from '../../grupos-investigacion/entity/grupo-investigacion.entity';
-import { Memoria } from '../../memorias/entity/memoria.entity';
-import { ActaConsejo } from '../../actas-consejo/entity/acta-consejo.entity';
+import { Memoria } from '../../transparencia/memorias/entity/memoria.entity';
+import { ActaConsejo } from '../../transparencia/actas-consejo/entity/acta-consejo.entity';
+import { Comunicado} from '../../informacion-academica/comunicados/entity';
 import {
   Column,
   CreateDateColumn,
@@ -50,6 +51,9 @@ export class Facultad {
 
   @OneToMany(() => Carrera, (carrera) => carrera.facultad)
   carreras: Carrera[];
+
+  @OneToMany(() => Comunicado, (comunicado) => comunicado.facultad)
+  comunicados: Comunicado[];
 
   @OneToMany(
     () => DocumentoOficial,

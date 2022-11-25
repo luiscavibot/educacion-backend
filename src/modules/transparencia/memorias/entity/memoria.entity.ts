@@ -1,5 +1,3 @@
-import { Facultad } from '../../facultades/entity/facultad.entity';
-import { User } from '../../users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,43 +7,45 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Facultad } from '../../../facultades/entity/facultad.entity';
+import { User } from '../../../users/entities/user.entity';
 
-@Entity('documentos-oficiales')
-export class DocumentoOficial {
+@Entity('memorias')
+export class Memoria {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text', charset: 'utf8mb4' })
+  @Column({ type: 'text' })
   nombre: string;
 
-  @Column({ type:'text' })
-  palabras_claves: string;
+  @Column({ type: 'simple-array' })
+  palabras_claves: string[];
 
   @Column({ type: 'text' })
-  anio: string;
-
-  @Column({ type: 'text' })
-  archivo: string;
-
-  @Column({ type: 'text', charset: 'utf8mb4' })
-  fileName: string;
+  documento: string;
 
   @ManyToOne(() => Facultad, (facultad) => facultad.documentosOficiales)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 
-  @Column({ type: 'int', nullable: false })
+  @Column({ type: 'int' })
   facultadId: number;
+
+  @Column({ type: 'date' })
+  fecha: Date;
 
   @Column({ type: 'boolean' })
   estado: boolean;
 
-  @ManyToOne(() => User, (user) => user.documentos)
+  @ManyToOne(() => User, (user) => user.memorias)
   @JoinColumn({ name: 'usuario_id' })
   user: User;
 
   @Column({ type: 'int' })
   usuario_id: number;
+
+  @Column({ type: 'text', charset: 'utf8mb4' })
+  fileName: string;
 
   @Column({ type: 'int' })
   last_updated_by: number;

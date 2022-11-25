@@ -19,12 +19,14 @@ import { CarrerasDocentesModule } from './modules/carreras-docentes/carreras-doc
 import { AsignaturasModule } from './modules/asignaturas/asignaturas.module';
 import { DirectoriosModule } from './modules/directorios/directorios.module';
 import { TramitesModule } from './modules/tramites/tramites.module';
-import { DocumentosOficialesModule } from './modules/documentos-oficiales/documentos-oficiales.module';
-import { ActasConsejoModule } from './modules/actas-consejo/actas-consejo.module';
-import { ResolucionesDecanalesModule } from './modules/resoluciones-decanales/resoluciones-decanales.module';
-import { MemoriasModule } from './modules/memorias/memorias.module';
+import { DocumentosOficialesModule } from './modules/transparencia/documentos-oficiales/documentos-oficiales.module';
+import { ActasConsejoModule } from './modules/transparencia/actas-consejo/actas-consejo.module';
+import { ResolucionesDecanalesModule } from './modules/transparencia/resoluciones-decanales/resoluciones-decanales.module';
+import { MemoriasModule } from './modules/transparencia/memorias/memorias.module';
 import { GruposInvestigacionModule } from './modules/grupos-investigacion/grupos-investigacion.module';
 import { EnlacesInteresModule } from './modules/enlaces-interes/enlaces-interes.module';
+import { DepartamentoAcademicoModule } from './modules/informacion-academica/departamento-academico/departamento-academico.module';
+import { ComunicadosModule } from './modules/informacion-academica/comunicados/comunicados.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -76,6 +78,8 @@ import * as Joi from '@hapi/joi';
     MemoriasModule,
     GruposInvestigacionModule,
     EnlacesInteresModule,
+    DepartamentoAcademicoModule,
+    ComunicadosModule,
     // UserModule,
     // PostModule,
   ],
