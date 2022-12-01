@@ -58,6 +58,11 @@ export class TramitesService {
         descripcion:true,
         dirigido:true,
         fecha: true,
+        proceso: true,
+        anexo: true,
+        correo: true,
+        requisitos: true,
+        updated_at:true
       };
       _where = { ..._where, estado: true };
     }
