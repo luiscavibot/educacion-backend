@@ -77,7 +77,7 @@ export class TramitesService {
             {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
           ]
         }
-        if(idx>1){
+        if(idx>=1){
           _where = [
             ..._where,
             {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
