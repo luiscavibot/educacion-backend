@@ -4,12 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsSelect, FindOptionsWhere, Repository, Like } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Repository, Like} from 'typeorm';
 import { CreateTramiteDto, EditTramiteDto } from './dtos';
 import { Tramite } from './entity';
 import { from, map, Observable } from 'rxjs';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { TramiteTipo } from './conts';
+import { Console } from 'console';
 
 @Injectable()
 export class TramitesService {
@@ -41,7 +42,7 @@ export class TramitesService {
     slug: string,
     sort: string,
     estado: string,
-    tipo: string,
+    tipos: string[],
     query: string,
   ): Observable<Pagination<Tramite>> {
     let order_by = sort?.split(':')[0] || 'id';
@@ -69,10 +70,21 @@ export class TramitesService {
       _where = [{ facultad: { slug }, estado: true }];
     }
 
-    if (tipo) {
-      _where = [
-        {  facultad: { slug }, estado: true, dirigido:tipo },
-      ]
+    if (tipos && tipos.length>0) {
+      for(let idx = 0; idx< tipos.length; idx++){
+        if(idx == 0){
+          _where = [
+            {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
+          ]
+        }
+        if(idx>1){
+          _where = [
+            ..._where,
+            {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
+          ]
+        }
+
+      }
     }
 
     if (query.length>=1) {
