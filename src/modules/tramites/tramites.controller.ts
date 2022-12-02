@@ -31,7 +31,7 @@ export class TramitesController {
     @Param('slug', new DefaultValuePipe('')) slug: string,
     @Query('sort') sort: string,
     @Query('estado') estado: string,
-    @Query('tipo') tipo: string,
+    @Query('tipos') tipos: string[],
     @Query('query') query: string ='',
     ): Observable<Pagination<Tramite>> {
     limit = limit > 100 ? 100 : limit;
@@ -43,7 +43,7 @@ export class TramitesController {
       slug,
       sort,
       estado,
-      tipo,
+      tipos,
       query
     );
   }
