@@ -36,6 +36,7 @@ export class CarrerasService {
       this.carreraRepository.find({
         relations: {
           enlaces_interes: true,
+          facultad: true
         },
         order: { created_at: 'ASC' },
         where: {
@@ -44,6 +45,23 @@ export class CarrerasService {
           },
           slug: nombre,
           tipo,
+        },
+      }),
+    ).pipe(map((carreras: Carrera[]) => carreras));
+  }
+
+    escuelasXFacultad(
+    slug: string,
+  ): Observable<Carrera[]> {
+    return from(
+      this.carreraRepository.find({
+        order: { created_at: 'ASC' },
+        select: { slug: true, nombre:true},
+        where: {
+          facultad: {
+            slug,
+          },
+          tipo: "pregrado",
         },
       }),
     ).pipe(map((carreras: Carrera[]) => carreras));

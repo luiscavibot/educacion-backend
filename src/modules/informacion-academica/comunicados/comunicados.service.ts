@@ -130,7 +130,6 @@ export class ComunicadosService {
 
             dto.foto = Location;
         }
-        console.log(dto);
         const comunicadoEditado = Object.assign(comunicado, dto);
         return await this.comunicadoRepository.save(comunicadoEditado);
     }

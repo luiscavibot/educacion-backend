@@ -97,7 +97,7 @@ export class Carrera {
   @Column({ type: 'varchar', nullable: false, length: 150 })
   tipo_maestria: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.carreras, { eager: true })
+  @ManyToOne(() => Facultad, (facultad) => facultad.carreras)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
 

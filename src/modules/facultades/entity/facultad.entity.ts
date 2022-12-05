@@ -12,6 +12,7 @@ import { GrupoInvestigacion } from '../../grupos-investigacion/entity/grupo-inve
 import { Memoria } from '../../transparencia/memorias/entity/memoria.entity';
 import { ActaConsejo } from '../../transparencia/actas-consejo/entity/acta-consejo.entity';
 import { Comunicado} from '../../informacion-academica/comunicados/entity';
+import { Pregrado } from '../../informacion-academica/pregrado/entity/pregrado.entity';
 import {
   Column,
   CreateDateColumn,
@@ -51,6 +52,9 @@ export class Facultad {
 
   @OneToMany(() => Carrera, (carrera) => carrera.facultad)
   carreras: Carrera[];
+
+  @OneToMany(() => Pregrado, (pregrado) => pregrado.facultad)
+  inf_pregrado: Pregrado[];
 
   @OneToMany(() => Comunicado, (comunicado) => comunicado.facultad)
   comunicados: Comunicado[];
