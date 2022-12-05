@@ -42,6 +42,14 @@ export class CarrerasController {
     return this.carreraService.carrerasPorFacultad(slug, nombre, tipo);
   }
 
+  @Get('pregrado/:slug')
+  escuelasxFacultad(
+    @Param('slug') slug: string,
+  ): Observable<Carrera[]> {
+    return this.carreraService.escuelasXFacultad(slug);
+  }
+
+
   @Get(':id')
   @ApiOperation({
     description: 'Devuelve una carrera dado un id',
