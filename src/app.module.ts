@@ -27,6 +27,8 @@ import { GruposInvestigacionModule } from './modules/grupos-investigacion/grupos
 import { EnlacesInteresModule } from './modules/enlaces-interes/enlaces-interes.module';
 import { DepartamentoAcademicoModule } from './modules/informacion-academica/departamento-academico/departamento-academico.module';
 import { ComunicadosModule } from './modules/informacion-academica/comunicados/comunicados.module';
+import { PregradoModule } from './modules/informacion-academica/pregrado/pregrado.module';
+import { PosgradoModule } from './modules/informacion-academica/posgrado/posgrado.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -80,6 +82,8 @@ import * as Joi from '@hapi/joi';
     EnlacesInteresModule,
     DepartamentoAcademicoModule,
     ComunicadosModule,
+    PregradoModule,
+    PosgradoModule,
     // UserModule,
     // PostModule,
   ],
