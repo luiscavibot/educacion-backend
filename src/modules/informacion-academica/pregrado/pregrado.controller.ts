@@ -27,6 +27,8 @@ export class PregradoController {
         @Param('slug', new DefaultValuePipe('')) slug: string,
         @Query('sort') sort: string,
         @Query('estado') estado: string,
+        @Query('escuelas') escuelas: string[],
+        @Query('recursos') recursos: string[],
         @Query('query') query: string,
     ): Observable<Pagination<Pregrado>>{
         limit = limit > 100 ? 100 : limit;
@@ -38,6 +40,8 @@ export class PregradoController {
             slug,
             sort,
             estado,
+            escuelas,
+            recursos,
             query
         )
     }

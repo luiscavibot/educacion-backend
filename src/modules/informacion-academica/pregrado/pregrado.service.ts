@@ -31,13 +31,16 @@ export class PregradoService {
         slug: string,
         sort: string,
         estado: string,
+        escuelas: string[], 
+        recursos: string[],
         query: string
     ): Observable<Pagination<Pregrado>>{
         let order_by = sort?.split(':')[0] || 'id';
         let direction = sort?.split(':')[1] || 'DESC';
-        let _where: FindOptionsWhere<Pregrado> = {
+        let condition:any = []; 
+        let _where: FindOptionsWhere<Pregrado>[] = [{
             facultad: { slug },
-        };
+          }];
         let _select: FindOptionsSelect<Pregrado> = {
             id: true,
             nombre: true,
@@ -51,12 +54,95 @@ export class PregradoService {
                 tipo: true,
                 anio: true
             }
-            _where = { ..._where };
+            _where = [..._where ];
         }
 
-        // if(query.length>=1){
-        //     _where = {..._where, nombre: Like(`%${query}%`)}
-        // }
+        if(query?.length>0){
+            _where = [{
+                facultad: { slug },
+                nombre: Like(`%${query}%`)
+              }]
+        }
+
+        if(escuelas?.length>0){
+            escuelas.map( (escuela) =>{
+                if(recursos?.length>0){
+                    recursos.map( (recurso) =>{
+                        condition.push({escuela, recurso});
+                    })
+                }else{
+                    condition.push({escuela})
+                }
+            })
+        }else{
+            if(recursos?.length>0){
+                recursos.map( (recurso) =>{
+                    condition.push({recurso})  
+                })
+            }
+
+        }
+
+
+        if (condition?.length>0) {
+            for(let idx = 0; idx< condition.length; idx++){
+              if(idx == 0){
+                if(condition[idx].escuela && condition[idx].recurso){
+                    _where = [
+                        {..._where[0],
+                         escuela: Like(`%${condition[idx].escuela}%`),
+                         tipo: Like(`%${condition[idx]?.recurso}%`)
+                        }
+                    ]
+                }else{
+                  if(condition[idx].escuela){
+                    _where = [
+                        {..._where[0],
+                         escuela: Like(`%${condition[idx].escuela}%`),
+                        }
+                    ]
+                  }  
+                  if(condition[idx].recurso){
+                    _where = [
+                        {..._where[0],
+                         tipo: Like(`%${condition[idx]?.recurso}%`)
+                        }
+                    ]
+                  }  
+                }
+              }
+              if(idx>=1){
+                if(condition[idx].escuela && condition[idx].recurso){
+                    _where = [
+                        ..._where,
+                        {..._where[0], 
+                         escuela: Like(`%${condition[idx]?.escuela}%`),
+                         tipo: Like(`%${condition[idx].recurso}%`)
+                        }
+                      ]
+                }else{
+                  if(condition[idx].escuela){
+                    _where = [
+                        ..._where,
+                        {..._where[0], 
+                         escuela: Like(`%${condition[idx]?.escuela}%`),
+                        }
+                      ]
+                  }  
+                  if(condition[idx].recurso){
+                    _where = [
+                        ..._where,
+                        {..._where[0], 
+                         tipo: Like(`%${condition[idx].recurso}%`)
+                        }
+                      ]
+                  }  
+                }
+              }
+      
+            }
+        }
+
 
         return from(
             this.pregradoRepository.findAndCount({

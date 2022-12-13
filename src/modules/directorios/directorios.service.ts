@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere, Like } from 'typeorm';
 import { Directorio } from './entity/directorio.entity';
 import { CreateDirectorioDto } from './dtos/create-directorio.dto';
 import { EditDirectorioDto } from './dtos';
@@ -35,16 +35,24 @@ export class DirectoriosService {
     return { directorio };
   }
 
-  directoriosPorFacultad(slug: string): Observable<Directorio[]> {
+  directoriosPorFacultad(slug: string, search:string): Observable<Directorio[]> {
+    let _where: FindOptionsWhere<Directorio>[] = [{
+      facultad: {
+        slug,
+      },
+      estado: true,
+    }]
+    if(search?.length){
+      _where = [
+        {facultad: {slug,},estado: true, unidad: Like(`%${search}%`)},
+        {facultad: {slug,},estado: true, cargo: Like(`%${search}%`)},
+        {facultad: {slug,},estado: true, nombre: Like(`%${search}%`)},
+      ]
+    }
     return from(
       this.directorioRepository.find({
         order: { id: 'ASC' },
-        where: {
-          facultad: {
-            slug,
-          },
-          estado: true,
-        },
+        where: _where,
       }),
     ).pipe(map((directorios: Directorio[]) => directorios));
   }
