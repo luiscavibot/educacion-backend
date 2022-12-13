@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { DirectoriosService } from './directorios.service';
 import { CreateDirectorioDto, EditDirectorioDto } from './dtos';
@@ -17,8 +18,8 @@ export class DirectoriosController {
   constructor(private readonly directorioService: DirectoriosService) {}
 
   @Get(':slug')
-  directoriosPorFacultad(@Param('slug') slug: string): Observable<Directorio[]> {
-    return this.directorioService.directoriosPorFacultad(slug);
+  directoriosPorFacultad(@Param('slug') slug: string, @Query('search') search: string): Observable<Directorio[]> {
+    return this.directorioService.directoriosPorFacultad(slug, search);
   }
 
   @Post()
