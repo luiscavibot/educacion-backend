@@ -37,7 +37,7 @@ export class ResolucionDecanal {
   @Column({ type: 'int' })
   facultadId: number;
 
-  @Column({ type: 'date' })
+  @Column({type: 'timestamp'})
   fecha: Date;
 
   @Column({ type: 'boolean' })
