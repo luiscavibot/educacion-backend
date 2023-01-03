@@ -75,10 +75,6 @@ export class CreateCarreraDto {
 
   @IsOptional()
   @IsString()
-  tipo: string;
-
-  @IsOptional()
-  @IsString()
   telefono: string;
 
   @IsOptional()
@@ -88,10 +84,6 @@ export class CreateCarreraDto {
   @IsOptional()
   @IsString()
   horario: string;
-
-  @IsOptional()
-  @IsString()
-  tipo_maestria: string;
 
   @IsOptional()
   facultadId: number;

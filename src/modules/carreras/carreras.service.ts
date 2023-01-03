@@ -59,7 +59,6 @@ export class CarrerasService {
           facultad: {
             slug,
           },
-          tipo: "pregrado",
         },
       }),
     ).pipe(map((carreras: Carrera[]) => carreras));
