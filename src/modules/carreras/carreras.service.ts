@@ -30,7 +30,6 @@ export class CarrerasService {
   carrerasPorFacultad(
     slug: string,
     nombre: string,
-    tipo: string,
   ): Observable<Carrera[]> {
     return from(
       this.carreraRepository.find({
@@ -44,7 +43,6 @@ export class CarrerasService {
             slug,
           },
           slug: nombre,
-          tipo,
         },
       }),
     ).pipe(map((carreras: Carrera[]) => carreras));

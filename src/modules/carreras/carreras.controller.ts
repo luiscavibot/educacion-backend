@@ -37,9 +37,8 @@ export class CarrerasController {
   carreras(
     @Param('slug') slug: string,
     @Query('nombre') nombre: string,
-    @Query('tipo') tipo: string,
   ): Observable<Carrera[]> {
-    return this.carreraService.carrerasPorFacultad(slug, nombre, tipo);
+    return this.carreraService.carrerasPorFacultad(slug, nombre);
   }
 
   @Get('pregrado/:slug')
