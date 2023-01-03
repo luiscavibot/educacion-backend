@@ -1,18 +1,20 @@
+import { ActaConsejo } from '../../transparencia/actas-consejo/entity/';
 import { Area } from '../../areas/entity';
-import { Noticia } from '../../noticias/entity';
 import { Carrera } from '../../carreras/entity';
-import { Evento } from '../../eventos/entity';
-import { Egresado } from '../../egresados/entity';
-import { User } from '../../users/entities/user.entity';
-import { Directorio } from '../../directorios/entity/directorio.entity';
-import { Tramite } from '../../tramites/entity/tramite.entity';
-import { DocumentoOficial } from '../../transparencia/documentos-oficiales/entity/documento-oficial.entity';
-import { ResolucionDecanal } from '../../transparencia/resoluciones-decanales/entity/resolucion-decanal.entity';
-import { GrupoInvestigacion } from '../../grupos-investigacion/entity/grupo-investigacion.entity';
-import { Memoria } from '../../transparencia/memorias/entity/memoria.entity';
-import { ActaConsejo } from '../../transparencia/actas-consejo/entity/acta-consejo.entity';
 import { Comunicado} from '../../informacion-academica/comunicados/entity';
-import { Pregrado } from '../../informacion-academica/pregrado/entity/pregrado.entity';
+import { Directorio } from '../../directorios/entity/';
+import { DocumentoOficial } from '../../transparencia/documentos-oficiales/entity/';
+import { Egresado } from '../../egresados/entity';
+import { Evento } from '../../eventos/entity';
+import { GrupoInvestigacion } from '../../grupos-investigacion/entity/';
+import { Memoria } from '../../transparencia/memorias/entity/memoria.entity';
+import { Noticia } from '../../noticias/entity';
+import { Posgrado } from '../../informacion-academica/posgrado/entity/';
+import { Pregrado } from '../../informacion-academica/pregrado/entity/';
+import { Programa } from '../../programas/entity/';
+import { ResolucionDecanal } from '../../transparencia/resoluciones-decanales/entity/';
+import { Tramite } from '../../tramites/entity/';
+import { User } from '../../users/entities/';
 import {
   Column,
   CreateDateColumn,
@@ -53,8 +55,14 @@ export class Facultad {
   @OneToMany(() => Carrera, (carrera) => carrera.facultad)
   carreras: Carrera[];
 
+  @OneToMany(() => Programa, (programa) => programa.facultad)
+  programas: Programa[];
+
   @OneToMany(() => Pregrado, (pregrado) => pregrado.facultad)
   inf_pregrado: Pregrado[];
+
+  @OneToMany(() => Posgrado, (posgrado) => posgrado.facultad)
+  inf_posgrado: Posgrado[];
 
   @OneToMany(() => Comunicado, (comunicado) => comunicado.facultad)
   comunicados: Comunicado[];
