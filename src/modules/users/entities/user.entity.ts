@@ -20,7 +20,8 @@ import { Asignatura } from '../../asignaturas/entity';
 import { Tramite } from '../../tramites/entity';
 import { EnlaceInteres } from '../../enlaces-interes/entity';
 import { Comunicado } from '../../informacion-academica/comunicados/entity';
-import { Pregrado } from '../../informacion-academica/pregrado/entity/pregrado.entity';
+import { Pregrado } from '../../informacion-academica/pregrado/entity/';
+import { Posgrado } from '../../informacion-academica/posgrado/entity/';
 
 @Entity('users')
 export class User {
@@ -70,6 +71,9 @@ export class User {
 
   @OneToMany(() => Pregrado, (pregrado) => pregrado.user)
   inf_pregrado: Pregrado[];
+
+  @OneToMany(() => Posgrado, (posgrado) => posgrado.user)
+  inf_posgrado: Posgrado[];
 
   @OneToMany(
     () => DocumentoOficial,
