@@ -188,7 +188,7 @@ export class PosgradoService {
     }
 
 
-    async deletePregrado(id:number, posgradoEntity?: Posgrado){
+    async deletePosgrado(id:number, posgradoEntity?: Posgrado){
         const posgrado = await this.getById(id, posgradoEntity);
         return await this.posgradoRepository.remove(posgrado);        
     }
