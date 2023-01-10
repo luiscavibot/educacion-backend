@@ -30,6 +30,7 @@ import { ComunicadosModule } from './modules/informacion-academica/comunicados/c
 import { PregradoModule } from './modules/informacion-academica/pregrado/pregrado.module';
 import { PosgradoModule } from './modules/informacion-academica/posgrado/posgrado.module';
 import { ProgramasModule } from './modules/programas/programas.module';
+import { DirigidosModule } from './modules/dirigidos/dirigidos.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -86,6 +87,7 @@ import * as Joi from '@hapi/joi';
     PregradoModule,
     PosgradoModule,
     ProgramasModule,
+    DirigidosModule,
     // UserModule,
     // PostModule,
   ],

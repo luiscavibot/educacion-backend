@@ -52,6 +52,12 @@ export class FacultadesController {
     return { data };
   }
 
+  @Get('dirigidos-facultad/:id')
+  async getDirigidosPorFacultad(@Param('id', ParseIntPipe) id: number) {
+    const data = await this.facultadService.getDirigidosPorFacultad(id);
+    return data ;
+  }
+
   @Post()
   @ApiOperation({
     description: 'Crea una nueva facultad',

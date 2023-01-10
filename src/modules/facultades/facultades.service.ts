@@ -26,7 +26,18 @@ export class FacultadesService {
 
   async getById(id: number, facultadEntity?: Facultad) {
     const facultad = await this.facultadRepository
-      .findOne({ where: { id } })
+      .findOne({ relations: { dirigidos: true } ,where: { id } })
+      .then((d) =>
+        !facultadEntity ? d : !!d && facultadEntity.id === d.id ? d : null,
+      );
+    if (!facultad)
+      throw new NotFoundException('Facultad no existe o no está autorizado');
+    return facultad;
+  }
+
+  async getDirigidosPorFacultad(id: number, facultadEntity?: Facultad) {
+    const facultad = await this.facultadRepository
+      .findOne( { select: ['dirigidos'], relations: { dirigidos: true } ,where: { id } })
       .then((d) =>
         !facultadEntity ? d : !!d && facultadEntity.id === d.id ? d : null,
       );

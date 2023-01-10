@@ -9,8 +9,6 @@ import { CreateTramiteDto, EditTramiteDto } from './dtos';
 import { Tramite } from './entity';
 import { from, map, Observable } from 'rxjs';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
-import { TramiteTipo } from './conts';
-import { Console } from 'console';
 
 @Injectable()
 export class TramitesService {
@@ -129,10 +127,4 @@ export class TramitesService {
     return await this.tramiteRepository.remove(tramite);
   }
 
-  tipoTramite() {
-    return Object.keys(TramiteTipo).map((key) => ({
-      value: key,
-      label: TramiteTipo[key],
-    }));
-  }
 }

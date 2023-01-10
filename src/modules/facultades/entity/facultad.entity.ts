@@ -15,11 +15,14 @@ import { Programa } from '../../programas/entity/';
 import { ResolucionDecanal } from '../../transparencia/resoluciones-decanales/entity/';
 import { Tramite } from '../../tramites/entity/';
 import { User } from '../../users/entities/';
+import { Dirigido } from '../../dirigidos/entity/dirigido.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -66,6 +69,10 @@ export class Facultad {
 
   @OneToMany(() => Comunicado, (comunicado) => comunicado.facultad)
   comunicados: Comunicado[];
+
+  @ManyToMany(() => Dirigido)
+  @JoinTable()
+  dirigidos: Dirigido[]
 
   @OneToMany(
     () => DocumentoOficial,
