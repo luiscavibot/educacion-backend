@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Res, HttpStatus, Query, DefaultValuePipe, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Res, HttpStatus, Query, DefaultValuePipe, Put, Delete } from '@nestjs/common';
 import { CreatePosgradoDto } from './dto';
 import { Posgrado } from './entity';
 import { PosgradoService } from './posgrado.service';
@@ -94,6 +94,13 @@ export class PosgradoController {
     getTiposProgramaPregrado() {
         const tiposDeProgramas = this.posgradoService.tipoProgramaPosgrado();
         return { tiposDeProgramas };
+    }
+
+    @Delete(':id')
+    async deleteComunicado(@Param('id') id: number){
+        let data;
+        data = await this.posgradoService.deletePosgrado(id);
+        return { message: 'Informacion academica de posgrado eliminada', data};
     }
 
 }

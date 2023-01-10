@@ -88,15 +88,6 @@ export class Carrera {
   @Column({ type: 'int', nullable: false })
   vacante: number;
 
-  @Column({ type: 'varchar', nullable: false, length: 150 })
-  tipo: string;
-
-  @Column({ type: 'varchar', nullable: false, length: 150 })
-  tipo_posgrado: string;
-
-  @Column({ type: 'varchar', nullable: false, length: 150 })
-  tipo_maestria: string;
-
   @ManyToOne(() => Facultad, (facultad) => facultad.carreras)
   @JoinColumn({ name: 'facultadId' })
   facultad: Facultad;
