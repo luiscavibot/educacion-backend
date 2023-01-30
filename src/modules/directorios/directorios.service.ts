@@ -4,11 +4,12 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere, Like } from 'typeorm';
+import { Repository, FindOptionsWhere, Like, FindOptionsSelect } from 'typeorm';
 import { Directorio } from './entity/directorio.entity';
 import { CreateDirectorioDto } from './dtos/create-directorio.dto';
 import { EditDirectorioDto } from './dtos';
 import { Observable, from, map } from 'rxjs';
+import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class DirectoriosService {
@@ -35,7 +36,7 @@ export class DirectoriosService {
     return { directorio };
   }
 
-  directoriosPorFacultad(slug: string, search:string): Observable<Directorio[]> {
+  directoriosPorFacultad(slug: string, search?:string): Observable<Directorio[]> {
     let _where: FindOptionsWhere<Directorio>[] = [{
       facultad: {
         slug,
@@ -55,6 +56,40 @@ export class DirectoriosService {
         where: _where,
       }),
     ).pipe(map((directorios: Directorio[]) => directorios));
+  }
+
+  paginacionDirectorio(
+    options: IPaginationOptions,
+    slug: string,
+    sort: string,
+  ): Observable<Pagination<Directorio>> {
+    let order_by = sort?.split(':')[0] || 'id';
+    let direction = sort?.split(':')[1] || 'DESC';
+    let _where: FindOptionsWhere<Directorio> = {
+      facultad: { slug },
+    };
+    return from(
+      this.directorioRepository.findAndCount({
+        skip: Number(options.page) * Number(options.limit) || 0,
+        take: Number(options.limit) || 3,
+        order: { [order_by]: direction },
+        where: _where,
+      }),
+    ).pipe(
+      map(([directorios, totaldirectorios]) => {
+        const directoriosPageable: Pagination<Directorio> = {
+          items: directorios,
+          meta: {
+            currentPage: Number(options.page),
+            itemCount: directorios.length,
+            itemsPerPage: Number(options.limit),
+            totalItems: totaldirectorios,
+            totalPages: Math.ceil(totaldirectorios / Number(options.limit)),
+          },
+        };
+        return directoriosPageable;
+      }),
+    );
   }
 
   async editDirectorio(

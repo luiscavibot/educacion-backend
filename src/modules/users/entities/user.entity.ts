@@ -22,6 +22,7 @@ import { EnlaceInteres } from '../../enlaces-interes/entity';
 import { Comunicado } from '../../informacion-academica/comunicados/entity';
 import { Pregrado } from '../../informacion-academica/pregrado/entity/';
 import { Posgrado } from '../../informacion-academica/posgrado/entity/';
+import { Directorio } from '../../directorios/entity/directorio.entity';
 
 @Entity('users')
 export class User {
@@ -53,6 +54,9 @@ export class User {
 
   @OneToMany(() => Comunicado, (comunicado) => comunicado.user)
   comunicados: Comunicado[];
+  
+  @OneToMany(() => Directorio, (directorio) => directorio.user)
+  directorios: Directorio[];
 
   @OneToMany(() => EnlaceInteres, (enlace) => enlace.user)
   enlaces_interes: EnlaceInteres[];

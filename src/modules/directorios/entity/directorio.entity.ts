@@ -1,4 +1,5 @@
 import { Facultad } from '../../facultades/entity/facultad.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -29,6 +30,9 @@ export class Directorio {
   @Column({ type: 'simple-array' })
   correos: string[];
 
+  @Column({ type: 'int' })
+  orden: number;
+
   @Column({ type: 'boolean' })
   estado: boolean;
 
@@ -38,6 +42,13 @@ export class Directorio {
 
   @Column({ type: 'int', nullable: false })
   facultadId: number;
+
+  @ManyToOne(() => User, (user) => user.directorios)
+  @JoinColumn({ name: 'usuario_id' })
+  user: User;
+
+  @Column({ type: 'int' })
+  usuario_id: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

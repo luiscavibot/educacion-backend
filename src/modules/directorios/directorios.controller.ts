@@ -12,14 +12,39 @@ import { DirectoriosService } from './directorios.service';
 import { CreateDirectorioDto, EditDirectorioDto } from './dtos';
 import { Observable } from 'rxjs';
 import { Directorio } from './entity';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 
 @Controller('directorios')
 export class DirectoriosController {
   constructor(private readonly directorioService: DirectoriosService) {}
 
+  @Get('id/:id')
+  async getById(@Param('id', ParseIntPipe) id: number) {
+    const data = await this.directorioService.getById(id);
+    return { data };
+  }
   @Get(':slug')
   directoriosPorFacultad(@Param('slug') slug: string, @Query('search') search: string): Observable<Directorio[]> {
     return this.directorioService.directoriosPorFacultad(slug, search);
+  }
+
+  @Get('paginacion/:slug')
+  directoriosPorPaginacion(
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
+    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
+    @Query('sort') sort: string,
+    @Param('slug', new DefaultValuePipe('')) slug: string,
+  ): Observable<Pagination<Directorio>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.directorioService.paginacionDirectorio(
+      {
+              limit,
+              page,
+      },
+      slug,
+      sort
+    );
   }
 
   @Post()
