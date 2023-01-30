@@ -52,7 +52,7 @@ export class DirectoriosService {
     }
     return from(
       this.directorioRepository.find({
-        order: { id: 'ASC' },
+        order: { orden: 'ASC' },
         where: _where,
       }),
     ).pipe(map((directorios: Directorio[]) => directorios));
