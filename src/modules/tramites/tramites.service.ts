@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsSelect, FindOptionsWhere, Repository, Like} from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Repository, Like } from 'typeorm';
 import { CreateTramiteDto, EditTramiteDto } from './dtos';
 import { Tramite } from './entity';
 import { from, map, Observable } from 'rxjs';
@@ -45,59 +45,83 @@ export class TramitesService {
   ): Observable<Pagination<Tramite>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
-    let _where: FindOptionsWhere<Tramite>[] = [{
-      facultad: { slug },
-    }];
+    let _where: FindOptionsWhere<Tramite>[] = [
+      {
+        facultad: { slug },
+      },
+    ];
     let _select: FindOptionsSelect<Tramite> = {
       id: true,
       titulo: true,
       estado: true,
     };
-    if (estado && estado == 'true') {
+    // if (estado && estado == 'true') {
+    if (estado) {
       _select = {
         ..._select,
-        descripcion:true,
-        dirigido:true,
+        descripcion: true,
+        dirigido: true,
         fecha: true,
         proceso: true,
         anexo: true,
         correo: true,
         requisitos: true,
-        updated_at:true
+        updated_at: true,
       };
       _where = [{ facultad: { slug }, estado: true }];
     }
 
-    if (tipos && tipos.length>0) {
-      for(let idx = 0; idx< tipos.length; idx++){
-        if(idx == 0){
-          _where = [
-            {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
-          ]
-        }
-        if(idx>=1){
-          _where = [
-            ..._where,
-            {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
-          ]
-        }
+    if (tipos?.length > 0) _where = [];
 
-      }
-    }
-
-    if (query.length>=1) {
+    tipos?.forEach((tipo) => {
       _where = [
-        {  facultad: { slug }, estado: true, titulo: Like(`%${query}%`) },
-        {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`) },
-      ]
+        ..._where,
+        { facultad: { slug }, estado: true, dirigido: Like(`%${tipo}%`) },
+      ];
+    });
+
+    if (query?.length > 0) {
+      const firstGroupWhere = _where.map((where) => ({
+        ...where,
+        titulo: Like(`%${query}%`),
+      }));
+      const secondGroupWhere = _where.map((where) => ({
+        ...where,
+        descripcion: Like(`%${query}%`),
+      }));
+      _where = [...firstGroupWhere, ...secondGroupWhere];
     }
+
+    // if (tipos && tipos.length>0) {
+    //   for(let idx = 0; idx< tipos.length; idx++){
+    //     if(idx == 0){
+    //       _where = [
+    //         {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
+    //       ]
+    //     }
+    //     if(idx>=1){
+    //       _where = [
+    //         ..._where,
+    //         {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
+    //       ]
+    //     }
+
+    //   }
+    // }
+
+    // if (query.length>=1) {
+    //   _where = [
+    //     {  facultad: { slug }, estado: true, titulo: Like(`%${query}%`) },
+    //     {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`) },
+    //   ]
+    // }
     return from(
       this.tramiteRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
         order: { id: 'ASC' },
         select: _select,
-        where: _where
+        where: _where,
       }),
     ).pipe(
       map(([tramites, totalTramites]) => {
@@ -126,5 +150,4 @@ export class TramitesService {
     const tramite = await this.getById(id, tramiteEntity);
     return await this.tramiteRepository.remove(tramite);
   }
-
 }
