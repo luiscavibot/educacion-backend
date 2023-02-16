@@ -70,7 +70,8 @@ export class PregradoService {
                 fijado: true,
                 tipo: true,
                 anio: true,
-                updated_at:true
+                updated_at:true,
+                url: true
             }
             _where = [..._where ];
         }
