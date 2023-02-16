@@ -30,6 +30,7 @@ export class PregradoController {
         @Query('escuelas') escuelas: string[],
         @Query('recursos') recursos: string[],
         @Query('query') query: string,
+        @Query('fijado') fijado: boolean,
     ): Observable<Pagination<Pregrado>>{
         limit = limit > 100 ? 100 : limit;
         return this.pregradoService.paginacionPregrado(
@@ -42,7 +43,8 @@ export class PregradoController {
             estado,
             escuelas,
             recursos,
-            query
+            query,
+            fijado
         )
     }
 

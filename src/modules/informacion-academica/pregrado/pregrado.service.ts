@@ -33,14 +33,16 @@ export class PregradoService {
         estado: string,
         escuelas: string[], 
         recursos: string[],
-        query: string
+        query: string,
+        fijado: boolean
     ): Observable<Pagination<Pregrado>>{
         let order_by = sort?.split(':')[0] || 'id';
         let direction = sort?.split(':')[1] || 'DESC';
         let condition:any = []; 
         let _where: FindOptionsWhere<Pregrado>[] = [{
             facultad: { slug },
-          }];
+            fijado
+        }];
         let _select: FindOptionsSelect<Pregrado> = {
             id: true,
             nombre: true,
@@ -60,6 +62,7 @@ export class PregradoService {
         if(query?.length>0){
             _where = [{
                 facultad: { slug },
+                fijado,
                 nombre: Like(`%${query}%`)
               }]
         }
