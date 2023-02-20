@@ -27,8 +27,12 @@ export class ComunicadosController {
         @Param('slug', new DefaultValuePipe('')) slug: string,
         @Query('sort') sort: string,
         @Query('estado') estado: string,
+        @Query('busqueda') busqueda: string = '',
+        @Query('fechaInicio') fechaInicio?: Date,
+        @Query('fechaFin') fechaFin?: Date,
       ): Observable<Pagination<Comunicado>> {
         limit = limit > 100 ? 100 : limit;
+
         return this.comunicadoService.paginacionComunicados(
           {
             limit,
@@ -37,6 +41,9 @@ export class ComunicadosController {
           slug,
           sort,
           estado,
+          busqueda,
+          fechaInicio,
+          fechaFin
         );
       }
 

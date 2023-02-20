@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
+import { Repository, FindOptionsWhere, FindOptionsSelect, Raw, Between, Like } from 'typeorm';
 import { Comunicado } from './entity';
 import { CreateComunicadosDto } from './dto/create-comunicados.dto';
 import { fileFilterName } from '../../../helpers/fileFilerName.helpers';
@@ -33,12 +33,15 @@ export class ComunicadosService {
         slug: string,
         sort: string,
         estado: string,
+        busqueda: string,
+        fechaInicio?: Date,
+        fechaFin?: Date,
       ): Observable<Pagination<Comunicado>> {
         let order_by = sort?.split(':')[0] || 'id';
         let direction = sort?.split(':')[1] || 'DESC';
-        let _where: FindOptionsWhere<Comunicado> = {
+        let _where: FindOptionsWhere<Comunicado>[] = [{
           facultad: { slug },
-        };
+        }];
         let _select: FindOptionsSelect<Comunicado> = {
           id: true,
           nombre: true,
@@ -50,9 +53,23 @@ export class ComunicadosService {
             foto: true,
             fecha: true,
             resumen: true,
+            pie_foto:true,
+            cuerpoComunicado: true
           };
-          _where = { ..._where };
         }
+        if(busqueda){
+          _where = [
+            {facultad: { slug }, nombre: Like(`%${busqueda}%`) },
+            {facultad: { slug }, resumen: Like(`%${busqueda}%`) }
+          ]
+        }
+        if(fechaInicio && fechaFin){
+          _where = [
+            {facultad: { slug }, nombre: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) },
+            {facultad: { slug }, resumen: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) }
+          ]
+        }
+
         return from(
           this.comunicadoRepository.findAndCount({
             skip: Number(options.page) * Number(options.limit) || 0,
