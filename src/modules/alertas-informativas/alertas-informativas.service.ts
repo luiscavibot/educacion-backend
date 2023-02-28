@@ -55,8 +55,7 @@ export class AlertasInformativasService {
 
         if (hasActiveAlertaInformativa) {
             hasActiveAlertaInformativa.publicado = false;
-            const despublicado = await this.alertaInformativaRepository.save(hasActiveAlertaInformativa);
-            console.log('Alerta informativa despublicada', despublicado);
+            await this.alertaInformativaRepository.save(hasActiveAlertaInformativa);
         }
 
         const alertaInformativa = await this.getAlertaInformativaById(id);
