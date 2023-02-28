@@ -23,6 +23,7 @@ import { Comunicado } from '../../informacion-academica/comunicados/entity';
 import { Pregrado } from '../../informacion-academica/pregrado/entity/';
 import { Posgrado } from '../../informacion-academica/posgrado/entity/';
 import { Directorio } from '../../directorios/entity/directorio.entity';
+import { AlertaInformativa } from 'src/modules/alertas-informativas/entity';
 
 @Entity('users')
 export class User {
@@ -51,6 +52,9 @@ export class User {
 
   @OneToMany(() => Noticia, (noticia) => noticia.user)
   noticias: Noticia[];
+
+  @OneToMany(() => AlertaInformativa, (alertas_informativas) => alertas_informativas.user)
+  alertas_informativas: AlertaInformativa[];
 
   @OneToMany(() => Comunicado, (comunicado) => comunicado.user)
   comunicados: Comunicado[];
