@@ -31,6 +31,7 @@ import { PregradoModule } from './modules/informacion-academica/pregrado/pregrad
 import { PosgradoModule } from './modules/informacion-academica/posgrado/posgrado.module';
 import { ProgramasModule } from './modules/programas/programas.module';
 import { DirigidosModule } from './modules/dirigidos/dirigidos.module';
+import { AlertasInformativasModule } from './modules/alertas-informativas/alertas-informativas.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -88,6 +89,7 @@ import * as Joi from '@hapi/joi';
     PosgradoModule,
     ProgramasModule,
     DirigidosModule,
+    AlertasInformativasModule,
     // UserModule,
     // PostModule,
   ],
