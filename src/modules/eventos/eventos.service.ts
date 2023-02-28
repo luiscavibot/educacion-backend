@@ -53,7 +53,7 @@ export class EventoService {
     return from(
       this.eventoRepository.find({
         take: 3,
-        order: { created_at: 'DESC' },
+        order: { fecha_inicio: 'DESC' },
         where: _where,
       }),
     ).pipe(map((eventos: Evento[]) => {
@@ -83,7 +83,7 @@ export class EventoService {
     return from(
       this.eventoRepository.find({
         take: 3,
-        order: { created_at: 'DESC' },
+        order: { fecha_inicio: 'DESC' },
         where: _where,
       }),
     ).pipe(map((eventos: Evento[]) => {
@@ -111,7 +111,7 @@ export class EventoService {
     return from(
       this.eventoRepository.find({
         take: 3,
-        order: { created_at: 'DESC' },
+        order: { fecha_inicio: 'DESC' },
         where: _where,
       }),
     ).pipe(map((eventos: Evento[]) => {
@@ -135,7 +135,7 @@ export class EventoService {
     return from(
       this.eventoRepository.find({
         take: 3,
-        order: { created_at: 'DESC' },
+        order: { fecha_inicio: 'DESC' },
         where: _where,
       }),
     ).pipe(map((eventos: Evento[]) =>{
@@ -155,7 +155,7 @@ export class EventoService {
     fin: string,
     vigentes: string,
   ): Observable<Pagination<Evento>> {
-    let order_by = sort?.split(':')[0] || 'id';
+    let order_by = sort?.split(':')[0] || 'fecha_inicio';
     let direction = sort?.split(':')[1] || 'DESC';
     let _where: FindOptionsWhere<Evento>[] = [
       {
@@ -248,7 +248,7 @@ export class EventoService {
   getEventoBySlug(slug: string): Observable<Evento[]> {
     return from(
       this.eventoRepository.find({
-        order: { created_at: 'DESC' },
+        order: { fecha_inicio: 'DESC' },
         where: {
           slug,
         },
