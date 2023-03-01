@@ -37,9 +37,7 @@ export class NoticiasService {
         take: 3,
         order: { fecha: 'DESC' },
         where: {
-          facultad: {
-            slug,
-          },
+          user: { facultad: { slug } },
           destacado: false,
           estado: true,
         },
@@ -49,9 +47,7 @@ export class NoticiasService {
 
   ultimasNoticias(slug: string, id: number): Observable<Noticia[]> {
     let _where: FindOptionsWhere<Noticia> = {
-      facultad: {
-        slug,
-      },
+      user: { facultad: { slug } },
       estado: true,
     };
     if(id){
@@ -72,9 +68,7 @@ export class NoticiasService {
         take: 3,
         order: { created_at: 'DESC' },
         where: {
-          facultad: {
-            slug,
-          },
+          user: { facultad: { slug } },
           destacado: true,
           estado: true,
         },
@@ -102,7 +96,7 @@ export class NoticiasService {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
     let _where: FindOptionsWhere<Noticia> = {
-      facultad: { slug },
+      user: { facultad: { slug } },
     };
     let _select: FindOptionsSelect<Noticia> = {
       id: true,
