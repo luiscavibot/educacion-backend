@@ -43,7 +43,7 @@ export class Facultad {
   @Column({ type: 'varchar', nullable: false, length: 300 })
   slug!: string;
 
-  @OneToMany(() => Noticia, (noticia) => noticia.facultad)
+  @OneToMany(() => Noticia, (noticia) => noticia.user.facultad)
   noticias: Noticia[];
 
   @OneToMany(() => Evento, (evento) => evento.facultad)
