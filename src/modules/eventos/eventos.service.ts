@@ -166,6 +166,7 @@ export class EventoService {
       id: true,
       titulo: true,
       estado: true,
+      fecha_inicio:true
     };
 
     if (estado) {

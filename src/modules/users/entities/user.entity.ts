@@ -24,6 +24,7 @@ import { Pregrado } from '../../informacion-academica/pregrado/entity/';
 import { Posgrado } from '../../informacion-academica/posgrado/entity/';
 import { Directorio } from '../../directorios/entity/directorio.entity';
 import { AlertaInformativa } from 'src/modules/alertas-informativas/entity';
+import { ProgramaEspecial } from '../../informacion-academica/programas-especiales/entity/programa-especial.entity';
 
 @Entity('users')
 export class User {
@@ -55,6 +56,10 @@ export class User {
 
   @OneToMany(() => AlertaInformativa, (alertas_informativas) => alertas_informativas.user)
   alertas_informativas: AlertaInformativa[];
+
+
+  @OneToMany(() => ProgramaEspecial, (programa_especial) => programa_especial.user)
+  programa_especial: ProgramaEspecial[];
 
   @OneToMany(() => Comunicado, (comunicado) => comunicado.user)
   comunicados: Comunicado[];
