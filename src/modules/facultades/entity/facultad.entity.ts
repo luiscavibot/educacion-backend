@@ -98,7 +98,7 @@ export class Facultad {
   @OneToMany(() => ActaConsejo, (actaConsejo) => actaConsejo.facultad)
   actas: ActaConsejo[];
 
-  @OneToMany(() => Memoria, (memoria) => memoria.facultad)
+  @OneToMany(() => Memoria, (memoria) => memoria.user.facultad)
   memorias: Memoria[];
 
   @ManyToOne(() => Area, (area) => area.facultades)

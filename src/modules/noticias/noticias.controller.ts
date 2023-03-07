@@ -30,7 +30,7 @@ import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('noticias')
-@ApiTags('noticias')
+@ApiTags('Noticias')
 export class NoticiasController {
   constructor(private readonly noticiaService: NoticiasService) {}
 

@@ -24,10 +24,6 @@ export class CreateMemoriaDto {
   @IsOptional()
   fileName: string;
 
-  @IsOptional()
-  @IsNumber()
-  facultadId: number;
-
   @IsDate()
   @IsOptional()
   fecha: Date;

@@ -24,13 +24,6 @@ export class Memoria {
   @Column({ type: 'text' })
   documento: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.documentosOficiales)
-  @JoinColumn({ name: 'facultadId' })
-  facultad: Facultad;
-
-  @Column({ type: 'int' })
-  facultadId: number;
-
   @Column({ type: 'date' })
   fecha: Date;
 
