@@ -47,7 +47,7 @@ export class TramitesService {
     let direction = sort?.split(':')[1] || 'DESC';
     let _where: FindOptionsWhere<Tramite>[] = [
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
       },
     ];
     let _select: FindOptionsSelect<Tramite> = {
@@ -68,7 +68,7 @@ export class TramitesService {
         requisitos: true,
         updated_at: true,
       };
-      _where = [{ facultad: { slug }, estado: true }];
+      _where = [{ user: { facultad: { slug } }, estado: true }];
     }
 
     if (tipos?.length > 0) _where = [];
@@ -76,7 +76,7 @@ export class TramitesService {
     tipos?.forEach((tipo) => {
       _where = [
         ..._where,
-        { facultad: { slug }, estado: true, dirigido: Like(`%${tipo}%`) },
+        { user: { facultad: { slug } }, estado: true, dirigido: Like(`%${tipo}%`) },
       ];
     });
 
@@ -96,13 +96,13 @@ export class TramitesService {
     //   for(let idx = 0; idx< tipos.length; idx++){
     //     if(idx == 0){
     //       _where = [
-    //         {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
+    //         {user: { facultad: { slug } }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
     //       ]
     //     }
     //     if(idx>=1){
     //       _where = [
     //         ..._where,
-    //         {facultad: { slug }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
+    //         {user: { facultad: { slug } }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
     //       ]
     //     }
 
@@ -111,8 +111,8 @@ export class TramitesService {
 
     // if (query.length>=1) {
     //   _where = [
-    //     {  facultad: { slug }, estado: true, titulo: Like(`%${query}%`) },
-    //     {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`) },
+    //     {  user: { facultad: { slug } }, estado: true, titulo: Like(`%${query}%`) },
+    //     {  user: { facultad: { slug } }, estado: true, descripcion: Like(`%${query}%`) },
     //   ]
     // }
     return from(

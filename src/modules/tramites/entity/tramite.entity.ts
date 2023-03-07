@@ -42,19 +42,12 @@ export class Tramite extends BaseEntity {
   @Column({ type: 'varchar', length: 5 })
   anexo: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.tramites)
-  @JoinColumn({ name: 'facultadId' })
-  facultad: Facultad;
-
   @ManyToOne(() => User, (user) => user.tramites)
   @JoinColumn({ name: 'usuario_id' })
   user: User;
 
   @Column({ type: 'int', nullable: false })
   usuario_id: number;
-
-  @Column({ type: 'int', nullable: false })
-  facultadId: number;
 
   @Column({ type: 'boolean' })
   estado: boolean;

@@ -52,7 +52,7 @@ export class Facultad {
   @OneToMany(() => Directorio, (directorio) => directorio.facultad)
   directorios: Directorio[];
 
-  @OneToMany(() => Tramite, (tramite) => tramite.facultad)
+  @OneToMany(() => Tramite, (tramite) => tramite.user.facultad)
   tramites: Tramite[];
 
   @OneToMany(() => Carrera, (carrera) => carrera.facultad)
