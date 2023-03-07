@@ -40,7 +40,7 @@ export class ActasConsejoService {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
     let _where: FindOptionsWhere<ActaConsejo>[] = [{
-      facultad: { slug },
+      user: { facultad: { slug } },
     }];
     let _select: FindOptionsSelect<ActaConsejo> = {
       id: true,
@@ -60,19 +60,19 @@ export class ActasConsejoService {
         fecha: true,
         palabras_claves:true
       };
-      _where = [{ facultad: { slug }, estado: true }];
+      _where = [{ user: { facultad: { slug } }, estado: true }];
     }
     if (query.length>=1) {
       _where = [
-        {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`) },
-        {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`) },
+        {  user: { facultad: { slug } }, estado: true, palabras_claves: Like(`%${query}%`) },
+        {  user: { facultad: { slug } }, estado: true, descripcion: Like(`%${query}%`) },
       ]
     }
     
     if(fecha_inicio && fecha_fin){
       _where = [
-        {  facultad: { slug }, estado: true, palabras_claves: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)), },
-        {  facultad: { slug }, estado: true, descripcion: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)) },
+        {  user: { facultad: { slug } }, estado: true, palabras_claves: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)), },
+        {  user: { facultad: { slug } }, estado: true, descripcion: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)) },
       ]
     }
 

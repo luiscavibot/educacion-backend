@@ -40,13 +40,6 @@ export class ActaConsejo {
   @Column({ type: 'text' })
   video: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.actas)
-  @JoinColumn({ name: 'facultadId' })
-  facultad: Facultad;
-
-  @Column({ type: 'int' })
-  facultadId: number;
-
   @ManyToOne(() => User, (user) => user.actas)
   @JoinColumn({ name: 'usuario_id' })
   user: User;

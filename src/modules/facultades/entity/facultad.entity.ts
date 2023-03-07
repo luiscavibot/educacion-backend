@@ -95,7 +95,7 @@ export class Facultad {
   )
   grupos_investigacion: GrupoInvestigacion[];
 
-  @OneToMany(() => ActaConsejo, (actaConsejo) => actaConsejo.facultad)
+  @OneToMany(() => ActaConsejo, (actaConsejo) => actaConsejo.user.facultad)
   actas: ActaConsejo[];
 
   @OneToMany(() => Memoria, (memoria) => memoria.user.facultad)

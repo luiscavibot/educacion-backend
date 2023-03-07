@@ -23,9 +23,6 @@ export class CreateActaConsejoDto {
   @IsOptional()
   video: string;
 
-  @IsNotEmpty()
-  facultadId: number;
-
   @IsOptional()
   usuario_id: number;
 
