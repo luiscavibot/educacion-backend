@@ -63,8 +63,5 @@ export class CreateEventoDto {
   fecha_final: Date;
 
   @IsNotEmpty()
-  facultadId: number;
-
-  @IsNotEmpty()
   usuario_id: number;
 }

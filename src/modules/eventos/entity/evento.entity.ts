@@ -20,11 +20,6 @@ export class Evento extends BaseEntity {
   @Column({ type: 'varchar', nullable: false })
   titulo!: string;
 
-  // @Column({
-  //   type: 'set',
-  //   enum: EventoTipo,
-  // })
-  // tipo_evento: string;
   @Column({
     type: 'text',
   })
@@ -56,13 +51,6 @@ export class Evento extends BaseEntity {
 
   @Column({ type: 'simple-array' })
   tags: string[];
-
-  @ManyToOne(() => Facultad, (facultad) => facultad.eventos)
-  @JoinColumn({ name: 'facultadId' })
-  facultad: Facultad;
-
-  @Column({ type: 'int' })
-  facultadId: number;
 
   @ManyToOne(() => User, (user) => user.eventos)
   @JoinColumn({ name: 'usuario_id' })

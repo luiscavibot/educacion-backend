@@ -16,6 +16,7 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -26,30 +27,67 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Evento } from './entity/evento.entity';
 import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ParseBoolPipe } from '@nestjs/common/pipes';
 
 @Controller('eventos')
-@ApiTags('eventos')
+@ApiTags('Eventos')
 export class EventosController {
   constructor(private readonly eventoService: EventoService) {}
 
   @Get(':slug')
   @ApiOperation({
-    description: 'Devuelve todas las eventos de una facultad paginados',
+    description: 'Devuelve la paginación de todos los eventos de una facultad',
   })
-  @ApiParam({
-    name: 'slug',
+  @ApiQuery({
+    name: 'vigentes',
+    type: Boolean,
+    required: false,
+    description: 'Filtra eventos por la fecha hoy.',
+  })
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    required: false,
+    description: 'Muestra eventos en la página indicada.',
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    required: false,
+    description: 'Limita la cantidad de eventos por página.',
+  })
+  @ApiQuery({
+    name: 'sort',
     type: String,
-    required: true,
-    description: 'url de la facultad',
+    required: false,
+    description: 'Ordena los enventos según el criterio indicado.',
+  })
+  @ApiQuery({
+    name: 'estado',
+    type: Boolean,
+    required: false,
+    description: 'Muestra los eventos publicados.',
+  })
+  @ApiQuery({
+    name: 'fechaInicio',
+    type: String,
+    required: false,
+    description: 'Filtra eventos indicando la fecha de inicio.',
+  })
+  @ApiQuery({
+    name: 'fechaFin',
+    type: String,
+    required: false,
+    description: 'Filtra eventos indicando la fecha de fin.',
   })
   getAllEventosFacultad(
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Query('sort') sort: string,
-    @Query('estado') estado: string,
-    @Query('inicio') inicio: string,
-    @Query('fin') fin: string,
-    @Query('vigentes') vigentes: string,
+    @Query('estado', new DefaultValuePipe(false), ParseBoolPipe) estado: boolean = false,
+    @Query('fechaInicio') inicio: string,
+    @Query('fechaFin') fin: string,
+    @Query('vigentes') vigentes: boolean,
     @(Param('slug')!) slug: string,
   ): Observable<Pagination<Evento>> {
     limit = limit > 100 ? 100 : limit;
@@ -60,16 +98,16 @@ export class EventosController {
       },
       slug,
       sort,
-      estado,
       inicio,
       fin,
       vigentes,
+      estado,
     );
   }
 
   @Get(':slug/:_id/ultimos')
   @ApiOperation({
-    description: 'Devuelve los ultimos 4 eventos',
+    description: 'Devuelve los próximos 3 eventos vigentes después del evento con el id indicado',
   })
   ultimasEventos(@Param('slug') slug: string, @Param('_id') _id: number): Observable<Evento[]> {
     return this.eventoService.ultimosEventos(slug, _id);
@@ -77,14 +115,14 @@ export class EventosController {
 
   @Get(':slug/ultimos-destacados')
   @ApiOperation({
-    description: 'Devuelve los ultimos 4 eventos destacados',
+    description: 'Devuelve los últimos 3 eventos destacados vigentes',
   })
   ultimasEventosDestacados(@Param('slug') slug: string): Observable<Evento[]> {
     return this.eventoService.ultimosEventosDestacados(slug);
   }
   @Get(':slug/ultimos-vigentes')
   @ApiOperation({
-    description: 'Devuelve los ultimos 3 eventos vigentes',
+    description: 'Devuelve los últimos 3 eventos vigentes',
   })
   ultimasEventosVigentes(@Param('slug') slug: string): Observable<Evento[]> {
     return this.eventoService.ultimosEventosVigentes(slug);
@@ -92,7 +130,7 @@ export class EventosController {
 
   @Get(':slug/ultimos-no-vigentes')
   @ApiOperation({
-    description: 'Devuelve los ultimos 3 eventos no vigentes',
+    description: 'Devuelve los últimos 3 eventos no vigentes',
   })
   ultimasEventosNoVigentes(@Param('slug') slug: string): Observable<Evento[]> {
     return this.eventoService.ultimosEventosNoVigentes(slug);
@@ -100,7 +138,7 @@ export class EventosController {
 
   @Get('id/:id')
   @ApiOperation({
-    description: 'Devuelve una evento dado un id',
+    description: 'Devuelve un evento dado un id',
   })
   @ApiResponse({
     status: 200,
@@ -110,7 +148,7 @@ export class EventosController {
     name: 'id',
     type: Number,
     required: true,
-    description: 'Id de la evento',
+    description: 'Id del evento',
   })
   async getById(@Param('id', ParseIntPipe) id: number) {
     const data = await this.eventoService.getById(id);
@@ -130,18 +168,18 @@ export class EventosController {
 
   @Post()
   @ApiOperation({
-    description: 'Crea una nueva evento',
+    description: 'Crea un nuevo evento',
   })
   @ApiResponse({
     status: 201,
-    description: 'Evento creada correctamente',
+    description: 'Evento creado correctamente',
   })
   @ApiResponse({
     status: 409,
     description: `El evento existe`,
   })
   @ApiBody({
-    description: 'Crea una nueva evento usando una EventoDto',
+    description: 'Crea un nuevo evento usando un EventoDto',
     type: CreateEventoDto,
     examples: {
       ejemplo1: {
@@ -169,20 +207,20 @@ export class EventosController {
 
   @Put(':id')
   @ApiOperation({
-    description: 'Actualiza una evento',
+    description: 'Actualiza un evento',
   })
   @ApiParam({
     name: 'id',
     type: Number,
     required: true,
-    description: 'Id de la evento',
+    description: 'Id del evento',
   })
   @ApiResponse({
     status: 200,
     description: 'Se ha actualizado correctamente',
   })
   @ApiBody({
-    description: 'Actualiza una evento usando una EventoDto',
+    description: 'Actualiza un evento usando una EventoDto',
     type: EditEventoDto,
     examples: {
       ejemplo1: {
@@ -208,26 +246,26 @@ export class EventosController {
     }
     let data;
     data = await this.eventoService.editEvento(id, dto, file);
-    return { message: 'Evento editada', data };
+    return { message: 'Evento editado', data };
   }
 
   @Delete(':id')
   @ApiOperation({
-    description: 'Borra a una evento dado un id',
+    description: 'Borra un evento dado un id',
   })
   @ApiParam({
     name: 'id',
     type: Number,
     required: true,
-    description: 'Id de la evento',
+    description: 'Id del evento',
   })
   @ApiResponse({
     status: 200,
-    description: 'Se ha borrado la evento correctamente',
+    description: 'Se ha borrado el evento correctamente',
   })
   async deleteEvento(@Param('id') id: number) {
     let data;
     data = await this.eventoService.deleteEvento(id);
-    return { message: 'Evento eliminada', data };
+    return { message: 'Evento eliminado', data };
   }
 }

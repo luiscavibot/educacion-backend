@@ -46,7 +46,7 @@ export class Facultad {
   @OneToMany(() => Noticia, (noticia) => noticia.user.facultad)
   noticias: Noticia[];
 
-  @OneToMany(() => Evento, (evento) => evento.facultad)
+  @OneToMany(() => Evento, (evento) => evento.user.facultad)
   eventos: Evento[];
 
   @OneToMany(() => Directorio, (directorio) => directorio.facultad)

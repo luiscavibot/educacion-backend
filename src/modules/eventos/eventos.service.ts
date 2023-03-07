@@ -37,14 +37,14 @@ export class EventoService {
   ultimosEventosDestacados(slug: string): Observable<Evento[]>{
     let _where: FindOptionsWhere<Evento>[] = [
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
         estado: true,
         destacado: true,
         fecha_inicio: Raw((alias) => `${alias} <= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         fecha_final: Raw((alias) => `${alias} >= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
         estado: true,
         destacado: true,
         fecha_inicio: Raw((alias) => `${alias} > DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
@@ -67,14 +67,14 @@ export class EventoService {
   ultimosEventos(slug: string, _id: number): Observable<Evento[]> {
     let _where: FindOptionsWhere<Evento>[] = [
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
         id: Not(_id),
         estado: true,
         fecha_inicio: Raw((alias) => `${alias} <= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         fecha_final: Raw((alias) => `${alias} >= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
         id: Not(_id),
         estado: true,
         fecha_inicio: Raw((alias) => `${alias} > DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
@@ -97,13 +97,13 @@ export class EventoService {
   ultimosEventosVigentes(slug: string): Observable<Evento[]> {
     let _where: FindOptionsWhere<Evento>[] = [
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
         estado: true,
         fecha_inicio: Raw((alias) => `${alias} <= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         fecha_final: Raw((alias) => `${alias} >= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
         estado: true,
         fecha_inicio: Raw((alias) => `${alias} > DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
@@ -127,7 +127,7 @@ export class EventoService {
   ultimosEventosNoVigentes(slug: string): Observable<Evento[]> {
     let _where: FindOptionsWhere<Evento>[] = [
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
         estado: true,
         fecha_final: Raw((alias) => `${alias} < DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
       },
@@ -150,16 +150,16 @@ export class EventoService {
     options: IPaginationOptions,
     slug: string,
     sort: string,
-    estado: string,
-    inicio: string,
-    fin: string,
-    vigentes: string,
+    fechaInicio: string,
+    fechaFin: string,
+    vigentes: boolean,
+    estado?: boolean,
   ): Observable<Pagination<Evento>> {
-    let order_by = sort?.split(':')[0] || 'fecha_inicio';
+    let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
     let _where: FindOptionsWhere<Evento>[] = [
       {
-        facultad: { slug },
+        user: { facultad: { slug } },
       },
     ];
     let _select: FindOptionsSelect<Evento> = {
@@ -168,7 +168,7 @@ export class EventoService {
       estado: true,
     };
 
-    if (estado && estado == 'true') {
+    if (estado) {
       _select = {
         ..._select,
         foto: true,
@@ -179,27 +179,35 @@ export class EventoService {
         tipo_evento: true,
         slug: true,
       };
-    }
-    if (vigentes == 'true') {
       _where = [
         {
-          facultad: { slug },
+          user: { facultad: { slug } },
+          estado: true,
+        }
+      ]
+    }
+    if (vigentes) {
+    console.log("vigentes true", vigentes);
+      _where = [
+        {
+          user: { facultad: { slug } },
           estado: true,
           fecha_inicio: Raw((alias) => `${alias} <= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
           fecha_final: Raw((alias) => `${alias} >= DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         },
         {
-          facultad: { slug },
+          user: { facultad: { slug } },
           estado: true,
           fecha_inicio: Raw((alias) => `${alias} > DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         },
       ];
-    }
+    } 
 
-    if (vigentes == 'false') {
+    if (vigentes === false) {
+      console.log("vigentes false", vigentes);
       _where = [
         {
-          facultad: { slug },
+          user: { facultad: { slug } },
           estado: true,
           fecha_final: Raw((alias) => `${alias} < DATE_SUB(NOW(), INTERVAL 5 HOUR)`),
         },
