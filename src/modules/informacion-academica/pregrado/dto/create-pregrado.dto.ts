@@ -25,9 +25,6 @@ export class CreatePregradoDto {
     fijado: boolean;
 
     @Optional()
-    facultadId: number;
-
-    @Optional()
     usuarioId: number;
 
     @Optional()

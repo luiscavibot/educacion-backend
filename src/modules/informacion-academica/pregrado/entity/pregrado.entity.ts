@@ -29,13 +29,6 @@ export class Pregrado {
     @Column({ type: 'boolean'})
     fijado: boolean;
 
-    @ManyToOne(() => Facultad, (facultad) => facultad.inf_pregrado)
-    @JoinColumn({ name: 'facultadId' })
-    facultad: Facultad;
-
-    @Column({ type: 'int', nullable: false })
-    facultadId: number;
-
     @ManyToOne(() => User, (user) => user.inf_pregrado)
     @JoinColumn({ name: 'usuarioId' })
     user: User;

@@ -41,7 +41,7 @@ export class PregradoService {
         let direction = sort?.split(':')[1] || 'DESC';
         let condition:any = []; 
         let _where: FindOptionsWhere<Pregrado>[] = [{
-            facultad: { slug },
+            user: { facultad: { slug } },
             fijado,
             anio
         }];
@@ -52,13 +52,13 @@ export class PregradoService {
         }
         if(fijado){
             _where = [{
-                facultad: { slug },
+                user: { facultad: { slug } },
                 fijado,
               }]
         }
         if(anio){
             _where = [{
-                facultad: { slug },
+                user: { facultad: { slug } },
                 fijado,
                 anio
             }] 
@@ -78,7 +78,7 @@ export class PregradoService {
 
         if(query?.length>0){
             _where = [{
-                facultad: { slug },
+                user: { facultad: { slug } },
                 fijado,
                 anio,
                 nombre: Like(`%${query}%`)
