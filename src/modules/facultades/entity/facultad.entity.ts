@@ -64,7 +64,7 @@ export class Facultad {
   @OneToMany(() => Pregrado, (pregrado) => pregrado.facultad)
   inf_pregrado: Pregrado[];
 
-  @OneToMany(() => Posgrado, (posgrado) => posgrado.facultad)
+  @OneToMany(() => Posgrado, (posgrado) => posgrado.user.facultad)
   inf_posgrado: Posgrado[];
 
   @OneToMany(() => Comunicado, (comunicado) => comunicado.user.facultad)

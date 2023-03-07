@@ -38,7 +38,7 @@ export class PosgradoService {
         // let direction = sort?.split(':')[1] || 'DESC';
         let condition:any = []; 
         let _where: FindOptionsWhere<Posgrado>[] = [{
-            facultad: { slug },
+            user: { facultad: { slug } },
           }];
         let _select: FindOptionsSelect<Posgrado> = {
             id: true,
@@ -59,7 +59,7 @@ export class PosgradoService {
 
         // if(query?.length>0){
         //     _where = [{
-        //         facultad: { slug },
+        //         user: { facultad: { slug } },
         //         nombre: Like(`%${query}%`)
         //       }]
         // }

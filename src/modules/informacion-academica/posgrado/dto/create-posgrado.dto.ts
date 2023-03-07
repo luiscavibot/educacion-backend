@@ -24,10 +24,7 @@ export class CreatePosgradoDto {
     
     @Optional()
     fijado: boolean;
-    
-    @Optional()
-    facultadId: number;
-    
+        
     @Optional()
     usuarioId: number;
     
