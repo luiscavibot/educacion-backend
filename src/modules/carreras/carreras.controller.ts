@@ -26,7 +26,7 @@ import { Carrera } from './entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('carreras')
-@ApiTags('carreras')
+@ApiTags('Carreras')
 export class CarrerasController {
   constructor(private readonly carreraService: CarrerasService) {}
 

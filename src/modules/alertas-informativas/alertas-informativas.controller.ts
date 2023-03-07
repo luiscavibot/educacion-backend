@@ -7,7 +7,7 @@ import { CreateAlertaInformativaDto, EditAlertaInformativaDto } from './dtos';
 import { AlertaInformativa } from './entity';
 
 @Controller('alertas-informativas')
-@ApiTags('Alertas informativas')
+@ApiTags('Alertas Informativas')
 export class AlertasInformativasController {
   constructor(private readonly alertaInformativaService: AlertasInformativasService) { }
 

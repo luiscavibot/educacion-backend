@@ -21,8 +21,10 @@ import { ActaConsejo } from './entity/acta-consejo.entity';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
 import { EditActaConsejoDto } from './dtos/edit-acta-consejo.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('actas-consejo')
+@ApiTags('Actas Consejo')
 export class ActasConsejoController {
   constructor(private readonly actaConsejoService: ActasConsejoService) {}
 

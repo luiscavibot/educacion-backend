@@ -20,7 +20,7 @@ import { FacultadesService } from './facultades.service';
 import { CreateFacultadDto, EditFacultadDto } from './dtos';
 
 @Controller('facultades')
-@ApiTags('facultades')
+@ApiTags('Facultades')
 export class FacultadesController {
   constructor(private readonly facultadService: FacultadesService) {}
 

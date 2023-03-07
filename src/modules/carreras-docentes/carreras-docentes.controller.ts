@@ -14,8 +14,10 @@ import { CreateCarreraDocenteDto, EditCarreraDocenteDto } from './dtos';
 import { Observable } from 'rxjs';
 import { CarreraDocente } from './entity';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('carreras-docentes')
+@ApiTags('Carreras Docentes')
 export class CarrerasDocentesController {
   constructor(private readonly carreraService: CarrerasDocentesService) {}
 

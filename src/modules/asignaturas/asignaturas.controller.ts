@@ -13,8 +13,10 @@ import { EditAsignaturaDto } from './dtos/edit-asignatura.dto';
 import { CreateAsignaturaDto } from './dtos/create-asignatura.dto';
 import { Observable } from 'rxjs';
 import { Asignatura } from './entity/asignatura.entity';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('asignaturas')
+@ApiTags('Asignaturas')
 export class AsignaturasController {
   constructor(private readonly asignaturaService: AsignaturasService) {}
 

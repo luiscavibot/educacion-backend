@@ -5,8 +5,10 @@ import { PosgradoService } from './posgrado.service';
 import { Observable } from 'rxjs';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { EditPosgradoDto } from './dto/edit-posgrado.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('posgrado')
+@ApiTags('Posgrado')
 export class PosgradoController {
 
     constructor(

@@ -5,8 +5,10 @@ import { CreateProgramaDto, EditProgramaDto } from './dto';
 import { Observable } from 'rxjs';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Programa } from './entity/programa.entity';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('programas')
+@ApiTags('Programas')
 export class ProgramasController {
     constructor(private readonly programaService: ProgramasService) {}
     

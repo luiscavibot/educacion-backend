@@ -6,8 +6,10 @@ import { Pregrado } from './entity';
 import { CreatePregradoDto } from './dto';
 import { response } from 'express';
 import { EditPregradoDto } from './dto/edit-pregrado.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('pregrado')
+@ApiTags('Pregrado')
 export class PregradoController {
 
     constructor(

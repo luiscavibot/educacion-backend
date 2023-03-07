@@ -21,8 +21,10 @@ import { GrupoInvestigacion } from './entity/grupo-investigacion.entity';
 import { CreateGrupoInvestigacionDto } from './dtos/create-grupo-investigacion.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { EditGrupoInvestigacionDto } from './dtos/edit-grupo-investigacion.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('grupos-investigacion')
+@ApiTags('Grupos Investigación')
 export class GruposInvestigacionController {
   constructor(
     private readonly grupoInvestigacionService: GruposInvestigacionService,

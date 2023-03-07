@@ -20,7 +20,7 @@ import { AreasService } from './areas.service';
 import { CreateAreaDto, EditAreaDto } from './dtos';
 
 @Controller('areas')
-@ApiTags('areas')
+@ApiTags('Areas')
 export class AreasController {
   constructor(private readonly areaService: AreasService) {}
 

@@ -13,7 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { CreateEgresadoDto, EditEgresadoDto } from './dtos';
 import { EgresadosService } from './egresados.service';
 import { Observable } from 'rxjs';
@@ -21,6 +21,7 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Egresado } from './entity/egresado.entity';
 
 @Controller('egresados')
+@ApiTags('Egresados')
 export class EgresadosController {
   constructor(private readonly egresadoService: EgresadosService) {}
 

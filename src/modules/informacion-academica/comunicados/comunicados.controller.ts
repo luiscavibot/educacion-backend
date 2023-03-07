@@ -10,7 +10,7 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Comunicado } from './entity';
 
 @Controller('comunicados')
-@ApiTags('comunicados')
+@ApiTags('Comunicados')
 export class ComunicadosController {
     constructor(private readonly comunicadoService: ComunicadosService){}
 

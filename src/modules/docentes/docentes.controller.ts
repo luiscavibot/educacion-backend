@@ -26,7 +26,7 @@ import { CreateDocenteDto, EditDocenteDto } from './dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('docentes')
-@ApiTags('docentes')
+@ApiTags('Docentes')
 export class DocenteController {
   constructor(private readonly docenteService: DocenteService) {}
 

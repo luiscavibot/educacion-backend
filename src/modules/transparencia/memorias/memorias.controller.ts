@@ -21,8 +21,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateMemoriaDto } from './dtos/create-memoria.dto';
 import { EditMemoriaDto } from './dtos/edit-memoria.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('memorias')
+@ApiTags('Memorias')
 export class MemoriasController {
   constructor(private readonly memoriaService: MemoriasService) {}
 

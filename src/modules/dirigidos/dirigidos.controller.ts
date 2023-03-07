@@ -1,9 +1,11 @@
 import { Controller, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { DirigidosService } from './dirigidos.service';
 import { CreateDirigidoDto, EditDirigidoDto } from './dto';
 
 
 @Controller('dirigidos')
+@ApiTags('Dirigidos')
 export class DirigidosController {
     constructor(private readonly dirigidoService: DirigidosService) {}
 

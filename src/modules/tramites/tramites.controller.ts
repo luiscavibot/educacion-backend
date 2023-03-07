@@ -18,9 +18,10 @@ import { EditTramiteDto } from './dtos/edit-tramite.dto';
 import { Observable } from 'rxjs';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Tramite } from './entity';
-import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('tramites')
+@ApiTags('Trámites')
 export class TramitesController {
   constructor(private readonly tramiteService: TramitesService) {}
 

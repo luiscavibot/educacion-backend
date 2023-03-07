@@ -21,8 +21,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
 import { EditDocumentoOficialDto } from './dtos';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('documentos-oficiales')
+@ApiTags('Documentos Oficiales')
 export class DocumentosOficialesController {
   constructor(
     private readonly documentoOficialService: DocumentosOficialesService,

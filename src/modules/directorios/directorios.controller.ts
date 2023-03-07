@@ -14,8 +14,10 @@ import { Observable } from 'rxjs';
 import { Directorio } from './entity';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('directorios')
+@ApiTags('Directorios')
 export class DirectoriosController {
   constructor(private readonly directorioService: DirectoriosService) {}
 
