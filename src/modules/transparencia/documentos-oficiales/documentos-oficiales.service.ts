@@ -27,9 +27,7 @@ export class DocumentosOficialesService {
       this.documentoOficialRepository.find({
         order: { anio: 'DESC' },
         where: {
-          facultad: {
-            slug,
-          },
+          user: { facultad: { slug } },
           estado: true,
         },
       }),
@@ -43,9 +41,7 @@ export class DocumentosOficialesService {
       this.documentoOficialRepository.find({
         order: { anio: 'DESC' },
         where: {
-          facultad: {
-            slug,
-          },
+          user: { facultad: { slug } },
           estado: true,
         },
       }),
@@ -71,7 +67,7 @@ export class DocumentosOficialesService {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
     let _where: FindOptionsWhere<DocumentoOficial>[] = [{
-      facultad: { slug },
+      user: { facultad: { slug } },
     }];
 
     let _select: FindOptionsSelect<DocumentoOficial> = {
@@ -87,18 +83,18 @@ export class DocumentosOficialesService {
         archivo: true,
         anio: true,
       };
-      _where = [{ facultad: { slug }, estado: true }];
+      _where = [{ user: { facultad: { slug } }, estado: true }];
     }
 
     if (anio) {
-      _where = [{ facultad: { slug }, estado: true, anio }];
+      _where = [{ user: { facultad: { slug } }, estado: true, anio }];
     }
     if (query) {
-      _where = [{ facultad: { slug }, estado: true, nombre: Like(`%${query}%`) }];
+      _where = [{ user: { facultad: { slug } }, estado: true, nombre: Like(`%${query}%`) }];
     }
 
     if(anio && query){
-      _where = [{ facultad: { slug }, estado: true,anio, nombre: Like(`%${query}%`) }];
+      _where = [{ user: { facultad: { slug } }, estado: true,anio, nombre: Like(`%${query}%`) }];
     }
 
     return from(

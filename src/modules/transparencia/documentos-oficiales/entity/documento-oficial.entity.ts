@@ -30,13 +30,6 @@ export class DocumentoOficial {
   @Column({ type: 'text', charset: 'utf8mb4' })
   fileName: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.documentosOficiales)
-  @JoinColumn({ name: 'facultadId' })
-  facultad: Facultad;
-
-  @Column({ type: 'int', nullable: false })
-  facultadId: number;
-
   @Column({ type: 'boolean' })
   estado: boolean;
 

@@ -22,9 +22,6 @@ export class CreateDocumentoOficialDto {
   fileName: string;
 
   @IsOptional()
-  facultadId: number;
-
-  @IsOptional()
   estado: boolean;
 
   @IsOptional()

@@ -76,7 +76,7 @@ export class Facultad {
 
   @OneToMany(
     () => DocumentoOficial,
-    (documentoOficial) => documentoOficial.facultad,
+    (documentoOficial) => documentoOficial.user.facultad,
   )
   documentosOficiales: DocumentoOficial[];
 
