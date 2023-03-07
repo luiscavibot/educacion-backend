@@ -40,7 +40,7 @@ export class ComunicadosService {
         let order_by = sort?.split(':')[0] || 'id';
         let direction = sort?.split(':')[1] || 'DESC';
         let _where: FindOptionsWhere<Comunicado>[] = [{
-          facultad: { slug },
+          user: { facultad: { slug } },
         }];
         let _select: FindOptionsSelect<Comunicado> = {
           id: true,
@@ -59,14 +59,14 @@ export class ComunicadosService {
         }
         if(busqueda){
           _where = [
-            {facultad: { slug }, nombre: Like(`%${busqueda}%`) },
-            {facultad: { slug }, resumen: Like(`%${busqueda}%`) }
+            {user: { facultad: { slug } }, nombre: Like(`%${busqueda}%`) },
+            {user: { facultad: { slug } }, resumen: Like(`%${busqueda}%`) }
           ]
         }
         if(fechaInicio && fechaFin){
           _where = [
-            {facultad: { slug }, nombre: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) },
-            {facultad: { slug }, resumen: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) }
+            {user: { facultad: { slug } }, nombre: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) },
+            {user: { facultad: { slug } }, resumen: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) }
           ]
         }
 

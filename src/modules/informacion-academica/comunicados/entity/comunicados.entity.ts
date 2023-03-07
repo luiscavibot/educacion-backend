@@ -35,13 +35,6 @@ export class Comunicado {
     @Column({ type: 'varchar'})
     foto: string;
 
-    @ManyToOne(() => Facultad, (facultad) => facultad.comunicados)
-    @JoinColumn({ name: 'facultadId' })
-    facultad: Facultad;
-
-    @Column({ type: 'int', nullable: false })
-    facultadId: number;
-
     @ManyToOne(() => User, (user) => user.comunicados)
     @JoinColumn({ name: 'usuario_id' })
     user: User;
