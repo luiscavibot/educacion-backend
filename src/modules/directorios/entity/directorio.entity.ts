@@ -36,13 +36,6 @@ export class Directorio {
   @Column({ type: 'boolean' })
   estado: boolean;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.directorios)
-  @JoinColumn({ name: 'facultadId' })
-  facultad: Facultad;
-
-  @Column({ type: 'int', nullable: false })
-  facultadId: number;
-
   @ManyToOne(() => User, (user) => user.directorios)
   @JoinColumn({ name: 'usuario_id' })
   user: User;

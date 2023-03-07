@@ -38,16 +38,14 @@ export class DirectoriosService {
 
   directoriosPorFacultad(slug: string, search?:string): Observable<Directorio[]> {
     let _where: FindOptionsWhere<Directorio>[] = [{
-      facultad: {
-        slug,
-      },
+      user: { facultad: { slug } },
       estado: true,
     }]
     if(search?.length){
       _where = [
-        {facultad: {slug,},estado: true, unidad: Like(`%${search}%`)},
-        {facultad: {slug,},estado: true, cargo: Like(`%${search}%`)},
-        {facultad: {slug,},estado: true, nombre: Like(`%${search}%`)},
+        {user: { facultad: { slug } }, estado: true, unidad: Like(`%${search}%`)},
+        {user: { facultad: { slug } }, estado: true, cargo: Like(`%${search}%`)},
+        {user: { facultad: { slug } }, estado: true, nombre: Like(`%${search}%`)},
       ]
     }
     return from(
@@ -66,7 +64,7 @@ export class DirectoriosService {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
     let _where: FindOptionsWhere<Directorio> = {
-      facultad: { slug },
+      user: { facultad: { slug } },
     };
     return from(
       this.directorioRepository.findAndCount({

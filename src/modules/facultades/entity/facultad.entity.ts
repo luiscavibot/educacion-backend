@@ -49,7 +49,7 @@ export class Facultad {
   @OneToMany(() => Evento, (evento) => evento.user.facultad)
   eventos: Evento[];
 
-  @OneToMany(() => Directorio, (directorio) => directorio.facultad)
+  @OneToMany(() => Directorio, (directorio) => directorio.user.facultad)
   directorios: Directorio[];
 
   @OneToMany(() => Tramite, (tramite) => tramite.user.facultad)
