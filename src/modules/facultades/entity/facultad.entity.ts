@@ -82,7 +82,7 @@ export class Facultad {
 
   @OneToMany(
     () => ResolucionDecanal,
-    (resolucionDecanal) => resolucionDecanal.facultad,
+    (resolucionDecanal) => resolucionDecanal.user.facultad,
   )
   resolucionesDecanales: ResolucionDecanal[];
 

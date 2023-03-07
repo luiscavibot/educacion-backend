@@ -27,15 +27,8 @@ export class ResolucionDecanal {
   @Column({ type: 'text' })
   documento: string;
 
-  @ManyToOne(() => Facultad, (facultad) => facultad.memorias)
-  @JoinColumn({ name: 'facultadId' })
-  facultad: Facultad;
-
   @Column({ type: 'text', charset: 'utf8mb4' })
   fileName: string;
-
-  @Column({ type: 'int' })
-  facultadId: number;
 
   @Column({type: 'timestamp'})
   fecha: Date;

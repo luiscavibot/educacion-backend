@@ -3,5 +3,5 @@ import { OmitType } from '@nestjs/swagger';
 
 export class EditResolucionDecanalDto extends OmitType(
   CreateResolucionDecanalDto,
-  ['facultadId', 'usuario_id'] as const,
+  ['usuario_id'] as const,
 ) {}

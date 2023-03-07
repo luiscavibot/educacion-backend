@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateResolucionDecanalDto {
@@ -13,13 +14,11 @@ export class CreateResolucionDecanalDto {
   palabras_claves: string[];
 
   @IsOptional()
+  @ApiProperty()
   documento: string;
 
   @IsOptional()
   fileName: string;
-
-  @IsOptional()
-  facultadId: number;
 
   @IsOptional()
   fecha: Date;

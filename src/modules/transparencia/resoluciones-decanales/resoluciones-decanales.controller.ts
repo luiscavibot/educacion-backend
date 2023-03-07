@@ -21,8 +21,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateResolucionDecanalDto } from './dtos';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { EditResolucionDecanalDto } from './dtos/edit-resolucion-decanal.dto';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags, getSchemaPath } from '@nestjs/swagger';
 
 @Controller('resoluciones-decanales')
+@ApiTags('Resoluciones Decanales')
 export class ResolucionesDecanalesController {
   constructor(
     private readonly resolucionDecanalService: ResolucionesDecanalesService,
@@ -105,6 +107,6 @@ export class ResolucionesDecanalesController {
   async deleteResolucionDecanal(@Param('id') id: number) {
     let data;
     data = await this.resolucionDecanalService.deleteResolucionDecanal(id);
-    return { message: 'Resolucion Decanal eliminada', data };
+    return { message: 'Resolucion decanal eliminada', data };
   }
 }
