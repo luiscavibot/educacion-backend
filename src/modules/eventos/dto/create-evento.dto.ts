@@ -1,4 +1,3 @@
-import { EventoTipo } from '../consts/EventoTipo';
 import {
   IsArray,
   IsDate,
@@ -64,4 +63,5 @@ export class CreateEventoDto {
 
   @IsNotEmpty()
   usuario_id: number;
+  
 }

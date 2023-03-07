@@ -10,7 +10,7 @@ import { StorageService } from '../../storage/storage.service';
 import { EditDocumentoOficialDto } from './dtos/edit-documento-oficial.dto';
 import { fileFilterName } from '../../../helpers/fileFilerName.helpers';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
-import { Observable, from, map, distinct } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { YearsDocumentosOfiales } from './const';
 

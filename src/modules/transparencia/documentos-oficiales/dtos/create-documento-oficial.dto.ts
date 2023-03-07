@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateDocumentoOficialDto {
   @IsOptional()
@@ -29,4 +29,5 @@ export class CreateDocumentoOficialDto {
 
   @IsOptional()
   last_updated_by: number;
+
 }

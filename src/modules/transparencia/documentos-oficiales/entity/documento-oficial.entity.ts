@@ -1,4 +1,3 @@
-import { Facultad } from '../../../facultades/entity/facultad.entity';
 import { User } from '../../../users/entities/user.entity';
 import {
   Column,
@@ -48,4 +47,5 @@ export class DocumentoOficial {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updated_at: Date;
+  
 }

@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsArray, IsOptional } from 'class-validator';
 
 export class CreateActaConsejoDto {
   @IsOptional()
@@ -31,4 +31,5 @@ export class CreateActaConsejoDto {
 
   @IsOptional()
   estado: boolean;
+  
 }

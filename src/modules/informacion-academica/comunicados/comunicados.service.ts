@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere, FindOptionsSelect, Raw, Between, Like } from 'typeorm';
+import { Repository, FindOptionsWhere, FindOptionsSelect, Between, Like } from 'typeorm';
 import { Comunicado } from './entity';
 import { CreateComunicadosDto } from './dto/create-comunicados.dto';
 import { fileFilterName } from '../../../helpers/fileFilerName.helpers';

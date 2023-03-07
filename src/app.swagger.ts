@@ -1,7 +1,5 @@
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
-import { json, urlencoded } from 'express';
-import multer from 'multer';
 
 export const initSwagger = (app: INestApplication) => {
   const swaggerConfig = new DocumentBuilder()

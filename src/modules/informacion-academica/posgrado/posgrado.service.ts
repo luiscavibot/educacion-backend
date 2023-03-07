@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
+import { Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
 import { Posgrado } from './entity';
 import { from, map, Observable } from 'rxjs';
 import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';

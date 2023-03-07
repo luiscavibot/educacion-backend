@@ -1,10 +1,9 @@
 import {
   Injectable,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere, Like, FindOptionsSelect } from 'typeorm';
+import { Repository, FindOptionsWhere, Like } from 'typeorm';
 import { Directorio } from './entity/directorio.entity';
 import { CreateDirectorioDto } from './dtos/create-directorio.dto';
 import { EditDirectorioDto } from './dtos';

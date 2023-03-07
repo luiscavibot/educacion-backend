@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { AsignaturasService } from './asignaturas.service';
 import { EditAsignaturaDto } from './dtos/edit-asignatura.dto';

@@ -1,5 +1,4 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Facultad } from '../../../facultades/entity/facultad.entity';
 import { User } from '../../../users/entities/';
 
 @Entity('inf_posgrado')
@@ -47,6 +46,5 @@ export class Posgrado {
 
     @UpdateDateColumn({ name: 'updated_at', type: 'timestamp'})
     updated_at: Date;
-
 
 }

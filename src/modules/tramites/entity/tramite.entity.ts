@@ -1,4 +1,3 @@
-import { Facultad } from '../../facultades/entity/facultad.entity';
 import {
   BaseEntity,
   Column,
@@ -9,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { TramiteTipo } from '../conts';
 import { User } from '../../users/entities';
 
 @Entity('tramites')
