@@ -110,7 +110,7 @@ export class ProgramasEspecialesController {
     description: 'Se ha borrado el programa especial correctamente',
   })
   async deleteProgramaEspecial(@Param('id') id: number) {
-    let data;
+    let data:any;
     data = await this.programaEspecialService.deleteProgramaEspecial(id);
     return { message: 'programa especial eliminado', data };
   }
