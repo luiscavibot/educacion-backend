@@ -1,5 +1,4 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Facultad } from '../../../facultades/entity/facultad.entity';
 import { User } from '../../../users/entities/user.entity';
 
 @Entity('inf_pregrado')
@@ -39,10 +38,10 @@ export class Pregrado {
     @Column({ type: 'int' })
     last_updated_by: number;
 
-    @CreateDateColumn({ name: 'created_at', type: 'timestamp'})
+    @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
     created_at: Date;
 
-    @UpdateDateColumn({ name: 'updated_at', type: 'timestamp'})
+    @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
     updated_at: Date;
 
 }
