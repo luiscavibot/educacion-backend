@@ -17,7 +17,7 @@ export class Noticia extends BaseEntity {
   id: number;
 
   @Column({ type: 'varchar', nullable: false, length: 200 })
-  titulo!: string;
+  titulo: string;
 
   @Column({ type: 'text' })
   subtitulo: string;
@@ -45,13 +45,6 @@ export class Noticia extends BaseEntity {
 
   @Column({ type: 'text' })
   resumen: string;
-
-  // @ManyToOne(() => Facultad, (facultad) => facultad.noticias)
-  // @JoinColumn({ name: 'facultadId' })
-  // facultad: Facultad;
-
-  // @Column({ type: 'int' })
-  // facultadId: number;
 
   @ManyToOne(() => User, (user) => user.noticias)
   @JoinColumn({ name: 'usuario_id' })

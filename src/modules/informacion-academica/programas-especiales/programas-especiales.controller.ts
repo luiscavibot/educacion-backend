@@ -1,5 +1,5 @@
 import { Controller, Param, Get, ParseIntPipe, Put, Body, Delete, Query, DefaultValuePipe } from '@nestjs/common';
-import { ApiResponse, ApiOperation, ApiParam, ApiBody } from '@nestjs/swagger';
+import { ApiResponse, ApiOperation, ApiParam, ApiBody, ApiTags } from '@nestjs/swagger';
 import { ProgramasEspecialesService } from './programas-especiales.service';
 import { EditProgramaEspecialDto } from './dtos/edit-programa-especial.dto';
 import { ProgramaEspecial } from './entity/programa-especial.entity';
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('programas-especiales')
+@ApiTags('Programas Especiales')
 export class ProgramasEspecialesController {
 
   constructor(private readonly programaEspecialService: ProgramasEspecialesService) { }
