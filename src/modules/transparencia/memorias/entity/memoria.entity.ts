@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Facultad } from '../../../facultades/entity/facultad.entity';
 import { User } from '../../../users/entities/user.entity';
 
 @Entity('memorias')
