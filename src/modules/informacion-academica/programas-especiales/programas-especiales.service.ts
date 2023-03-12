@@ -83,15 +83,15 @@ export class ProgramasEspecialesService {
                 where: _where,
             }),
         ).pipe(
-            map(([alertas, totalAlertas]) => {
+            map(([programasEspeciales, totalProgramasEspeciales]) => {
                 const programasEspecialesPageable: Pagination<ProgramaEspecial> = {
-                    items: alertas,
+                    items: programasEspeciales,
                     meta: {
                         currentPage: Number(options.page),
-                        itemCount: alertas.length,
+                        itemCount: programasEspeciales.length,
                         itemsPerPage: Number(options.limit),
-                        totalItems: totalAlertas,
-                        totalPages: Math.ceil(totalAlertas / Number(options.limit)),
+                        totalItems: totalProgramasEspeciales,
+                        totalPages: Math.ceil(totalProgramasEspeciales / Number(options.limit)),
                     },
                 };
                 return programasEspecialesPageable;
