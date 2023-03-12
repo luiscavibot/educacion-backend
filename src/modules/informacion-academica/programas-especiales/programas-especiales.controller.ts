@@ -1,10 +1,11 @@
-import { Controller, Param, Get, ParseIntPipe, Put, Body, Delete, Query, DefaultValuePipe } from '@nestjs/common';
+import { Controller, Param, Get, ParseIntPipe, Put, Body, Delete, Query, DefaultValuePipe, Post } from '@nestjs/common';
 import { ApiResponse, ApiOperation, ApiParam, ApiBody } from '@nestjs/swagger';
 import { ProgramasEspecialesService } from './programas-especiales.service';
 import { EditProgramaEspecialDto } from './dtos/edit-programa-especial.dto';
 import { ProgramaEspecial } from './entity/programa-especial.entity';
 import { Observable } from 'rxjs';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { CreateProgramaEspecialDto } from './dtos/create-programa-especial.dto';
 
 @Controller('programas-especiales')
 export class ProgramasEspecialesController {
@@ -55,9 +56,42 @@ export class ProgramasEspecialesController {
     return this.programaEspecialService.getPaginacionProgramasEspeciales(options, slug);
   }
 
+  @Post()
+  @ApiOperation({
+    description: 'Crea un nuevo Programa especial',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Programa especial creado correctamente',
+  })
+  @ApiResponse({
+    status: 409,
+    description: `El programa especial existe`,
+  })
+  @ApiBody({
+    description: 'Crea un programa especial usando un ProgramaEspecialDTO',
+    type: CreateProgramaEspecialDto,
+    examples: {
+      ejemplo1: {
+        value: {
+          nombre: 'Programa especial',
+        },
+      },
+      ejemplo2: {
+        value: {
+          nombre: 'Programa especial',
+        },
+      },
+    },
+  })
+  async createProgramaEspecial(@Body() dto: CreateProgramaEspecialDto) {
+    const data = await this.programaEspecialService.createProgramaEspecial({ ...dto });
+    return { message: 'Programa especial creado', data };
+  }
+
   @Put(':id')
   @ApiOperation({
-    description: 'Actualiza y publica un programa especial',
+    description: 'Actualiza y publica   un programa especial',
   })
   @ApiParam({
     name: 'id',
@@ -89,7 +123,6 @@ export class ProgramasEspecialesController {
     @Param('id') id: number,
     @Body() dto: EditProgramaEspecialDto,
   ) {
-
     let data;
     data = await this.programaEspecialService.EditProgramaEspecialDto(id, dto);
     return { message: 'programa especial actualizado y publicado', data };
@@ -119,6 +152,12 @@ export class ProgramasEspecialesController {
   getRecursos() {
       const recursos = this.programaEspecialService.recursos();
       return { recursos };
+  }
+
+  @Get('years')
+  getYears() {
+    const years = this.programaEspecialService.yearsInfPosgrado();
+    return { years };
   }
 
   @Get('tipos-de-programas-especiales')

@@ -1,30 +1,31 @@
-import { IsNotEmpty, IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { Optional } from '@nestjs/common';
 export class CreateProgramaEspecialDto {
 
     @IsNotEmpty()
     @IsString()
     nombre: string;
 
-    @IsOptional()
-    @IsString()
+    @Optional()
     tipoRecurso: string;
 
-    @IsOptional()
-    @IsString()    
+    @Optional()  
     tipoProgramaEspecial: string;
 
-    @IsOptional()
-    @IsString()    
+    @Optional()   
     url: string;
 
-    @IsOptional()
+    @Optional()   
+    anio: number;
+
+    @Optional()
     publicado: boolean;
 
-    @IsOptional()
+    @Optional()
     fijado: boolean;
 
     @IsNotEmpty()
     @IsNumber()
-    usuario_id: number;
+    usuarioId: number;
 
 }

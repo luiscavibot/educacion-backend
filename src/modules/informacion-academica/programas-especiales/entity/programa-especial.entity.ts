@@ -19,17 +19,20 @@ export class ProgramaEspecial {
     @Column({ type: 'varchar', nullable: false })  
     url: string;
 
-    @Column({ type: 'boolean' })
+    @Column({ type: 'int', nullable: false })  
+    anio: number;
+
+    @Column({ type: 'boolean', default: false })
     publicado: boolean;
 
     @Column({ type: 'boolean' })
     fijado: boolean;
 
     @Column({ type: 'int' })
-    usuario_id: number;
+    usuarioId: number;
 
     @ManyToOne(() => User, (user) => user.programa_especial)
-    @JoinColumn({ name: 'usuario_id' })
+    @JoinColumn({ name: 'usuarioId' })
     user: User;
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })

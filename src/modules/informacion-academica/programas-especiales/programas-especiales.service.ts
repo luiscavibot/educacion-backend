@@ -4,7 +4,7 @@ import { ProgramaEspecial } from './entity';
 import { Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
 import { CreateProgramaEspecialDto } from './dtos/create-programa-especial.dto';
 import { EditProgramaEspecialDto } from './dtos/edit-programa-especial.dto';
-import { Recursos, TipoProgramasEspeciales } from './consts';
+import { Recursos, TipoProgramasEspeciales, YearsProgramasEspeciales } from './consts';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { Observable, map, from } from 'rxjs';
 
@@ -18,9 +18,10 @@ export class ProgramasEspecialesService {
 
 
     async createProgramaEspecial(dto: CreateProgramaEspecialDto) {
+        console.log(dto);
         const nuevoProgramaEspecial = this.programaEspecialRepository.create(dto);
         const programaEspecial = await this.programaEspecialRepository.save(nuevoProgramaEspecial);
-        return { programaEspecial };
+        return { programaEspecial };    
     }
 
     async getProgramaEspecialById(id: number) {
@@ -99,6 +100,10 @@ export class ProgramasEspecialesService {
           value: key,
           label: TipoProgramasEspeciales[key],
         }));
+    }
+
+    yearsInfPosgrado() {
+        return YearsProgramasEspeciales.map( year => year );
     }
 
 }
