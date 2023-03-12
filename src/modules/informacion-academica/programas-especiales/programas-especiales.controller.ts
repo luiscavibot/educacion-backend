@@ -45,7 +45,8 @@ export class ProgramasEspecialesController {
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug', new DefaultValuePipe('')) slug: string,
-    @Query('sort', new DefaultValuePipe('')) sort: string
+    @Query('sort', new DefaultValuePipe('')) sort: string,
+    @Query('estado', new DefaultValuePipe(false)) estado: boolean = false
   ): Observable<Pagination<ProgramaEspecial>> {
     limit = limit > 100 ? 100 : limit;
     const options = {
@@ -53,7 +54,7 @@ export class ProgramasEspecialesController {
       page,
       sort
     };
-    return this.programaEspecialService.getPaginacionProgramasEspeciales(options, slug);
+    return this.programaEspecialService.getPaginacionProgramasEspeciales(options, slug, estado);
   }
 
   @Post()

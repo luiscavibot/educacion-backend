@@ -51,6 +51,7 @@ export class ProgramasEspecialesService {
     getPaginacionProgramasEspeciales(
         options: IPaginationOptions,
         slug: string,
+        estado: boolean,
         sort?: string
     ): Observable<Pagination<ProgramaEspecial>> {
         let order_by = sort?.split(':')[0] || 'id';
@@ -63,6 +64,16 @@ export class ProgramasEspecialesService {
             nombre: true,
             publicado: true
         };
+        if(estado){
+            _select = {
+                ..._select,
+                tipoRecurso: true,
+                url:true,
+                publicado:true,
+                tipoProgramaEspecial:true,
+                anio:true,
+            }
+        }
         return from(
             this.programaEspecialRepository.findAndCount({
                 skip: Number(options.page) * Number(options.limit) || 0,
