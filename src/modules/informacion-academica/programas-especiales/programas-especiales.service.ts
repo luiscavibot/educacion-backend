@@ -4,7 +4,7 @@ import { ProgramaEspecial } from './entity';
 import { Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
 import { CreateProgramaEspecialDto } from './dtos/create-programa-especial.dto';
 import { EditProgramaEspecialDto } from './dtos/edit-programa-especial.dto';
-import { Recursos, TipoProgramasEspeciales } from './consts';
+import { Recursos, TipoProgramasEspeciales, YearsProgramasEspeciales } from './consts';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { Observable, map, from } from 'rxjs';
 
@@ -18,9 +18,10 @@ export class ProgramasEspecialesService {
 
 
     async createProgramaEspecial(dto: CreateProgramaEspecialDto) {
+        console.log(dto);
         const nuevoProgramaEspecial = this.programaEspecialRepository.create(dto);
         const programaEspecial = await this.programaEspecialRepository.save(nuevoProgramaEspecial);
-        return { programaEspecial };
+        return { programaEspecial };    
     }
 
     async getProgramaEspecialById(id: number) {
@@ -50,6 +51,7 @@ export class ProgramasEspecialesService {
     getPaginacionProgramasEspeciales(
         options: IPaginationOptions,
         slug: string,
+        estado: boolean,
         sort?: string
     ): Observable<Pagination<ProgramaEspecial>> {
         let order_by = sort?.split(':')[0] || 'id';
@@ -62,6 +64,16 @@ export class ProgramasEspecialesService {
             nombre: true,
             publicado: true
         };
+        if(estado){
+            _select = {
+                ..._select,
+                tipoRecurso: true,
+                url:true,
+                publicado:true,
+                tipoProgramaEspecial:true,
+                anio:true,
+            }
+        }
         return from(
             this.programaEspecialRepository.findAndCount({
                 skip: Number(options.page) * Number(options.limit) || 0,
@@ -99,6 +111,10 @@ export class ProgramasEspecialesService {
           value: key,
           label: TipoProgramasEspeciales[key],
         }));
+    }
+
+    yearsInfPosgrado() {
+        return YearsProgramasEspeciales.map( year => year );
     }
 
 }
