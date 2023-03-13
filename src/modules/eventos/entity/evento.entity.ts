@@ -9,7 +9,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { EventoTipo } from '../consts';
 
 @Entity('eventos')
 export class Evento extends BaseEntity {
@@ -30,10 +29,10 @@ export class Evento extends BaseEntity {
   @Column({ type: 'text' })
   foto: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true})
   adjuntos: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   calendario: string;
 
   @Column({ type: 'text' })
@@ -48,7 +47,7 @@ export class Evento extends BaseEntity {
   @Column({ type: 'text' })
   cuerpo: string;
 
-  @Column({ type: 'simple-array' })
+  @Column({ type: 'simple-array', nullable: true})
   tags: string[];
 
   @ManyToOne(() => User, (user) => user.eventos)
@@ -61,10 +60,10 @@ export class Evento extends BaseEntity {
   @Column({ type: 'int' })
   usuario_id: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true})
   last_updated_by: number;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   estado: boolean;
   
   @Column({ type: 'boolean', default: false })

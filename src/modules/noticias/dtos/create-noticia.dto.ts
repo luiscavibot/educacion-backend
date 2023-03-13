@@ -45,9 +45,6 @@ export class CreateNoticiaDto {
   @IsOptional()
   resumen: string;
 
-  // @IsOptional()
-  // facultadId: number;
-
   @IsNotEmpty()
   @IsOptional()
   usuario_id: number;
