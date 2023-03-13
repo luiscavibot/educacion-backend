@@ -154,6 +154,9 @@ export class ComunicadosService {
 
     async deleteComunicado(id:number, comunicadoEntity?: Comunicado){
         const comunicado = await this.getById(id, comunicadoEntity);
+        if (comunicado.foto != '') {
+          await this.storageService.deleteFile(comunicado.foto);
+        }
         return await this.comunicadoRepository.remove(comunicado);        
     }
 

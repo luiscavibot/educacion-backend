@@ -10,10 +10,10 @@ export class Comunicado {
     @Column({ type: 'text'})
     nombre: string;
 
-    @Column({ type: 'text' })
+    @Column({ type: 'text', nullable:true })
     slug: string;
 
-    @Column({ type: 'boolean'})
+    @Column({ type: 'boolean', default:false})
     estado: boolean;
 
     @Column({ type: 'boolean'})
@@ -41,7 +41,7 @@ export class Comunicado {
     @Column({ type: 'int' })
     usuario_id: number;
 
-    @Column({ type: 'int' })
+    @Column({ type: 'int', nullable: true })
     last_updated_by: number;
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamp'})
