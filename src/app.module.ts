@@ -33,6 +33,7 @@ import { ProgramasModule } from './modules/programas/programas.module';
 import { DirigidosModule } from './modules/dirigidos/dirigidos.module';
 import { AlertasInformativasModule } from './modules/alertas-informativas/alertas-informativas.module';
 import { ProgramasEspecialesModule } from './modules/informacion-academica/programas-especiales/programas-especiales.module';
+import { AlertaAdmisionPosgradoModule } from './modules/alerta-admision-posgrado/alerta-admision-posgrado.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -92,8 +93,7 @@ import * as Joi from '@hapi/joi';
     DirigidosModule,
     AlertasInformativasModule,
     ProgramasEspecialesModule,
-    // UserModule,
-    // PostModule,
+    AlertaAdmisionPosgradoModule
   ],
   controllers: [AppController],
   providers: [AppService],
