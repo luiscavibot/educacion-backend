@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateAlertaAdmisionPosgradoDto, EditAlertaAdmisionPosgradoDto } from './dtos';
 import { AlertaAdmisionPosgrado } from './entity';
 
@@ -12,47 +12,55 @@ export class AlertaAdmisionPosgradoService {
     ) { }
 
     async createAlertaAdmisionPosgrado(dto: CreateAlertaAdmisionPosgradoDto) {
+        this.setDates(dto);           
         const nuevaAlertaAdmisionPosgrado = this.alertaAdmisionPosgradoRepository.create(dto);
         const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.save(nuevaAlertaAdmisionPosgrado);
-        
+
         return { alertaAdmisionPosgrado };
     }
 
-    async getAlertaAdmisionPosgradoPublicada(slug: string): Promise<AlertaAdmisionPosgrado> {
+    async editAlertaAdmisionPosgrado(
+        slug: string,
+        dto: EditAlertaAdmisionPosgradoDto
+    ) {
+        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
+            where: {
+                user: { facultad: { slug } }
+            },
+        });
+
+        if (!alertaAdmisionPosgrado) {
+            throw new NotFoundException('Alerta de admisión no existe o no está autorizado');
+        }
+
+        this.setDates(dto);        
+        const alertaAdmisionPosgradoEditada = Object.assign(alertaAdmisionPosgrado, dto);
+        return await this.alertaAdmisionPosgradoRepository.save(alertaAdmisionPosgradoEditada);
+    }
+
+    async getAlertaAdmisionPosgradoVigente(slug: string): Promise<AlertaAdmisionPosgrado> {
+        const currentDate = new Date();
+        currentDate.setHours(currentDate.getHours() - 5);
+
         const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
             where: {
                 publicado: true,
                 user: { facultad: { slug } },
-            }
+                fecha_inicio: LessThanOrEqual(currentDate),
+                fecha_fin: MoreThanOrEqual(currentDate),
+            },
         });
 
         if (!alertaAdmisionPosgrado) {
-            throw new NotFoundException('No hay alerta de admisión publicada para esta facultad');
+            throw new NotFoundException('No hay alerta de admisión vigente para esta facultad');
         }
 
         return alertaAdmisionPosgrado;
     }
 
-    async editAlertaAdmisionPosgrado(slug: string) {
-        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
-            where: {
-                publicado: false,
-                user: { facultad: { slug } },
-            }
-        });
-
-        if (!alertaAdmisionPosgrado)
-            throw new NotFoundException('Alerta de admisión no existe o no está autorizado');
-
-        alertaAdmisionPosgrado.publicado = true;
-        return await this.alertaAdmisionPosgradoRepository.save(alertaAdmisionPosgrado);
-    }
-
-
     async deleteAlertaAdmisionPosgrado(slug: string) {
         const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
             where: {
-                publicado: true,
                 user: { facultad: { slug } },
             }
         });
@@ -61,6 +69,21 @@ export class AlertaAdmisionPosgradoService {
             throw new NotFoundException('Alerta de admisión no existe o no está autorizado');
 
         await this.alertaAdmisionPosgradoRepository.remove(alertaAdmisionPosgrado);
+    }
+
+    setDates(dto: { fecha_inicio?: any, fecha_fin?: any }): void {
+        if (dto.fecha_inicio) {
+            const date = new Date(`${dto.fecha_inicio}T00:00:00`);
+            date.setHours(date.getHours() - 5);
+            dto.fecha_inicio = date;
+        }
+    
+        if (dto.fecha_fin) {
+            const date = new Date(`${dto.fecha_fin}T00:00:00`);
+            date.setDate(date.getDate() + 1);
+            date.setHours(date.getHours() - 5);
+            dto.fecha_fin = date;
+        }
     }
 
 }
