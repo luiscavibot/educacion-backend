@@ -24,10 +24,10 @@ export class AlertaAdmisionPosgrado extends BaseEntity {
     @Column({ type: 'varchar', nullable: true, length: 250 })
     descripcion: string;
 
-    @Column({ type: 'date', nullable: true })
+    @Column({ type: 'timestamp', nullable: true })
     fecha_inicio: Date;
 
-    @Column({ type: 'date', nullable: true })
+    @Column({ type: 'timestamp', nullable: true })
     fecha_fin: Date;
 
     @Column({ type: 'boolean', default: false })
