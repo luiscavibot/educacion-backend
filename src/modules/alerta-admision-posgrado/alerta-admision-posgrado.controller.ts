@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Query, Post, Put, Res } from '@nestjs/common';
+import { DefaultValuePipe, ParseBoolPipe } from '@nestjs/common/pipes';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AlertaAdmisionPosgradoService } from './alerta-admision-posgrado.service';
 import { CreateAlertaAdmisionPosgradoDto, EditAlertaAdmisionPosgradoDto } from './dtos';
@@ -53,7 +54,7 @@ export class AlertaAdmisionPosgradoController {
         }
     }
 
-    @Get(':slug/publicada')
+    @Get(':slug')
     @ApiOperation({
       description: 'Devuelve la alerta de admisión posgrado publicada de una facultad',
     })
@@ -63,35 +64,44 @@ export class AlertaAdmisionPosgradoController {
       required: true,
       description: 'url de la facultad',
     })
-    async getAlertaAdmisionPosgradoPublicada(
-        @Param('slug') slug: string
+    async getAlertaAdmisionPosgrado(
+        @Param('slug') slug: string,
+        @Query('isPublic', new DefaultValuePipe(false), ParseBoolPipe) isPublic : boolean = false
     ): Promise<AlertaAdmisionPosgrado> {
-        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoService.getAlertaAdmisionPosgradoPublicada(slug);
+        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoService.getAlertaAdmisionPosgrado(slug, isPublic);
         return alertaAdmisionPosgrado;
     }
-  
-    @Put(':slug')
-    @ApiOperation({
-      description: 'Actualiza y publica una alerta de admisión posgrado',
-    })
-    @ApiParam({
-      name: 'slug',
-      type: String,
-      required: true,
-      description: 'Slug de la facultad',
-    })
-    @ApiResponse({
-      status: 200,
-      description: 'Se ha actualizado correctamente',
-    })
-    async editAlertaInformativa(
-      @Param('slug') slug: string
-    ) {
-  
+
+    @Put(':id')
+    async editAlertaAdmisionPosgrado(@Param('id') id: number, @Body() dto: EditAlertaAdmisionPosgradoDto){
       let data;
-      data = await this.alertaAdmisionPosgradoService.editAlertaAdmisionPosgrado(slug);
-      return { message: 'Alerta de admisión posgrado actualizada y publicada', data };
+      data = await this.alertaAdmisionPosgradoService.editAlertaAdmisionPosgrado(id, dto);
+      return { message: 'Alerta admision posgrado editada', data };
     }
+
+  
+    // @Put(':slug')
+    // @ApiOperation({
+    //   description: 'Actualiza y publica una alerta de admisión posgrado',
+    // })
+    // @ApiParam({
+    //   name: 'slug',
+    //   type: String,
+    //   required: true,
+    //   description: 'Slug de la facultad',
+    // })
+    // @ApiResponse({
+    //   status: 200,
+    //   description: 'Se ha actualizado correctamente',
+    // })
+    // async editAlertaInformativa(
+    //   @Param('slug') slug: string
+    // ) {
+  
+    //   let data;
+    //   data = await this.alertaAdmisionPosgradoService.editAlertaAdmisionPosgrado(slug);
+    //   return { message: 'Alerta de admisión posgrado actualizada y publicada', data };
+    // }
   
     @Delete(':slug')
     @ApiOperation({

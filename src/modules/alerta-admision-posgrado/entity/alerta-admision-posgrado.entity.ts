@@ -10,7 +10,7 @@ import {
     UpdateDateColumn
 } from "typeorm";
 
-@Entity('alertas-admision-posgrado')
+@Entity('alertas_admision_posgrado')
 export class AlertaAdmisionPosgrado extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;

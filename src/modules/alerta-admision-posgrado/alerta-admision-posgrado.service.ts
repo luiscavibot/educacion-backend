@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { Not, Repository, FindOptionsWhere } from 'typeorm';
 import { CreateAlertaAdmisionPosgradoDto, EditAlertaAdmisionPosgradoDto } from './dtos';
 import { AlertaAdmisionPosgrado } from './entity';
 
@@ -18,34 +18,45 @@ export class AlertaAdmisionPosgradoService {
         return { alertaAdmisionPosgrado };
     }
 
-    async getAlertaAdmisionPosgradoPublicada(slug: string): Promise<AlertaAdmisionPosgrado> {
-        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
-            where: {
+    async getAlertaInformativaById(id: number) {
+        const alertaInformativa = await this.alertaAdmisionPosgradoRepository
+            .findOne({ where: { id } });
+
+        if (!alertaInformativa)
+            throw new NotFoundException('Alerta informativa no existe o no está autorizado');
+        return alertaInformativa;
+    }
+
+    async getAlertaAdmisionPosgrado(slug: string, isPublic: boolean): Promise<AlertaAdmisionPosgrado> {
+        let _where: FindOptionsWhere<AlertaAdmisionPosgrado>[] = [
+            {
+                user: { facultad: { slug } }, 
+            }
+        ];
+        
+        if(isPublic){
+            console.log(typeof(isPublic));
+            console.log("entra?")
+         _where = [
+            {
                 publicado: true,
                 user: { facultad: { slug } },
             }
+         ]
+        }
+        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
+            where: _where
         });
 
-        if (!alertaAdmisionPosgrado) {
-            throw new NotFoundException('No hay alerta de admisión publicada para esta facultad');
-        }
 
         return alertaAdmisionPosgrado;
     }
 
-    async editAlertaAdmisionPosgrado(slug: string) {
-        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
-            where: {
-                publicado: false,
-                user: { facultad: { slug } },
-            }
-        });
-
-        if (!alertaAdmisionPosgrado)
-            throw new NotFoundException('Alerta de admisión no existe o no está autorizado');
-
-        alertaAdmisionPosgrado.publicado = true;
-        return await this.alertaAdmisionPosgradoRepository.save(alertaAdmisionPosgrado);
+    async editAlertaAdmisionPosgrado(id: number,
+        dto: EditAlertaAdmisionPosgradoDto) {
+        const alertaAdmisionPosgrado = await this.getAlertaInformativaById(id);
+        const alertaAdmisionPosgradoEditado = Object.assign(alertaAdmisionPosgrado, dto);
+        return await this.alertaAdmisionPosgradoRepository.save(alertaAdmisionPosgradoEditado);
     }
 
 
