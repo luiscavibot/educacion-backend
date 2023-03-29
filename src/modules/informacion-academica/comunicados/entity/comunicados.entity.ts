@@ -28,12 +28,6 @@ export class Comunicado {
     @Column({ type: 'text' })
     cuerpoComunicado: string;
 
-    @Column({ type: 'text' })
-    pie_foto: string;
-
-    @Column({ type: 'varchar'})
-    foto: string;
-
     @ManyToOne(() => User, (user) => user.comunicados)
     @JoinColumn({ name: 'usuario_id' })
     user: User;

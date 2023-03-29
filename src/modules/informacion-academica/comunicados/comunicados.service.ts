@@ -50,10 +50,8 @@ export class ComunicadosService {
         if (estado && estado == 'true') {
           _select = {
             ..._select,
-            foto: true,
             fecha: true,
             resumen: true,
-            pie_foto:true,
             cuerpoComunicado: true
           };
         }
@@ -95,25 +93,7 @@ export class ComunicadosService {
         );
       }
 
-    async createComunicado(dto: CreateComunicadosDto, file: any){
-        const comunicadoExiste = await this.comunicadoRepository.findOne({
-            where: { nombre: dto.nombre},
-        })
-
-        const hash =  Date.now().toString();
-
-        if(file){
-            const nombreFoto = fileFilterName(file, hash);
-            if(!nombreFoto){
-                throw new BadRequestException('Archivo no válido');
-            }
-            let { Location } =  await this.storageService.uploadFile(
-                file,
-                nombreFoto
-            )
-            dto.foto = Location;
-        }
-
+    async createComunicado(dto: CreateComunicadosDto){
         const nuevoComunicado = this.comunicadoRepository.create(dto);
         const comunicado = await this.comunicadoRepository.save(nuevoComunicado);
 
@@ -124,29 +104,10 @@ export class ComunicadosService {
     async editComunicado(
         id: number,
         dto: EditComunicadosDto,
-        file: any,
         comunicadoEntity?: Comunicado,
     ){
         const comunicado = await this.getById(id, comunicadoEntity);
-        if(comunicado.foto != '' && file){
-            await this.storageService.deleteFile(comunicado.foto);
-        }
 
-        if(file){
-            const hash  = Date.now().toString();
-            const nombreFoto = fileFilterName(file, hash);
-
-            if(!nombreFoto){
-                throw new BadRequestException('Archivo no valido');
-            }
-
-            let { Location } = await this.storageService.uploadFile(
-                file,
-                nombreFoto
-            )
-
-            dto.foto = Location;
-        }
         const comunicadoEditado = Object.assign(comunicado, dto);
         return await this.comunicadoRepository.save(comunicadoEditado);
     }
@@ -154,9 +115,6 @@ export class ComunicadosService {
 
     async deleteComunicado(id:number, comunicadoEntity?: Comunicado){
         const comunicado = await this.getById(id, comunicadoEntity);
-        if (comunicado.foto != '') {
-          await this.storageService.deleteFile(comunicado.foto);
-        }
         return await this.comunicadoRepository.remove(comunicado);        
     }
 
