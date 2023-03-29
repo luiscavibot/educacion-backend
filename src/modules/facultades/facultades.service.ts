@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateFacultadDto, EditFacultadDto } from './dtos';
 import { Facultad } from './entity';
@@ -80,5 +80,18 @@ export class FacultadesService {
       .where(data)
       .addSelect('facultad.nombre')
       .getOne();
+  }
+
+
+  async listFacultades(): Promise<{ nombre: string; slug: string }[]> {
+    const facultades = await this.facultadRepository.find({
+      where: [
+        { nombre: Not(IsNull()), slug: Not(IsNull()) },
+        { nombre: Not(''), slug: Not('') },
+        { slug: Not(IsNull()) }
+      ],
+    });
+    const facultadesValidas = facultades.filter(facultad => facultad.slug.trim() !== '');
+    return facultadesValidas.map(({ nombre, slug }) => ({ nombre, slug }));
   }
 }
