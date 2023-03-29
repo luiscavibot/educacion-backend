@@ -34,6 +34,8 @@ import { DirigidosModule } from './modules/dirigidos/dirigidos.module';
 import { AlertasInformativasModule } from './modules/alertas-informativas/alertas-informativas.module';
 import { ProgramasEspecialesModule } from './modules/informacion-academica/programas-especiales/programas-especiales.module';
 import { AlertaAdmisionPosgradoModule } from './modules/alerta-admision-posgrado/alerta-admision-posgrado.module';
+import { FilesModule } from './modules/files/files.module';
+import { FileRelatedMorphModule } from './modules/files-related-morphs/files-related-morphs.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -93,7 +95,9 @@ import * as Joi from '@hapi/joi';
     DirigidosModule,
     AlertasInformativasModule,
     ProgramasEspecialesModule,
-    AlertaAdmisionPosgradoModule
+    AlertaAdmisionPosgradoModule,
+    FilesModule,
+    FileRelatedMorphModule
   ],
   controllers: [AppController],
   providers: [AppService],
