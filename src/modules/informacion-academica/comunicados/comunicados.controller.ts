@@ -3,7 +3,6 @@ import { ApiTags } from '@nestjs/swagger';
 import { DefaultValuePipe, Query } from '@nestjs/common'; 
 import { ComunicadosService } from './comunicados.service';
 import { CreateComunicadosDto } from './dto/create-comunicados.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { EditComunicadosDto } from './dto/edit-comunicados.dto';
 import { Observable } from 'rxjs';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -48,14 +47,12 @@ export class ComunicadosController {
       }
 
     @Post()
-    @UseInterceptors(FileInterceptor('file'))
     async createComunicado(
         @Body() dto: CreateComunicadosDto,
-        @UploadedFile() file,
         @Res() response,
     ){
         try {
-            const data = await this.comunicadoService.createComunicado({...dto}, file);
+            const data = await this.comunicadoService.createComunicado({...dto});
             response.status(HttpStatus.CREATED).json({
                 status: HttpStatus.CREATED,
                 message: 'Creacion exitosa',
@@ -71,14 +68,12 @@ export class ComunicadosController {
     }
 
     @Put(':id')
-    @UseInterceptors(FileInterceptor('file'))
     async editComunicado(
         @Param('id') id: number,
         @Body() dto: EditComunicadosDto,
-        @UploadedFile() file,
     ){
         let data;
-        data = await this.comunicadoService.editComunicado(id, dto, file);
+        data = await this.comunicadoService.editComunicado(id, dto);
         return { message: 'Comunicado editado', data};
     }
 
