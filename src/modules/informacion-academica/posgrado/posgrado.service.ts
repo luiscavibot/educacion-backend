@@ -52,7 +52,9 @@ export class PosgradoService {
                 tipo: true,
                 tipoPrograma: true,
                 nombrePrograma: true,
-                anio: true
+                anio: true,
+                url:true,
+                updated_at:true
             }
             _where = [..._where ];
         }
