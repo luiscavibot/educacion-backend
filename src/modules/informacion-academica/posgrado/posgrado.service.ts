@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
+import { Repository, FindOptionsWhere, FindOptionsSelect, Like } from 'typeorm';
 import { Posgrado } from './entity';
 import { from, map, Observable } from 'rxjs';
 import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
@@ -30,9 +30,9 @@ export class PosgradoService {
         slug: string,
         // sort: string,
         estado: string,
-        // escuelas: string[], 
-        // recursos: string[],
-        // query: string
+        programas: string[], 
+        recursos: string[],
+        query: string
     ): Observable<Pagination<Posgrado>>{
         // let order_by = sort?.split(':')[0] || 'id';
         // let direction = sort?.split(':')[1] || 'DESC';
@@ -59,91 +59,82 @@ export class PosgradoService {
             _where = [..._where ];
         }
 
-        // if(query?.length>0){
-        //     _where = [{
-        //         user: { facultad: { slug } },
-        //         nombre: Like(`%${query}%`)
-        //       }]
-        // }
+        if(query?.length>0){
+            _where = [{
+                user: { facultad: { slug } },
+                nombre: Like(`%${query}%`)
+              }]
+        }
 
-        // if(escuelas?.length>0){
-        //     escuelas.map( (escuela) =>{
-        //         if(recursos?.length>0){
-        //             recursos.map( (recurso) =>{
-        //                 condition.push({escuela, recurso});
-        //             })
-        //         }else{
-        //             condition.push({escuela})
-        //         }
-        //     })
-        // }else{
-        //     if(recursos?.length>0){
-        //         recursos.map( (recurso) =>{
-        //             condition.push({recurso})  
-        //         })
-        //     }
-
-        // }
-
-
-        // if (condition?.length>0) {
-        //     for(let idx = 0; idx< condition.length; idx++){
-        //       if(idx == 0){
-        //         if(condition[idx].escuela && condition[idx].recurso){
-        //             _where = [
-        //                 {..._where[0],
-        //                  escuela: Like(`%${condition[idx].escuela}%`),
-        //                  tipo: Like(`%${condition[idx]?.recurso}%`)
-        //                 }
-        //             ]
-        //         }else{
-        //           if(condition[idx].escuela){
-        //             _where = [
-        //                 {..._where[0],
-        //                  escuela: Like(`%${condition[idx].escuela}%`),
-        //                 }
-        //             ]
-        //           }  
-        //           if(condition[idx].recurso){
-        //             _where = [
-        //                 {..._where[0],
-        //                  tipo: Like(`%${condition[idx]?.recurso}%`)
-        //                 }
-        //             ]
-        //           }  
-        //         }
-        //       }
-        //       if(idx>=1){
-        //         if(condition[idx].escuela && condition[idx].recurso){
-        //             _where = [
-        //                 ..._where,
-        //                 {..._where[0], 
-        //                  escuela: Like(`%${condition[idx]?.escuela}%`),
-        //                  tipo: Like(`%${condition[idx].recurso}%`)
-        //                 }
-        //               ]
-        //         }else{
-        //           if(condition[idx].escuela){
-        //             _where = [
-        //                 ..._where,
-        //                 {..._where[0], 
-        //                  escuela: Like(`%${condition[idx]?.escuela}%`),
-        //                 }
-        //               ]
-        //           }  
-        //           if(condition[idx].recurso){
-        //             _where = [
-        //                 ..._where,
-        //                 {..._where[0], 
-        //                  tipo: Like(`%${condition[idx].recurso}%`)
-        //                 }
-        //               ]
-        //           }  
-        //         }
-        //       }
+        if (programas?.length > 0) {
+            programas.map((programa) => {
+              if (recursos?.length > 0) {
+                recursos.map((recurso) => {
+                  condition.push({ programa, recurso });
+                });
+              } else {
+                condition.push({ programa });
+              }
+            });
+          } else {
+            if (recursos?.length > 0) {
+              recursos.map((recurso) => {
+                condition.push({ recurso });
+              });
+            }
+          }
       
-        //     }
-        // }
+          if (condition?.length > 0) {
+            for (let idx = 0; idx < condition.length; idx++) {
+              if (idx == 0) {
+                if (condition[idx].programa && condition[idx].recurso) {
+                  _where = [
+                    {
+                      ..._where[0],
+                      tipoPrograma: Like(`${condition[idx].programa}`),
+                      tipo: Like(`%${condition[idx]?.recurso}%`),
+                    },
+                  ];
+                } else {
+                  if (condition[idx].programa) {
+                    _where = [
+                      { ..._where[0], tipoPrograma: Like(`${condition[idx].programa}`) },
+                    ];
+                  }
+                  if (condition[idx].recurso) {
+                    _where = [
+                      { ..._where[0], tipo: Like(`%${condition[idx]?.recurso}%`) },
+                    ];
+                  }
+                }
+              }
+              if (idx >= 1) {
+                if (condition[idx].programa && condition[idx].recurso) {
+                  _where = [
+                    ..._where,
+                    {
+                      ..._where[0],
+                      tipoPrograma: Like(`${condition[idx]?.programa}`),
+                      tipo: Like(`%${condition[idx].recurso}%`),
+                    },
+                  ];
+                } else {
+                  if (condition[idx].programa) {
+                    _where = [
+                      ..._where,
+                      { ..._where[0], tipoPrograma: Like(`${condition[idx]?.programa}`) },
+                    ];
+                  }
+                  if (condition[idx].recurso) {
+                    _where = [
+                      ..._where,
+                      { ..._where[0], tipo: Like(`%${condition[idx].recurso}%`) },
+                    ];
+                  }
+                }
+              }
+            }
+          }
 
 
         return from(
