@@ -35,6 +35,9 @@ export class Evento extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   calendario: string;
 
+  @Column({ type: 'text', nullable: true })
+  horario: string;
+
   @Column({ type: 'text' })
   organizador: string;
 
