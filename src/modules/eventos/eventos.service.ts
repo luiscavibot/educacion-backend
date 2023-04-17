@@ -19,8 +19,6 @@ import { StorageService } from '../storage/storage.service';
 import { generateSlug } from '../../helpers/generateSlug';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { EventoTipo } from './consts/EventoTipo';
-import * as _momentTimezone from 'moment-timezone';
-const momentTimeZone = _momentTimezone;
 
 export interface EventoFindOne {
   id?: number;
