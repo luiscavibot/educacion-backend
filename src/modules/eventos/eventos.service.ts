@@ -19,6 +19,8 @@ import { StorageService } from '../storage/storage.service';
 import { generateSlug } from '../../helpers/generateSlug';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { EventoTipo } from './consts/EventoTipo';
+import * as _momentTimezone from 'moment-timezone';
+const momentTimeZone = _momentTimezone;
 
 export interface EventoFindOne {
   id?: number;
@@ -273,9 +275,8 @@ export class EventoService {
   async createEvento(dto: CreateEventoDto, file: any) {
     const hash = Date.now().toString();
     dto.slug = await generateSlug(dto.titulo, hash);
-    if(dto.fecha_final){
-      dto.fecha_final = new Date(`${dto.fecha_final} 23:59:00`);
-    }
+    dto.fecha_inicio = new Date(`${dto.fecha_inicio}T00:00:00.000Z`);
+    dto.fecha_final = new Date(`${dto.fecha_final}T23:59:00.000Z`);
     if (file) {
       const nombre_foto = fileFilterName(file, hash);
       dto.foto = nombre_foto;
