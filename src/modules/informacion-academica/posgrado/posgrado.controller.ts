@@ -61,9 +61,9 @@ export class PosgradoController {
         @Param('slug', new DefaultValuePipe('')) slug: string,
         // @Query('sort') sort: string,
         @Query('estado') estado: string,
-        // @Query('escuelas') escuelas: string[],
-        // @Query('recursos') recursos: string[],
-        // @Query('query') query: string,
+        @Query('programas') programas: string[],
+        @Query('recursos') recursos: string[],
+        @Query('query') query: string,
     ): Observable<Pagination<Posgrado>>{
         limit = limit > 100 ? 100 : limit;
         return this.posgradoService.paginacionPosgrado(
@@ -74,9 +74,9 @@ export class PosgradoController {
             slug,
             // sort,
             estado,
-            // escuelas,
-            // recursos,
-            // query
+            programas,
+            recursos,
+            query
         )
     }
 

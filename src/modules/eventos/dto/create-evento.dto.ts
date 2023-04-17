@@ -29,6 +29,10 @@ export class CreateEventoDto {
 
   @IsOptional()
   @IsString()
+  horario: string;
+
+  @IsOptional()
+  @IsString()
   tipo_evento: string;
 
   @IsOptional()
