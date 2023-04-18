@@ -153,6 +153,7 @@ export class EventoService {
     fechaInicio: string,
     fechaFin: string,
     vigentes: boolean,
+    noVigentes: boolean,
     estado?: boolean,
   ): Observable<Pagination<Evento>> {
     let order_by = sort?.split(':')[0] || 'id';
@@ -188,7 +189,6 @@ export class EventoService {
       ]
     }
     if (vigentes) {
-    console.log("vigentes true", vigentes);
       _where = [
         {
           user: { facultad: { slug } },
@@ -204,8 +204,8 @@ export class EventoService {
       ];
     } 
 
-    if (vigentes === false) {
-      console.log("vigentes false", vigentes);
+    if (noVigentes) {
+      console.log("vigentes false", vigentes, "entra?");
       _where = [
         {
           user: { facultad: { slug } },

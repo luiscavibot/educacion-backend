@@ -87,7 +87,8 @@ export class EventosController {
     @Query('estado', new DefaultValuePipe(false), ParseBoolPipe) estado: boolean = false,
     @Query('fechaInicio') inicio: string,
     @Query('fechaFin') fin: string,
-    @Query('vigentes') vigentes: boolean,
+    @Query('vigentes', new DefaultValuePipe(false), ParseBoolPipe) vigentes: boolean = false,
+    @Query('noVigentes', new DefaultValuePipe(false), ParseBoolPipe) noVigentes: boolean = false,
     @(Param('slug')!) slug: string,
   ): Observable<Pagination<Evento>> {
     limit = limit > 100 ? 100 : limit;
@@ -101,6 +102,7 @@ export class EventosController {
       inicio,
       fin,
       vigentes,
+      noVigentes,
       estado,
     );
   }
