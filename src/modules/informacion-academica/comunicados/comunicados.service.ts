@@ -54,17 +54,23 @@ export class ComunicadosService {
             resumen: true,
             cuerpoComunicado: true
           };
+          _where= [
+            {
+              user: { facultad: { slug } },
+              estado: true,
+            }
+          ]
         }
         if(busqueda){
           _where = [
-            {user: { facultad: { slug } }, nombre: Like(`%${busqueda}%`) },
-            {user: { facultad: { slug } }, resumen: Like(`%${busqueda}%`) }
+            {user: { facultad: { slug } },estado: true, nombre: Like(`%${busqueda}%`) },
+            {user: { facultad: { slug } },estado: true, resumen: Like(`%${busqueda}%`) }
           ]
         }
         if(fechaInicio && fechaFin){
           _where = [
-            {user: { facultad: { slug } }, nombre: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) },
-            {user: { facultad: { slug } }, resumen: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) }
+            {user: { facultad: { slug } },estado: true, nombre: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) },
+            {user: { facultad: { slug } },estado: true, resumen: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) }
           ]
         }
 
