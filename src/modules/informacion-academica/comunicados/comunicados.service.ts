@@ -99,21 +99,51 @@ export class ComunicadosService {
         );
       }
 
-    async createComunicado(dto: CreateComunicadosDto){
-        const nuevoComunicado = this.comunicadoRepository.create(dto);
-        const comunicado = await this.comunicadoRepository.save(nuevoComunicado);
+    async createComunicado(dto: CreateComunicadosDto, file?: any){
+      const hash = Date.now().toString();
+      if (file) {
+        const nombre_foto = fileFilterName(file, hash);
+        dto.foto = nombre_foto;
+        if (!nombre_foto) {
+          throw new BadRequestException('Archivo no válido');
+        }
+        let { Location } = await this.storageService.uploadFile(
+          file,
+          nombre_foto,
+        );
+        dto.foto = Location;
+      }
+      const nuevoComunicado = this.comunicadoRepository.create(dto);
+      const comunicado = await this.comunicadoRepository.save(nuevoComunicado);
 
-        return { comunicado };
+      return { comunicado };
     }
 
 
     async editComunicado(
         id: number,
         dto: EditComunicadosDto,
+        file: any,
         comunicadoEntity?: Comunicado,
     ){
         const comunicado = await this.getById(id, comunicadoEntity);
+        if (comunicado.foto?.length >=1 && file) {
+          await this.storageService.deleteFile(comunicado.foto);
+        }
 
+        if (file) {
+          const hash = Date.now().toString();
+          const nombre_foto = fileFilterName(file, hash);
+    
+          if (!nombre_foto) {
+            throw new BadRequestException('Archivo no válido');
+          }
+          let { Location } = await this.storageService.uploadFile(
+            file,
+            nombre_foto,
+          );
+          dto.foto = Location;
+        }
         const comunicadoEditado = Object.assign(comunicado, dto);
         return await this.comunicadoRepository.save(comunicadoEditado);
     }
@@ -121,6 +151,9 @@ export class ComunicadosService {
 
     async deleteComunicado(id:number, comunicadoEntity?: Comunicado){
         const comunicado = await this.getById(id, comunicadoEntity);
+        if (comunicado.foto?.length >=1) {
+          await this.storageService.deleteFile(comunicado.foto);
+        }
         return await this.comunicadoRepository.remove(comunicado);        
     }
 

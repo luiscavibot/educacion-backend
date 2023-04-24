@@ -13,6 +13,12 @@ export class Comunicado {
     @Column({ type: 'text', nullable:true })
     slug: string;
 
+    @Column({ type: 'text', nullable:true })
+    foto: string;
+
+    @Column({ type: 'text', nullable:true })
+    pie_foto: string;
+
     @Column({ type: 'boolean', default:false})
     estado: boolean;
 
