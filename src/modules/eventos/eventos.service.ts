@@ -178,6 +178,7 @@ export class EventoService {
         fecha_inicio: true,
         fecha_final: true,
         lugar: true,
+        organizador: true,
         tipo_evento: true,
         slug: true,
       };
@@ -205,7 +206,6 @@ export class EventoService {
     } 
 
     if (noVigentes) {
-      console.log("vigentes false", vigentes, "entra?");
       _where = [
         {
           user: { facultad: { slug } },
