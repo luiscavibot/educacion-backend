@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere, FindOptionsSelect, Between, Like } from 'typeorm';
+import { Repository, FindOptionsWhere, FindOptionsSelect, Between, Like, In, Raw } from 'typeorm';
 import { Comunicado } from './entity';
 import { CreateComunicadosDto } from './dto/create-comunicados.dto';
 import { fileFilterName } from '../../../helpers/fileFilerName.helpers';
@@ -32,6 +32,7 @@ export class ComunicadosService {
         options: IPaginationOptions,
         slug: string,
         sort: string,
+        tipos: string[],
         estado: string,
         busqueda: string,
         fechaInicio?: Date,
@@ -52,25 +53,25 @@ export class ComunicadosService {
             ..._select,
             fecha: true,
             resumen: true,
-            cuerpoComunicado: true
+            cuerpoComunicado: true,
+            dirigido:true,
+            fijar:true
           };
           _where= [
             {
-              user: { facultad: { slug } },
+              user: {
+                facultad: { slug },
+              },
               estado: true,
+              ...(tipos?.length > 0 && {
+                dirigido: Raw(alias => tipos.map(tipo => `FIND_IN_SET('${tipo}', ${alias}) > 0`).join(' OR '))
+              }),              
+              ...(fechaInicio && fechaFin && { fecha: Between(fechaInicio, fechaFin) }),
+              ...(busqueda && {
+                nombre: Like(`%${busqueda}%`),
+                resumen: Like(`%${busqueda}%`),
+              }),
             }
-          ]
-        }
-        if(busqueda){
-          _where = [
-            {user: { facultad: { slug } },estado: true, nombre: Like(`%${busqueda}%`) },
-            {user: { facultad: { slug } },estado: true, resumen: Like(`%${busqueda}%`) }
-          ]
-        }
-        if(fechaInicio && fechaFin){
-          _where = [
-            {user: { facultad: { slug } },estado: true, nombre: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) },
-            {user: { facultad: { slug } },estado: true, resumen: Like(`%${busqueda}%`), fecha: Between(fechaInicio, fechaFin) }
           ]
         }
 

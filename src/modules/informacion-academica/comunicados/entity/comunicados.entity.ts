@@ -10,6 +10,9 @@ export class Comunicado {
     @Column({ type: 'text'})
     nombre: string;
 
+    @Column({ type: 'text'})
+    dirigido: string[];
+
     @Column({ type: 'text', nullable:true })
     slug: string;
 
