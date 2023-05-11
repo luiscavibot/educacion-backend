@@ -37,6 +37,9 @@ export class Tramite extends BaseEntity {
   @Column({ type: 'text' })
   correo: string;
 
+  @Column({ type: 'boolean'})
+  fijar: boolean;
+  
   @Column({ type: 'varchar', length: 5 })
   anexo: string;
 

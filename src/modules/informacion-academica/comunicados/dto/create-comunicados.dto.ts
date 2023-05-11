@@ -11,6 +11,9 @@ export class CreateComunicadosDto {
     resumen: string;
 
     @IsOptional()
+    dirigido: string[];
+
+    @IsOptional()
     @IsBoolean()
     fijar: boolean;
 

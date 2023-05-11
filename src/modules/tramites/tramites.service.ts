@@ -54,7 +54,6 @@ export class TramitesService {
       titulo: true,
       estado: true,
     };
-    // if (estado && estado == 'true') {
     if (estado) {
       _select = {
         ..._select,
@@ -64,6 +63,7 @@ export class TramitesService {
         proceso: true,
         anexo: true,
         correo: true,
+        fijar:true,
         requisitos: true,
         updated_at: true,
       };
@@ -91,34 +91,11 @@ export class TramitesService {
       _where = [...firstGroupWhere, ...secondGroupWhere];
     }
 
-    // if (tipos && tipos.length>0) {
-    //   for(let idx = 0; idx< tipos.length; idx++){
-    //     if(idx == 0){
-    //       _where = [
-    //         {user: { facultad: { slug } }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
-    //       ]
-    //     }
-    //     if(idx>=1){
-    //       _where = [
-    //         ..._where,
-    //         {user: { facultad: { slug } }, estado: true, dirigido: Like(`%${tipos[idx]}%`)}
-    //       ]
-    //     }
-
-    //   }
-    // }
-
-    // if (query.length>=1) {
-    //   _where = [
-    //     {  user: { facultad: { slug } }, estado: true, titulo: Like(`%${query}%`) },
-    //     {  user: { facultad: { slug } }, estado: true, descripcion: Like(`%${query}%`) },
-    //   ]
-    // }
     return from(
       this.tramiteRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
-        order: { id: 'ASC' },
+        order: { [order_by]: direction },
         select: _select,
         where: _where,
       }),
