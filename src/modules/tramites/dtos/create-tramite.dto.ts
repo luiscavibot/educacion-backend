@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CreateTramiteDto {
   @IsOptional()
@@ -33,6 +33,10 @@ export class CreateTramiteDto {
 
   @IsOptional()
   estado: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  fijar: boolean;
 
   @IsOptional()
   usuario_id: number;
