@@ -181,6 +181,7 @@ export class EventoService {
         organizador: true,
         tipo_evento: true,
         slug: true,
+        horario:true
       };
       _where = [
         {
