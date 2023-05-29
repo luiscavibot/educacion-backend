@@ -46,7 +46,56 @@ export class StorageService {
     }
   }
 
+  //Nuevo metodo
+  async upload(file: any) {
+    const mime = file.mimetype;
+    // const originalname = file.originalname;
+    const originalname = `${file.originalname}-${Date.now()}`;
+
+    const params = {
+      Bucket: this.AWS_S3_BUCKET,
+      Key: originalname,
+      Body: file.buffer,
+      ACL: 'public-read',
+      ContentType: mime,
+      ContentDisposition: 'inline',
+      CreateBucketConfiguration: {
+        LocationConstraint: 'us-east-1',
+      },
+    };
+
+    const { Location } = await this.s3.upload(params).promise();
+
+
+    return Location ;
+  }
+
+  //Nuevo metodo
+  async uploadMultipleFiles(files: any[]){
+    const uploadPromises = files.map( async file =>{
+      return await this.upload(file);
+    });
+
+    const locations =  await Promise.all(uploadPromises);
+
+    return locations;
+  
+  }
+
+  
+  //Nuevo metodo
   async deleteFile(key: string) {
+    const _key = key.split('/');
+
+    return await this.s3
+      .deleteObject({
+        Bucket: this.AWS_S3_BUCKET,
+        Key: _key[_key.length - 1],
+      })
+      .promise();
+  }
+
+  async deleteStorage(key: string) {
     const _key = key.split('/');
 
     return await this.s3

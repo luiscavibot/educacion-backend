@@ -58,6 +58,12 @@ export class FacultadesController {
     return data ;
   }
 
+  @Get('lista/facultades')
+  async getListaFacultad() {
+    const data = await this.facultadService.listFacultades();
+    return data ;
+  }
+  
   @Post()
   @ApiOperation({
     description: 'Crea una nueva facultad',

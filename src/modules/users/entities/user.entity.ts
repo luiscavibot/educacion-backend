@@ -23,9 +23,10 @@ import { Comunicado } from '../../informacion-academica/comunicados/entity';
 import { Pregrado } from '../../informacion-academica/pregrado/entity/';
 import { Posgrado } from '../../informacion-academica/posgrado/entity/';
 import { Directorio } from '../../directorios/entity/directorio.entity';
-import { AlertaInformativa } from 'src/modules/alertas-informativas/entity';
+import { AlertaInformativa } from '../../alertas-informativas/entity';
 import { ProgramaEspecial } from '../../informacion-academica/programas-especiales/entity/programa-especial.entity';
-import { AlertaAdmisionPosgrado } from 'src/modules/alerta-admision-posgrado/entity/alerta-admision-posgrado.entity';
+import { AlertaAdmisionPosgrado } from '../../alerta-admision-posgrado/entity/alerta-admision-posgrado.entity';
+import { File } from '../../files/entity';
 
 @Entity('users')
 export class User {
@@ -54,6 +55,9 @@ export class User {
 
   @OneToMany(() => Noticia, (noticia) => noticia.user)
   noticias: Noticia[];
+
+  @OneToMany(() => File, (file) => file.user)
+  files: File[];
 
   @OneToMany(() => AlertaInformativa, (alertas_informativas) => alertas_informativas.user)
   alertas_informativas: AlertaInformativa[];
