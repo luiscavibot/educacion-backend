@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import sizeOf from 'image-size';
-import { FindOptionsWhere, Repository, FindOptionsSelect } from 'typeorm';
+import { FindOptionsWhere, Repository, FindOptionsSelect, Like } from 'typeorm';
 import { File } from './entity';
 import { StorageService } from '../storage/storage.service';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
@@ -48,9 +48,6 @@ export class FilesService {
             usuario_id
         }
 
-        console.log(fileDto);
-
-
         const nuevoFile = this.fileRepository.create(fileDto);
         const _file = await this.fileRepository.save(nuevoFile);
 
@@ -92,6 +89,7 @@ export class FilesService {
         s3url : true,
         width: true,
         height:true,
+        created_at:true,
         user: {
           facultad:{
             slug:true
@@ -108,7 +106,7 @@ export class FilesService {
       if(busqueda){
         _where = {
           ..._where,
-          nombre:busqueda
+          nombre: Like(`%${busqueda}%`)
         }
       }
 
@@ -119,7 +117,6 @@ export class FilesService {
           take: Number(options.limit) || 3,
           order: { [order_by]: direction},
           select: _select,
-          // relations
         }),
       ).pipe(
          map(([files, totalFiles]) => {
