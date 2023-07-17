@@ -36,6 +36,7 @@ import { ProgramasEspecialesModule } from './modules/informacion-academica/progr
 import { AlertaAdmisionPosgradoModule } from './modules/alerta-admision-posgrado/alerta-admision-posgrado.module';
 import { FilesModule } from './modules/files/files.module';
 import { FileRelatedMorphModule } from './modules/files-related-morphs/files-related-morphs.module';
+import { AdjuntosModule } from './modules/adjuntos/adjuntos.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -97,7 +98,8 @@ import * as Joi from '@hapi/joi';
     ProgramasEspecialesModule,
     AlertaAdmisionPosgradoModule,
     FilesModule,
-    FileRelatedMorphModule
+    FileRelatedMorphModule,
+    AdjuntosModule
   ],
   controllers: [AppController],
   providers: [AppService],
