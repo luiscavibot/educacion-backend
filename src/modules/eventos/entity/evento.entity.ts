@@ -1,3 +1,4 @@
+import { Adjunto } from 'src/modules/adjuntos/entity';
 import { User } from '../../users/entities/user.entity';
 import {
   BaseEntity,
@@ -6,6 +7,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -28,9 +30,6 @@ export class Evento extends BaseEntity {
 
   @Column({ type: 'text' })
   foto: string;
-
-  @Column({ type: 'text', nullable: true})
-  adjuntos: string;
 
   @Column({ type: 'text', nullable: true })
   calendario: string;
@@ -71,6 +70,9 @@ export class Evento extends BaseEntity {
   
   @Column({ type: 'boolean', default: false })
   destacado: boolean;
+
+  @OneToMany(() => Adjunto, (adjunto) => adjunto.evento)
+  adjuntos: Adjunto[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;

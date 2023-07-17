@@ -19,6 +19,8 @@ import { StorageService } from '../storage/storage.service';
 import { generateSlug } from '../../helpers/generateSlug';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { EventoTipo } from './consts/EventoTipo';
+import { CreateAdjuntoDto } from '../adjuntos/dtos';
+import { AdjuntosService } from '../adjuntos/adjuntos.service';
 
 export interface EventoFindOne {
   id?: number;
@@ -31,6 +33,7 @@ export class EventoService {
     @InjectRepository(Evento)
     private readonly eventoRepository: Repository<Evento>,
     private readonly storageService: StorageService,
+    private readonly adjuntoService: AdjuntosService,
   ) {}
 
 
@@ -221,6 +224,7 @@ export class EventoService {
         skip: Number(options.page) * Number(options.limit) || 0,
         take: Number(options.limit) || 3,
         order: { [order_by]: direction },
+        relations: ['adjuntos'],
         select: _select,
         where: _where,
       }),
@@ -246,7 +250,7 @@ export class EventoService {
 
   async getById(id: number, eventoEntity?: Evento) {
     const evento = await this.eventoRepository
-      .findOne({ where: { id } })
+      .findOne({ where: { id }, relations: ['adjuntos'] })
       .then((d) =>
         !eventoEntity ? d : !!d && eventoEntity.id === d.id ? d : null,
       );
@@ -271,8 +275,9 @@ export class EventoService {
     }));
   }
 
-  async createEvento(dto: CreateEventoDto, file: any) {
+  async createEvento(dto: CreateEventoDto, file: any, adjuntos: CreateAdjuntoDto[]) {
     const hash = Date.now().toString();
+    let nuevosAdjuntos = {};
     dto.slug = await generateSlug(dto.titulo, hash);
     dto.fecha_inicio = new Date(`${dto.fecha_inicio}T00:00:00.000Z`);
     dto.fecha_final = new Date(`${dto.fecha_final}T23:59:00.000Z`);
@@ -290,8 +295,15 @@ export class EventoService {
     }
     const nuevoEvento = this.eventoRepository.create(dto);
     const evento = await this.eventoRepository.save(nuevoEvento);
-
-    return { evento };
+    if (adjuntos && adjuntos.length > 0) {
+      nuevosAdjuntos = await Promise.all(adjuntos.map(async adjuntoDto => {
+        const nuevoAdjunto = await this.adjuntoService.createAdjunto(
+          {...adjuntoDto, evento_id: evento.id},
+        );
+        return nuevoAdjunto;
+      }));
+    }
+    return { evento, nuevosAdjuntos };
   }
 
   async editEvento(
@@ -318,15 +330,25 @@ export class EventoService {
       );
       dto.foto = Location;
     }
-
+  
     const eventoEditado = Object.assign(evento, dto);
-    return await this.eventoRepository.save(eventoEditado);
+  
+    const eventoActualizado = await this.eventoRepository.save(eventoEditado);    
+  
+    return { evento: eventoActualizado};
   }
+  
 
   async deleteEvento(id: number, eventoEntity?: Evento) {
     const evento = await this.getById(id, eventoEntity);
     if (evento.foto != '') {
       await this.storageService.deleteFile(evento.foto);
+    }
+
+    if(evento.adjuntos.length>0){
+      for (const adjunto of evento.adjuntos) {
+        await this.adjuntoService.deleteAdjunto(adjunto.id);
+      }
     }
     return await this.eventoRepository.remove(evento);
   }

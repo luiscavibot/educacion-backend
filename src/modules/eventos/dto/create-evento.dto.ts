@@ -1,3 +1,4 @@
+import { Adjunto } from '../../adjuntos/entity/adjunto.entity';
 import {
   IsArray,
   IsDate,
@@ -42,10 +43,6 @@ export class CreateEventoDto {
   @IsOptional()
   @IsString()
   foto: string;
-
-  @IsOptional()
-  @IsString()
-  adjuntos: string;
 
   @IsOptional()
   @IsString()
