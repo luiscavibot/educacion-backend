@@ -28,6 +28,7 @@ import { Evento } from './entity/evento.entity';
 import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ParseBoolPipe } from '@nestjs/common/pipes';
+import { CreateAdjuntoDto } from '../adjuntos/dtos';
 
 @Controller('eventos')
 @ApiTags('Eventos')
@@ -199,11 +200,11 @@ export class EventosController {
     },
   })
   @UseInterceptors(FileInterceptor('file'))
-  async createEvento(@Body() dto: CreateEventoDto, @UploadedFile() file) {
+  async createEvento(@Body() dto: CreateEventoDto, @UploadedFile() file, @Body('adjuntos') adjuntos: CreateAdjuntoDto[]) {
     if (file) {
       dto.foto = file.originalname;
     }
-    const data = await this.eventoService.createEvento({ ...dto }, file);
+    const data = await this.eventoService.createEvento({ ...dto }, file, adjuntos);
     return { message: 'Evento creado', data };
   }
 
@@ -251,6 +252,7 @@ export class EventosController {
     return { message: 'Evento editado', data };
   }
 
+  
   @Delete(':id')
   @ApiOperation({
     description: 'Borra un evento dado un id',

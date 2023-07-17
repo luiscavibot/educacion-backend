@@ -17,6 +17,8 @@ import { from, map, Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { fileFilterName } from '../../helpers/fileFilerName.helpers';
 import { generateSlug } from '../../helpers/generateSlug';
+import { CreateAdjuntoDto } from '../adjuntos/dtos';
+import { AdjuntosService } from '../adjuntos/adjuntos.service';
 
 export interface NoticiaFindOne {
   id?: number;
@@ -29,6 +31,7 @@ export class NoticiasService {
     @InjectRepository(Noticia)
     private readonly noticiaRepository: Repository<Noticia>,
     private readonly storageService: StorageService,
+    private readonly adjuntoService: AdjuntosService
   ) {}
 
   ultimasNoticiasHome(slug: string): Observable<Noticia[]> {
@@ -142,7 +145,7 @@ export class NoticiasService {
 
   async getById(id: number, noticiaEntity?: Noticia) {
     const noticia = await this.noticiaRepository
-      .findOne({ where: { id } })
+      .findOne({ where: { id }, relations: ['adjuntos'] })
       .then((d) =>
         !noticiaEntity ? d : !!d && noticiaEntity.id === d.id ? d : null,
       );
@@ -151,9 +154,9 @@ export class NoticiasService {
     return noticia;
   }
 
-  async createNoticia(dto: CreateNoticiaDto, file: any) {
+  async createNoticia(dto: CreateNoticiaDto, file: any, adjuntos: CreateAdjuntoDto[]) {
     const hash = Date.now().toString();
-
+    let nuevosAdjuntos = {};
     dto.slug = await generateSlug(dto.titulo, hash);
 
     if (file) {
@@ -169,8 +172,15 @@ export class NoticiasService {
     }
     const nuevaNoticia = this.noticiaRepository.create(dto);
     const noticia = await this.noticiaRepository.save(nuevaNoticia);
-
-    return { noticia };
+    if (adjuntos && adjuntos.length > 0) {
+      nuevosAdjuntos = await Promise.all(adjuntos.map(async adjuntoDto => {
+        const {adjunto, ...campos } = await this.adjuntoService.createAdjunto(
+          {...adjuntoDto, noticia_id: noticia.id},
+        );
+        return campos;
+      }));
+    }
+    return { noticia, nuevosAdjuntos };
   }
 
   async editNoticia(
@@ -206,6 +216,12 @@ export class NoticiasService {
     const noticia = await this.getById(id, noticiaEntity);
     if (noticia.foto != '') {
       await this.storageService.deleteFile(noticia.foto);
+    }
+
+    if(noticia.adjuntos.length>0){
+      for (const adjunto of noticia.adjuntos) {
+        await this.adjuntoService.deleteAdjunto(adjunto.id);
+      }
     }
     return await this.noticiaRepository.remove(noticia);
   }

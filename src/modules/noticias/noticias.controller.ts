@@ -28,6 +28,7 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Noticia } from './entity/noticia.entity';
 import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateAdjuntoDto } from '../adjuntos/dtos';
 
 @Controller('noticias')
 @ApiTags('Noticias')
@@ -145,10 +146,11 @@ export class NoticiasController {
   async createNoticia(
     @Body() dto: CreateNoticiaDto,
     @UploadedFile() file,
+    @Body('adjuntos') adjuntos: CreateAdjuntoDto[],
     @Res() response,
   ) {
     try {
-      const data = await this.noticiaService.createNoticia({ ...dto }, file);
+      const data = await this.noticiaService.createNoticia({...dto},file, adjuntos );
       response.status(HttpStatus.CREATED).json({
         status: HttpStatus.CREATED,
         message: 'Creación exitosa',

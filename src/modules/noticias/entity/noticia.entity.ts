@@ -1,3 +1,4 @@
+import { Adjunto } from 'src/modules/adjuntos/entity';
 import { Facultad } from '../../facultades/entity/facultad.entity';
 import { User } from '../../users/entities/user.entity';
 import {
@@ -7,6 +8,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -45,6 +47,9 @@ export class Noticia extends BaseEntity {
 
   @Column({ type: 'text' })
   resumen: string;
+
+  @OneToMany(() => Adjunto, (adjunto) => adjunto.noticia)
+  adjuntos: Adjunto[];
 
   @ManyToOne(() => User, (user) => user.noticias)
   @JoinColumn({ name: 'usuario_id' })
