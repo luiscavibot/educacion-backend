@@ -16,7 +16,7 @@ export class AlertaInformativa extends BaseEntity {
     id: number;
 
     @Column({ type: 'varchar', nullable: false, length: 50 })
-    titulo!: string;
+    nombre!: string;
 
     @Column({ type: 'varchar', nullable: false, length: 80 })
     descripcion!: string;

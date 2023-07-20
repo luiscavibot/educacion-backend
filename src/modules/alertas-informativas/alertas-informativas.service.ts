@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { from, map, Observable } from 'rxjs';
-import { FindOptionsSelect, FindOptionsWhere, Not, Repository } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Like, Not, Repository } from 'typeorm';
 import { CreateAlertaInformativaDto, EditAlertaInformativaDto } from './dtos';
 import { AlertaInformativa } from './entity';
 
@@ -71,6 +71,7 @@ export class AlertasInformativasService {
     getPaginacionAlertasInformativas(
         options: IPaginationOptions,
         slug: string,
+        search:string,
         sort?: string
     ): Observable<Pagination<AlertaInformativa>> {
         let order_by = sort?.split(':')[0] || 'id';
@@ -80,9 +81,15 @@ export class AlertasInformativasService {
         };
         let _select: FindOptionsSelect<AlertaInformativa> = {
             id: true,
-            titulo: true,
+            nombre: true,
             publicado: true
         };
+        if(search?.length>0){
+            _where = {
+                ..._where,
+                nombre: Like(`%${search}%`)
+            }
+        }
         return from(
             this.alertaInformativaRepository.findAndCount({
                 skip: Number(options.page) * Number(options.limit) || 0,
