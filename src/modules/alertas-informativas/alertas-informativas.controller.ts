@@ -20,8 +20,8 @@ export class AlertasInformativasController {
     description: 'Alerta informativa creada correctamente',
   })
   @ApiResponse({
-    status: 409,
-    description: `La alerta informativa existe`,
+    status: 403,
+    description: `Existe alerta informativa con el mismo nombre`,
   })
   @ApiBody({
     description: 'Crea una nueva alerta informativa usando una AlertaInformativaDto',
@@ -29,24 +29,18 @@ export class AlertasInformativasController {
     examples: {
       ejemplo1: {
         value: {
-          titulo: "Nueva alerta",
-          descripcion: "Descripcion",
-          usuario_id: 0
+          nombre: "Admision pregrado 2023-I",
+          descripcion: "Descripcion de admision",
+          url: "https:nombrefacultad",
+          usuario_id: 1
         },
       },
       ejemplo2: {
         value: {
-          titulo: "Nueva alerta",
-          url: "url",
-          usuario_id: 0
-        },
-      },
-      ejemplo3: {
-        value: {
-          titulo: "Nueva alerta",
-          descripcion: "descripcion",
-          url: "url",
-          usuario_id: 0
+          nombre: "Nueva alerta",
+          descripcion: "Descripcion de la alerta",
+          url: "https:nombrefacultad",
+          usuario_id: 2
         },
       },
     },
@@ -126,12 +120,14 @@ export class AlertasInformativasController {
     examples: {
       ejemplo1: {
         value: {
-          titulo: 'Ejemplo 1',
+          nombre: "Admision pregrado 2023-II",
+          descripcion: "Descripcion de admision",
+          url: "https:nombrefacultad",
         },
       },
       ejemplo2: {
         value: {
-          titulo: 'Ejemplo 2',
+          publicado: true
         },
       },
     },
@@ -180,7 +176,8 @@ export class AlertasInformativasController {
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug', new DefaultValuePipe('')) slug: string,
-    @Query('sort', new DefaultValuePipe('')) sort: string
+    @Query('sort', new DefaultValuePipe('')) sort: string,
+    @Query('search', new DefaultValuePipe('')) search: string
   ): Observable<Pagination<AlertaInformativa>> {
     limit = limit > 100 ? 100 : limit;
     const options = {
@@ -188,7 +185,11 @@ export class AlertasInformativasController {
       page,
     };
     const sortParam = sort ? sort : undefined;
-    return this.alertaInformativaService.getPaginacionAlertasInformativas(options, slug, sortParam);
+    return this.alertaInformativaService.getPaginacionAlertasInformativas(
+      options,
+      slug,
+      search,
+      sortParam);
   }
 
 }
