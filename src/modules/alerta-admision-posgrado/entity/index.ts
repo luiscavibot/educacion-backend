@@ -1,1 +1,0 @@
-export * from './alerta-admision-posgrado.entity';

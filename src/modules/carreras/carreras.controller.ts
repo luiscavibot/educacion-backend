@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -41,6 +42,9 @@ export class CarrerasController {
     return this.carreraService.carrerasPorFacultad(slug, nombre);
   }
 
+  @ApiOperation({
+    description: 'Devuelve todas las carreras/escuelas por facultad',
+  })
   @Get('pregrado/:slug')
   escuelasxFacultad(
     @Param('slug') slug: string,
@@ -69,6 +73,7 @@ export class CarrerasController {
   }
 
   @Post()
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({
     description: 'Crea una nueva carrera',
   })
@@ -83,18 +88,6 @@ export class CarrerasController {
   @ApiBody({
     description: 'Crea una nueva carrera usando una CarreraDto',
     type: CreateCarreraDto,
-    examples: {
-      ejemplo1: {
-        value: {
-          nombre: 'Facultad demo 1',
-        },
-      },
-      ejemplo2: {
-        value: {
-          nombre: 'Facultad demo 2',
-        },
-      },
-    },
   })
   @UseInterceptors(FileInterceptor('file'))
   async createCarrera(@Body() dto: CreateCarreraDto, @UploadedFile() file) {

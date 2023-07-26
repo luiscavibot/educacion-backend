@@ -25,7 +25,7 @@ import { Posgrado } from '../../informacion-academica/posgrado/entity/';
 import { Directorio } from '../../directorios/entity/directorio.entity';
 import { AlertaInformativa } from '../../alertas-informativas/entity';
 import { ProgramaEspecial } from '../../informacion-academica/programas-especiales/entity/programa-especial.entity';
-import { AlertaAdmisionPosgrado } from '../../alerta-admision-posgrado/entity/alerta-admision-posgrado.entity';
+import { AlertaAdmision } from '../../alerta-admision/entity/alerta-admision.entity';
 import { File } from '../../files/entity';
 
 @Entity('users')
@@ -62,8 +62,8 @@ export class User {
   @OneToMany(() => AlertaInformativa, (alertas_informativas) => alertas_informativas.user)
   alertas_informativas: AlertaInformativa[];
 
-  @OneToMany(() => AlertaAdmisionPosgrado, (alertas_admision_posgrado) => alertas_admision_posgrado.user)
-  alertas_admision_posgrado: AlertaAdmisionPosgrado[];
+  @OneToMany(() => AlertaAdmision, (alertas_admision) => alertas_admision.user)
+  alertas_admision: AlertaAdmision[];
 
   @OneToMany(() => ProgramaEspecial, (programa_especial) => programa_especial.user)
   programa_especial: ProgramaEspecial[];

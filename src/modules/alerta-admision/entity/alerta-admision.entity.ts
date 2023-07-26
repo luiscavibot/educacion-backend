@@ -1,4 +1,4 @@
-import { User } from "src/modules/users/entities";
+import { User } from "../../users/entities";
 import { 
     BaseEntity,
     Column,
@@ -10,8 +10,8 @@ import {
     UpdateDateColumn
 } from "typeorm";
 
-@Entity('alertas_admision_posgrado')
-export class AlertaAdmisionPosgrado extends BaseEntity {
+@Entity('alertas_admision')
+export class AlertaAdmision extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -23,6 +23,9 @@ export class AlertaAdmisionPosgrado extends BaseEntity {
 
     @Column({ type: 'varchar', nullable: true, length: 250 })
     descripcion: string;
+
+    @Column({ type: 'varchar', nullable: true, length: 250 })
+    nivelDeEstudio: string;
 
     @Column({ type: 'timestamp', nullable: true })
     fecha_inicio: Date;
@@ -45,7 +48,7 @@ export class AlertaAdmisionPosgrado extends BaseEntity {
     @Column({ type: 'int', nullable: false })
     usuario_id: number;
 
-    @ManyToOne(() => User, (user) => user.alertas_admision_posgrado)
+    @ManyToOne(() => User, (user) => user.alertas_admision)
     @JoinColumn({ name: 'usuario_id' })
     user: User;
 }

@@ -53,12 +53,18 @@ export class FacultadesController {
   }
 
   @Get('dirigidos-facultad/:id')
+  @ApiOperation({
+    description: 'Devuelve dirigidos de una facultad',
+  })
   async getDirigidosPorFacultad(@Param('id', ParseIntPipe) id: number) {
     const data = await this.facultadService.getDirigidosPorFacultad(id);
     return data ;
   }
 
   @Get('lista/facultades')
+  @ApiOperation({
+    description: 'Devuelve la lista de todas las facultades',
+  })
   async getListaFacultad() {
     const data = await this.facultadService.listFacultades();
     return data ;

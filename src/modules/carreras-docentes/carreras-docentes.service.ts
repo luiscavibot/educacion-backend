@@ -31,12 +31,6 @@ export class CarrerasDocentesService {
   }
 
   async createCarreraDocente(dto: CreateCarreraDocenteDto) {
-    // const carreraExiste = await this.carreraDocenteRepository.findOne({
-    //   where: { nombre: dto.nombre },
-    // });
-    // if (carreraExiste)
-    //   throw new BadRequestException('Carrera ya registrada con ese nombre');
-
     const nuevaCarreraDocente = this.carreraDocenteRepository.create(dto);
     const carrera_docente = await this.carreraDocenteRepository.save(
       nuevaCarreraDocente,

@@ -1,26 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThanOrEqual, MoreThanOrEqual, Repository, FindOptionsWhere } from 'typeorm';
-import { CreateAlertaAdmisionPosgradoDto, EditAlertaAdmisionPosgradoDto } from './dtos';
-import { AlertaAdmisionPosgrado } from './entity';
+import { CreateAlertaAdmisionDto, EditAlertaAdmisionDto } from './dtos';
+import { AlertaAdmision } from './entity';
 
 @Injectable()
-export class AlertaAdmisionPosgradoService {
+export class AlertaAdmisionService {
     constructor(
-        @InjectRepository(AlertaAdmisionPosgrado)
-        private readonly alertaAdmisionPosgradoRepository: Repository<AlertaAdmisionPosgrado>
+        @InjectRepository(AlertaAdmision)
+        private readonly alertaAdmisionRepository: Repository<AlertaAdmision>
     ) { }
 
-    async createAlertaAdmisionPosgrado(dto: CreateAlertaAdmisionPosgradoDto) {
+    async createAlertaAdmision(dto: CreateAlertaAdmisionDto) {
         this.setDates(dto);           
-        const nuevaAlertaAdmisionPosgrado = this.alertaAdmisionPosgradoRepository.create(dto);
-        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.save(nuevaAlertaAdmisionPosgrado);
+        const nuevaAlertaAdmision = this.alertaAdmisionRepository.create(dto);
+        const alertaAdmision = await this.alertaAdmisionRepository.save(nuevaAlertaAdmision);
 
-        return { alertaAdmisionPosgrado };
+        return { alertaAdmision };
     }
 
     async getAlertaInformativaById(id: number) {
-        const alertaInformativa = await this.alertaAdmisionPosgradoRepository
+        const alertaInformativa = await this.alertaAdmisionRepository
             .findOne({ where: { id } });
 
         if (!alertaInformativa)
@@ -29,10 +29,10 @@ export class AlertaAdmisionPosgradoService {
     }
 
 
-    async getAlertaAdmisionPosgrado(slug: string, isPublic: boolean): Promise<AlertaAdmisionPosgrado> {
+    async getAlertaAdmision(slug: string, isPublic: boolean): Promise<AlertaAdmision> {
         const currentDate = new Date();
         currentDate.setHours(currentDate.getHours() - 5);
-        let _where: FindOptionsWhere<AlertaAdmisionPosgrado>[] = [
+        let _where: FindOptionsWhere<AlertaAdmision>[] = [
             {
                 user: { facultad: { slug } }, 
             }
@@ -48,29 +48,29 @@ export class AlertaAdmisionPosgradoService {
             }
          ]
         }
-        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
+        const alertaAdmision = await this.alertaAdmisionRepository.findOne({
             where: _where
         });
-        return alertaAdmisionPosgrado;
+        return alertaAdmision;
     }
     
-    async editAlertaAdmisionPosgrado(
+    async editAlertaAdmision(
             id: number,
-            dto: EditAlertaAdmisionPosgradoDto
+            dto: EditAlertaAdmisionDto
         ) {
-            const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
+            const alertaAdmision = await this.alertaAdmisionRepository.findOne({
                 where: {
                     id
                 },
             });
     
-            if (!alertaAdmisionPosgrado) {
+            if (!alertaAdmision) {
                 throw new NotFoundException('Alerta de admisión no existe o no está autorizado');
             }
     
             this.setDates(dto);        
-            const alertaAdmisionPosgradoEditada = Object.assign(alertaAdmisionPosgrado, dto);
-            return await this.alertaAdmisionPosgradoRepository.save(alertaAdmisionPosgradoEditada);
+            const alertaAdmisionEditada = Object.assign(alertaAdmision, dto);
+            return await this.alertaAdmisionRepository.save(alertaAdmisionEditada);
     }
 
 
@@ -94,17 +94,17 @@ export class AlertaAdmisionPosgradoService {
     //     return alertaAdmisionPosgrado;
     // }
 
-    async deleteAlertaAdmisionPosgrado(slug: string) {
-        const alertaAdmisionPosgrado = await this.alertaAdmisionPosgradoRepository.findOne({
+    async deleteAlertaAdmision(slug: string) {
+        const alertaAdmision = await this.alertaAdmisionRepository.findOne({
             where: {
                 user: { facultad: { slug } },
             }
         });
 
-        if (!alertaAdmisionPosgrado)
+        if (!alertaAdmision)
             throw new NotFoundException('Alerta de admisión no existe o no está autorizado');
 
-        await this.alertaAdmisionPosgradoRepository.remove(alertaAdmisionPosgrado);
+        await this.alertaAdmisionRepository.remove(alertaAdmision);
     }
 
     setDates(dto: { fecha_inicio?: any, fecha_fin?: any }): void {

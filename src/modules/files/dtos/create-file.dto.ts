@@ -1,21 +1,40 @@
-import { Optional } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 export class CreateFileDto {
 
-    @Optional()
+    @ApiProperty({
+        description: 'nombre del archivo'
+    })
+    @IsOptional()
     nombre: string;
-
-    @Optional()
+    
+    @ApiProperty({
+        description: 'nombre original del archivo'
+    })
+    @IsOptional()
     originalname: string;
-
-    @Optional()
+    
+    @ApiProperty({
+        description: 'Tipo del archivo'
+    })
+    @IsOptional()
     mimetype: string;
-
-    @Optional()
+    
+    @ApiProperty({
+        description: 'Url del archivo en s3'
+    })
+    @IsOptional()
     s3url: string;
-
-    @Optional()
+    
+    @ApiProperty({
+        description: 'Ancho del archivo en caso sea una imagen'
+    })
+    @IsOptional()
     width: number;
-
-    @Optional()
+    
+    @ApiProperty({
+        description: 'Alto del archivo en caso sea una imagen'
+    })
+    @IsOptional()
     height: number;
 }

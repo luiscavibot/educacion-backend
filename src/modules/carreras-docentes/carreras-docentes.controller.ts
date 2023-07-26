@@ -14,7 +14,7 @@ import { CreateCarreraDocenteDto, EditCarreraDocenteDto } from './dtos';
 import { Observable } from 'rxjs';
 import { CarreraDocente } from './entity';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('carreras-docentes')
 @ApiTags('Carreras Docentes')
@@ -38,6 +38,15 @@ export class CarrerasDocentesController {
     }
   }
 
+  @ApiOperation({
+    description: 'Crea una registro nuevo de carrera-docente'
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'carrera-docente creado correctamente',
+  })
+  @ApiResponse({ status: 400, description: 'Error en los datos enviados' })
+  @ApiResponse({ status: 500, description: 'Error del servidor' })
   async createCarreraDocente(
     @Body() dto: CreateCarreraDocenteDto,
     @Res() response,
@@ -59,6 +68,15 @@ export class CarrerasDocentesController {
     }
   }
 
+  @ApiOperation({
+    description: 'Actualiza un registro de carrera-deconte',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id del registro de carrera-docente',
+  })
   async editCarreraDocente(
     @Param('id') id: number,
     @Body() dto: EditCarreraDocenteDto,
@@ -82,6 +100,15 @@ export class CarrerasDocentesController {
     }
   }
 
+  @ApiOperation({
+    description: 'Elimina un registro de carrera-docente',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id del carrera-docente',
+  })
   async deleteCarreraDocente(@Param('id') id: number, @Res() response) {
     try {
       let data;
@@ -100,16 +127,43 @@ export class CarrerasDocentesController {
     }
   }
 
+  @ApiOperation({
+    description: 'Devuelve todos los docentes que son directores por carrera',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id de la carrera',
+  })
   @Get('directores/:id')
   directores(@Param('id') id: number): Observable<CarreraDocente[]> {
     return this.carreraService.directoresXCarrera(id);
   }
 
+  @ApiOperation({
+    description: 'Devuelve todos los docentes que son coordinadores por carrera',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id de la carrera',
+  })
   @Get('coordinadores/:id')
   coordinadores(@Param('id') id: number): Observable<CarreraDocente[]> {
     return this.carreraService.coordinadoresXCarrera(id);
   }
 
+  @ApiOperation({
+    description: 'Devuelve todos los docentes que son directores por carrera',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id de la carrera',
+  })
   @Get('docentes/:id')
   docentes(
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,

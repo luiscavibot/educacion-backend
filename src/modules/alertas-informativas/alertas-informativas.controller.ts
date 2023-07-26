@@ -177,7 +177,7 @@ export class AlertasInformativasController {
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
     @Param('slug', new DefaultValuePipe('')) slug: string,
     @Query('sort', new DefaultValuePipe('')) sort: string,
-    @Query('search', new DefaultValuePipe('')) search: string
+    @Query('search', new DefaultValuePipe('')) search: string 
   ): Observable<Pagination<AlertaInformativa>> {
     limit = limit > 100 ? 100 : limit;
     const options = {
