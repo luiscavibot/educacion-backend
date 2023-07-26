@@ -1,6 +1,14 @@
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsBoolean, IsDate, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
-export class CreateAlertaAdmisionPosgradoDto {
+
+enum NivelEstudio {
+    Pregrado = 'pregrado',
+    Posgrado = 'posgrado',
+}
+
+
+export class CreateAlertaAdmisionDto {
     @IsNotEmpty()
     @IsString()
     titulo: string;
@@ -12,6 +20,10 @@ export class CreateAlertaAdmisionPosgradoDto {
     @IsOptional()
     @IsString()
     ciclo: string;
+
+    @IsNotEmpty()
+    @IsIn([NivelEstudio.Pregrado, NivelEstudio.Posgrado])
+    nivelDeEstudio: string;
 
     @IsOptional()
     @IsBoolean()

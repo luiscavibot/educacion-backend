@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Dirigido } from './entity/';
 import { Repository } from 'typeorm';
 import { CreateDirigidoDto, EditDirigidoDto } from './dto';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class DirigidosService {
@@ -24,7 +23,7 @@ export class DirigidosService {
         return dirigido;
       }
     
-      async Createdirigido(dto: CreateDirigidoDto) {
+      async createDirigido(dto: CreateDirigidoDto) {
         const nuevodirigido = this.dirigidoRepository.create(dto);
         const dirigido = await this.dirigidoRepository.save(nuevodirigido);
     

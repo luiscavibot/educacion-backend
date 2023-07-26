@@ -5,7 +5,7 @@ export const initSwagger = (app: INestApplication) => {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('UNMSM-Services-API')
     .setDescription(
-      'Esta es una API creada con NestJS para las facultades y dependencias de la UNMSM y está desplegada en AWS',
+      'Documentación completa de las APIs para las Facultades y Dependencias de la UNMSM. Acceso fácil y detallado a la información académica y administrativa, desarrollada con NestJS',
     )
     .setVersion('1.0')
     .build();
