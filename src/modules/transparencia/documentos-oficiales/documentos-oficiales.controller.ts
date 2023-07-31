@@ -21,7 +21,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateDocumentoOficialDto } from './dtos/create-documento-oficial.dto';
 import { EditDocumentoOficialDto } from './dtos';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('documentos-oficiales')
 @ApiTags('Documentos Oficiales')
@@ -31,6 +31,15 @@ export class DocumentosOficialesController {
   ) {}
 
   @Get(':slug')
+  @ApiOperation({
+    description: 'Devuelve todos los documentos oficiales por paginacion de una facultad ',
+  })
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+    description: 'SLUG de la facultad a la que pertenecen los documentos oficiales',
+})
   documentosOficialesPorFacultad(
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 3,
@@ -55,11 +64,29 @@ export class DocumentosOficialesController {
   }
 
   @Get(':slug/years')
+  @ApiOperation({
+    description: 'Devuelve una lista de todos los años de los documentos oficiales',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'SLUG de la faucltad para filtrar los documentos oficiales',
+  })
   yearsDocumentosOficiales(@Param('slug', new DefaultValuePipe('')) slug: string): Observable<any> {
     return this.documentoOficialService.yearsDocumentosOficiales(slug);
   }
 
   @Get('id/:id')
+  @ApiOperation({
+    description: 'Devuelve un documento oficial dado un Id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id del documento oficial',
+  })
   async getById(@Param('id', ParseIntPipe) id: number) {
     const data = await this.documentoOficialService.getById(id);
     return { data };
@@ -74,6 +101,13 @@ export class DocumentosOficialesController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({
+    description: 'Crea un documento oficial',
+  })
+  @ApiResponse({
+      status: 200,
+      description: 'Se ha creado correctamente',
+  })
   async createDocumentoOficial(
     @Body() dto: CreateDocumentoOficialDto,
     @UploadedFile() file,
@@ -99,6 +133,13 @@ export class DocumentosOficialesController {
   }
 
   @Put(':id')
+  @ApiOperation({
+    description: 'Actualiza un documento oficial',
+  })
+  @ApiResponse({
+      status: 200,
+      description: 'Se ha actualizado correctamente',
+  })
   @UseInterceptors(FileInterceptor('file'))
   async editDocumentoOficial(
     @Param('id') id: number,
@@ -115,6 +156,19 @@ export class DocumentosOficialesController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    description: 'Borra un documento oficial dado un id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id del documento oficial',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Se ha borrado un documento oficial correctamente',
+  })
   async deleteDocumentoOficial(@Param('id') id: number) {
     let data;
     data = await this.documentoOficialService.deleteDocumentoOficial(id);

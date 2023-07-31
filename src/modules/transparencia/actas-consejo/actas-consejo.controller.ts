@@ -21,7 +21,7 @@ import { ActaConsejo } from './entity/acta-consejo.entity';
 import { CreateActaConsejoDto } from './dtos/create-acta-consejo.dto';
 import { EditActaConsejoDto } from './dtos/edit-acta-consejo.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('actas-consejo')
 @ApiTags('Actas Consejo')
@@ -29,6 +29,15 @@ export class ActasConsejoController {
   constructor(private readonly actaConsejoService: ActasConsejoService) {}
 
   @Get(':slug')
+  @ApiOperation({
+    description: 'Devuelve todos los adjuntos por paginacion de una facultad ',
+  })
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+    description: 'SLUG de la facultad a la que pertenecen las actas de consejo',
+})
   paginacionActaConsejo(
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
@@ -54,18 +63,37 @@ export class ActasConsejoController {
   }
 
   @Get('id/:id')
+  @ApiOperation({
+    description: 'Devuelve un acta de consejo dado un Id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id del acta de consejo',
+  })
   async getByid(@Param('id') id: number) {
     const data = await this.actaConsejoService.getById(id);
     return { data };
   }
 
   @Get('tipos/tipos-sesion')
+  @ApiOperation({
+    description: 'Devuelve los tipos de actas de consejo',
+  })
   getTipos() {
     const tipos = this.actaConsejoService.tipoSesion();
     return { tipos };
   }
 
   @Post()
+  @ApiOperation({
+    description: 'Crea un acta de consejo',
+  })
+  @ApiResponse({
+      status: 200,
+      description: 'Se ha creado correctamente',
+  })
   @UseInterceptors(FileInterceptor('file'))
   async createActaConsejo(
     @Body() dto: CreateActaConsejoDto,
@@ -93,6 +121,19 @@ export class ActasConsejoController {
   }
 
   @Put(':id')
+  @ApiOperation({
+    description: 'Actualiza y publica un acta de consejo',
+  })
+  @ApiParam({
+      name: 'id',
+      type: Number,
+      required: true,
+      description: 'Id del acta de consejo',
+  })
+  @ApiResponse({
+      status: 200,
+      description: 'Se ha actualizado correctamente',
+  })
   @UseInterceptors(FileInterceptor('file'))
   async editActaConsejo(
     @Param('id') id: number,
@@ -108,6 +149,20 @@ export class ActasConsejoController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    description: 'Borra un acta de consejo dado un id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id del acta de consejo',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Se ha borrado un acta de consejo correctamente',
+  })
+  @Delete(':id')
   async deleteActaConsejo(@Param('id') id: number) {
     let data;
     data = await this.actaConsejoService.deleteActaConsejo(id);
@@ -115,6 +170,13 @@ export class ActasConsejoController {
   }
 
   @Delete('eliminar')
+  @ApiOperation({
+    description: 'Borra una lista de documentos oficiales',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Se ha borrado la lista de documentos oficiales correctamente',
+  })
   async deleteActasConsejos(@Body() arreglo: number[]) {
     let data;
     if ((arreglo.length = 0)) return { message: 'Arreglo vacio' };

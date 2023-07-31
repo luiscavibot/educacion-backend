@@ -21,7 +21,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateResolucionDecanalDto } from './dtos';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { EditResolucionDecanalDto } from './dtos/edit-resolucion-decanal.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('resoluciones-decanales')
 @ApiTags('Resoluciones Decanales')
@@ -31,6 +31,15 @@ export class ResolucionesDecanalesController {
   ) {}
 
   @Get(':slug')
+  @ApiOperation({
+    description: 'Devuelve todas las resoluciones decanales por paginacion de una facultad ',
+  })
+  @ApiParam({
+    name: 'slug',
+    type: String,
+    required: true,
+    description: 'SLUG de la facultad a la que pertenecen las resoluciones decanales',
+  })
   paginacionResolucionesDecanales(
     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
     @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
@@ -56,12 +65,28 @@ export class ResolucionesDecanalesController {
   }
 
   @Get('id/:id')
+  @ApiOperation({
+    description: 'Devuelve una resolucion decanal dado un Id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id de la resolucion decanal',
+  })
   async getByid(@Param('id') id: number) {
     const data = await this.resolucionDecanalService.getById(id);
     return { data };
   }
 
   @Post()
+  @ApiOperation({
+    description: 'Crea una resolucion decanal',
+  })
+  @ApiResponse({
+      status: 200,
+      description: 'Se ha creado correctamente',
+  })
   @UseInterceptors(FileInterceptor('file'))
   async createResolucionDecanal(
     @Body() dto: CreateResolucionDecanalDto,
@@ -88,6 +113,19 @@ export class ResolucionesDecanalesController {
   }
 
   @Put(':id')
+  @ApiOperation({
+    description: 'Actualiza una resolucion decanal',
+  })
+  @ApiParam({
+      name: 'id',
+      type: Number,
+      required: true,
+      description: 'Id de la resolucion decanal',
+  })
+  @ApiResponse({
+      status: 200,
+      description: 'Se ha actualizado correctamente',
+  })
   @UseInterceptors(FileInterceptor('file'))
   async editResolucionDecanal(
     @Param('id') id: number,
@@ -104,6 +142,19 @@ export class ResolucionesDecanalesController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    description: 'Borra una resolucion decanal dado un id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    required: true,
+    description: 'Id de la resolucion decanal',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Se ha borrado una resolucion decanal correctamente',
+  })
   async deleteResolucionDecanal(@Param('id') id: number) {
     let data;
     data = await this.resolucionDecanalService.deleteResolucionDecanal(id);
