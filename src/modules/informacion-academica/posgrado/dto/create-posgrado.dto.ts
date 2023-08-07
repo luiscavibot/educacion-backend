@@ -1,33 +1,66 @@
 import { Optional } from "@nestjs/common";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsOptional } from "class-validator";
 export class CreatePosgradoDto {
 
-    @Optional()
+    @ApiProperty({
+        description: 'Nombre de informacion académica de posgrado'
+    })
+    @IsOptional()
     nombre: string;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Tipo de información académica de posgrado'
+    })
+    @IsOptional()
     tipo: string;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Tipo del programa al que pertenece la información académicade posgrado'
+    })
+    @IsOptional()
     tipoPrograma: string;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Programa al que pertenece la información académica de posgrado'
+    })
+    @IsOptional()
     nombrePrograma: string;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Año de información académica de posgrado'
+    })
+    @IsOptional()
     anio: string;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Url de la información académica de posgrado'
+    })
+    @IsOptional()
     url: string;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Publicar o despublicar la información académica de posgrado'
+    })
+    @IsOptional()
     estado: boolean;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Fijar en la web de la facultad la información académica de posgrado como uno de los primeros'
+    })
+    @IsOptional()
     fijado: boolean;
-        
-    @Optional()
+    
+    @ApiProperty({
+        description: 'Id del usuario que creó la información académica de posgrado',
+        required: true
+    })
+    @IsOptional()
     usuarioId: number;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Id del último usuario en actualizar la información académica de posgrado',
+    })
+    @IsOptional()
     last_updated_by: number;
 }

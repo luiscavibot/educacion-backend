@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DefaultValuePipe, Query } from '@nestjs/common'; 
 import { ComunicadosService } from './comunicados.service';
 import { CreateComunicadosDto } from './dto/create-comunicados.dto';
@@ -15,12 +15,34 @@ export class ComunicadosController {
     constructor(private readonly comunicadoService: ComunicadosService){}
 
     @Get('id/:id')
+    @ApiOperation({
+        description: 'Devuelve un comunicado dado un id',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Se ha devuelto la información correctamente',
+    })
+    @ApiParam({
+        name: 'id',
+        type: Number,
+        required: true,
+        description: 'Id de un comunicado',
+    })
     async getById(@Param('id', ParseIntPipe) id: number){
         const data = await this.comunicadoService.getById(id);
         return { data };
     }
 
     @Get(':slug')
+    @ApiOperation({
+        description: 'Devuelve todos los comuicados por paginacion de una facultad ',
+      })
+      @ApiParam({
+        name: 'slug',
+        type: String,
+        required: true,
+        description: 'SLUG de la facultad a la que pertenecen los comunicados',
+    })
     getAllComunicadosFacultad(
         @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number = 0,
         @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number = 3,
@@ -51,6 +73,13 @@ export class ComunicadosController {
 
 
     @Post()
+    @ApiOperation({
+        description: 'Crea un comunicado',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Se ha creado correctamente',
+    })
     @UseInterceptors(FileInterceptor('file'))
     async createComunicado(
         @Body() dto: CreateComunicadosDto,
@@ -75,6 +104,19 @@ export class ComunicadosController {
 
 
     @Put(':id')
+    @ApiOperation({
+        description: 'Actualiza y publica un comunicado',
+    })
+    @ApiParam({
+          name: 'id',
+          type: Number,
+          required: true,
+          description: 'Id del comunicado',
+    })
+    @ApiResponse({
+          status: 200,
+          description: 'Se ha actualizado correctamente',
+    })
     @UseInterceptors(FileInterceptor('file'))
     async editComunicado(
         @Param('id') id: number,
@@ -87,6 +129,19 @@ export class ComunicadosController {
     }
 
     @Delete(':id')
+    @ApiOperation({
+        description: 'Borra un comunicado dado un id',
+    })
+    @ApiParam({
+        name: 'id',
+        type: Number,
+        required: true,
+        description: 'Id del comunicado',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Se ha borrado un trámite correctamente',
+    })
     async deleteComunicado(@Param('id') id: number){
         let data;
         data = await this.comunicadoService.deleteComunicado(id);

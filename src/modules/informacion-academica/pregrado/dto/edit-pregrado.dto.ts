@@ -1,3 +1,12 @@
-import { PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { CreatePregradoDto } from './create-pregrado.dto';
-export class EditPregradoDto  extends PartialType(CreatePregradoDto){}
+import { IsOptional } from 'class-validator';
+export class EditPregradoDto  extends OmitType(CreatePregradoDto,[
+    'usuarioId'
+] as const){
+    @ApiProperty({
+        description: 'Id del usuario que creó la información académica de pregrado'
+    })
+    @IsOptional()
+    usuarioId: number;
+}
