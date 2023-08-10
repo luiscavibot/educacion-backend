@@ -313,8 +313,12 @@ export class EventoService {
     eventoEntity?: Evento,
   ) {
     const evento = await this.getById(id, eventoEntity);
-    dto.fecha_inicio = new Date(`${dto.fecha_inicio}T00:00:00.000Z`);
-    dto.fecha_final = new Date(`${dto.fecha_final}T23:59:00.000Z`);
+    if(dto.fecha_inicio){
+      dto.fecha_inicio = new Date(`${dto.fecha_inicio}T00:00:00.000Z`);
+    }
+    if(dto.fecha_final){
+      dto.fecha_final = new Date(`${dto.fecha_final}T23:59:00.000Z`);
+    }
     if (evento.foto != '' && file) {
       await this.storageService.deleteFile(evento.foto);
     }
