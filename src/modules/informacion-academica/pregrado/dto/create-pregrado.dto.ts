@@ -1,32 +1,60 @@
-import { Optional } from "@nestjs/common";
-import { IsBoolean, IsNumber, IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreatePregradoDto {
-    @Optional()
+
+    @ApiProperty({
+        description: 'Nombre de informacion académica de pregrado'
+    })
+    @IsOptional()
     @IsString()
     nombre: string;
 
-    @Optional()
+    @ApiProperty({
+        description: 'tipo de información académica de pregrado(HORARIOS, SYLLABUS, etc)'
+    })
+    @IsOptional()
     tipo: string;
 
-    @Optional()
+    @ApiProperty({
+        description: 'Escuela a la que pertenece la información académica'
+    })
+    @IsOptional()
     escuela: string;
 
-    @Optional()
+    @ApiProperty({
+        description: 'Año de información académica de pregrado'
+    })
+    @IsOptional()
     anio: string;
     
-    @Optional()
+    @ApiProperty({
+        description: 'Url de la información académica de pregrado'
+    })
+    @IsOptional()
     url: string;
 
-    @Optional()
+    @ApiProperty({
+        description: 'Publicar o despublicar la información académica de pregrado'
+    })
+    @IsOptional()
     estado: boolean;
 
-    @Optional()
+    @ApiProperty({
+        description: 'Fijar en la web de la facultad la información académica de pregrado como uno de los primeros'
+    })
+    @IsOptional()
     fijado: boolean;
 
-    @Optional()
+    @ApiProperty({
+        description: 'Id del usuario que creó la información académica de pregrado',
+        required: true
+    })
+    @IsNotEmpty()
     usuarioId: number;
 
-    @Optional()
+    @ApiProperty({
+        description: 'Id del último usuario en actualizar la información académica de pregrado',
+    })
     last_updated_by: number;
 }
