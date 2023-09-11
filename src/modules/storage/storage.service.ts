@@ -27,11 +27,11 @@ export class StorageService {
       Bucket: bucket,
       Key: String(name),
       Body: file,
-      ACL: 'public-read',
+      // ACL: 'public-read',
       ContentType: mimetype,
       ContentDisposition: 'inline',
       CreateBucketConfiguration: {
-        LocationConstraint: 'us-east-1',
+        LocationConstraint: 'us-east-2',
       },
     };
 
