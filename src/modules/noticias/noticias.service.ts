@@ -35,7 +35,10 @@ export class NoticiasService {
     private readonly adjuntoService: AdjuntosService,
   ) {}
 
-  ultimasNoticiasHome(slug: string): Observable<Noticia[]> {
+  ultimasNoticiasHome(
+    slug: string,
+    targetProject: string,
+  ): Observable<Noticia[]> {
     return from(
       this.noticiaRepository.find({
         take: 3,
@@ -44,6 +47,7 @@ export class NoticiasService {
           user: { facultad: { slug } },
           destacado: false,
           estado: true,
+          target_project: In(['ALL', targetProject]),
         },
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));
@@ -66,7 +70,10 @@ export class NoticiasService {
     ).pipe(map((noticias: Noticia[]) => noticias));
   }
 
-  destacadasNoticias(slug: string): Observable<Noticia[]> {
+  destacadasNoticias(
+    slug: string,
+    targetProject: string,
+  ): Observable<Noticia[]> {
     return from(
       this.noticiaRepository.find({
         take: 3,
@@ -75,6 +82,7 @@ export class NoticiasService {
           user: { facultad: { slug } },
           destacado: true,
           estado: true,
+          target_project: In(['ALL', targetProject]),
         },
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));

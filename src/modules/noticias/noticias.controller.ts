@@ -52,7 +52,6 @@ export class NoticiasController {
     @Query('sort') sort: string,
     @Query('estado') estado: string,
     @Query('targetProject') targetProject: string,
-    // @Query('ref') ref: string,
   ): Observable<Pagination<Noticia>> {
     limit = limit > 100 ? 100 : limit;
     return this.noticiaService.paginacionNoticias(
@@ -71,8 +70,11 @@ export class NoticiasController {
   @ApiOperation({
     description: 'Devuelve las ultimas noticias (3)',
   })
-  ultimasNoticiasHome(@Param('slug') slug: string): Observable<Noticia[]> {
-    return this.noticiaService.ultimasNoticiasHome(slug);
+  ultimasNoticiasHome(
+    @Param('slug') slug: string,
+    @Query('targetProject') targetProject: string,
+  ): Observable<Noticia[]> {
+    return this.noticiaService.ultimasNoticiasHome(slug, targetProject);
   }
   @Get(':slug/ultimas')
   @ApiOperation({
@@ -89,8 +91,11 @@ export class NoticiasController {
   @ApiOperation({
     description: 'Devuelve las noticias destacadas',
   })
-  destacadasNoticias(@Param('slug') slug: string): Observable<Noticia[]> {
-    return this.noticiaService.destacadasNoticias(slug);
+  destacadasNoticias(
+    @Param('slug') slug: string,
+    @Query('targetProject') targetProject: string,
+  ): Observable<Noticia[]> {
+    return this.noticiaService.destacadasNoticias(slug, targetProject);
   }
 
   @Get('id/:id')
