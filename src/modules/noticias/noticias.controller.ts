@@ -51,6 +51,7 @@ export class NoticiasController {
     @Param('slug', new DefaultValuePipe('')) slug: string,
     @Query('sort') sort: string,
     @Query('estado') estado: string,
+    @Query('targetProject') targetProject: string,
     // @Query('ref') ref: string,
   ): Observable<Pagination<Noticia>> {
     limit = limit > 100 ? 100 : limit;
@@ -62,6 +63,7 @@ export class NoticiasController {
       slug,
       sort,
       estado,
+      targetProject,
     );
   }
 
@@ -76,7 +78,10 @@ export class NoticiasController {
   @ApiOperation({
     description: 'Devuelve las ultimas noticias (3)',
   })
-  ultimasNoticias(@Param('slug') slug: string,  @Query('id') id: number,): Observable<Noticia[]> {
+  ultimasNoticias(
+    @Param('slug') slug: string,
+    @Query('id') id: number,
+  ): Observable<Noticia[]> {
     return this.noticiaService.ultimasNoticias(slug, id);
   }
 
@@ -150,7 +155,11 @@ export class NoticiasController {
     @Res() response,
   ) {
     try {
-      const data = await this.noticiaService.createNoticia({...dto},file, adjuntos );
+      const data = await this.noticiaService.createNoticia(
+        { ...dto },
+        file,
+        adjuntos,
+      );
       response.status(HttpStatus.CREATED).json({
         status: HttpStatus.CREATED,
         message: 'Creación exitosa',

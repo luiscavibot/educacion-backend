@@ -21,6 +21,12 @@ export class Noticia extends BaseEntity {
   @Column({ type: 'varchar', nullable: false, length: 200 })
   titulo: string;
 
+  @Column({
+    type: 'varchar',
+    default: 'GENERAL',
+  })
+  target_project: string;
+
   @Column({ type: 'text' })
   subtitulo: string;
 

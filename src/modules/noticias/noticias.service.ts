@@ -6,6 +6,7 @@ import {
 import {
   FindOptionsSelect,
   FindOptionsWhere,
+  In,
   Not,
   Repository,
 } from 'typeorm';
@@ -31,7 +32,7 @@ export class NoticiasService {
     @InjectRepository(Noticia)
     private readonly noticiaRepository: Repository<Noticia>,
     private readonly storageService: StorageService,
-    private readonly adjuntoService: AdjuntosService
+    private readonly adjuntoService: AdjuntosService,
   ) {}
 
   ultimasNoticiasHome(slug: string): Observable<Noticia[]> {
@@ -53,14 +54,14 @@ export class NoticiasService {
       user: { facultad: { slug } },
       estado: true,
     };
-    if(id){
-      _where = { ..._where, id: Not(id)};
+    if (id) {
+      _where = { ..._where, id: Not(id) };
     }
     return from(
       this.noticiaRepository.find({
         take: 3,
         order: { fecha: 'DESC' },
-        where: _where
+        where: _where,
       }),
     ).pipe(map((noticias: Noticia[]) => noticias));
   }
@@ -95,6 +96,7 @@ export class NoticiasService {
     slug: string,
     sort: string,
     estado: string,
+    targetProject: string,
   ): Observable<Pagination<Noticia>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
@@ -115,9 +117,22 @@ export class NoticiasService {
         cuerpo: true,
         resumen: true,
         slug: true,
+        target_project: true,
       };
       _where = { ..._where, estado: true };
     }
+    if (targetProject) {
+      _where = {
+        ..._where,
+        target_project: In(['ALL', targetProject]),
+      };
+    }
+    // else {
+    //   _where = {
+    //     ..._where,
+    //     target_project: 'ALL',
+    //   };
+    // }
     return from(
       this.noticiaRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,
@@ -154,7 +169,11 @@ export class NoticiasService {
     return noticia;
   }
 
-  async createNoticia(dto: CreateNoticiaDto, file: any, adjuntos: CreateAdjuntoDto[]) {
+  async createNoticia(
+    dto: CreateNoticiaDto,
+    file: any,
+    adjuntos: CreateAdjuntoDto[],
+  ) {
     const hash = Date.now().toString();
     let nuevosAdjuntos = {};
     dto.slug = await generateSlug(dto.titulo, hash);
@@ -173,12 +192,16 @@ export class NoticiasService {
     const nuevaNoticia = this.noticiaRepository.create(dto);
     const noticia = await this.noticiaRepository.save(nuevaNoticia);
     if (adjuntos && adjuntos.length > 0) {
-      nuevosAdjuntos = await Promise.all(adjuntos.map(async adjuntoDto => {
-        const {adjunto, ...campos } = await this.adjuntoService.createAdjunto(
-          {...adjuntoDto, noticia_id: noticia.id},
-        );
-        return campos;
-      }));
+      nuevosAdjuntos = await Promise.all(
+        adjuntos.map(async (adjuntoDto) => {
+          const { adjunto, ...campos } =
+            await this.adjuntoService.createAdjunto({
+              ...adjuntoDto,
+              noticia_id: noticia.id,
+            });
+          return campos;
+        }),
+      );
     }
     return { noticia, nuevosAdjuntos };
   }
@@ -218,7 +241,7 @@ export class NoticiasService {
       await this.storageService.deleteFile(noticia.foto);
     }
 
-    if(noticia.adjuntos.length>0){
+    if (noticia.adjuntos.length > 0) {
       for (const adjunto of noticia.adjuntos) {
         await this.adjuntoService.deleteAdjunto(adjunto.id);
       }
