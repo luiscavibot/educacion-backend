@@ -1,9 +1,12 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsSelect, FindOptionsWhere, Repository, Like } from 'typeorm';
+import {
+  FindOptionsSelect,
+  FindOptionsWhere,
+  Repository,
+  Like,
+  In,
+} from 'typeorm';
 import { CreateTramiteDto, EditTramiteDto } from './dtos';
 import { Tramite } from './entity';
 import { from, map, Observable } from 'rxjs';
@@ -41,6 +44,7 @@ export class TramitesService {
     estado: string,
     tipos: string[],
     query: string,
+    targetProject: string,
   ): Observable<Pagination<Tramite>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
@@ -63,11 +67,17 @@ export class TramitesService {
         proceso: true,
         anexo: true,
         correo: true,
-        fijar:true,
+        fijar: true,
         requisitos: true,
         updated_at: true,
       };
-      _where = [{ user: { facultad: { slug } }, estado: true }];
+      _where = [
+        {
+          user: { facultad: { slug } },
+          estado: true,
+          target_project: In(['ALL', targetProject]),
+        },
+      ];
     }
 
     if (tipos?.length > 0) _where = [];
@@ -75,7 +85,12 @@ export class TramitesService {
     tipos?.forEach((tipo) => {
       _where = [
         ..._where,
-        { user: { facultad: { slug } }, estado: true, dirigido: Like(`%${tipo}%`) },
+        {
+          user: { facultad: { slug } },
+          estado: true,
+          dirigido: Like(`%${tipo}%`),
+          target_project: In(['ALL', targetProject]),
+        },
       ];
     });
 
@@ -90,6 +105,17 @@ export class TramitesService {
       }));
       _where = [...firstGroupWhere, ...secondGroupWhere];
     }
+
+    // if (targetProject) {
+    //   _where = [
+    //     ..._where,
+    //     {
+    //       target_project: In(['ALL', targetProject]),
+    //     },
+    //   ];
+    // }
+
+    console.log('_where-->', _where);
 
     return from(
       this.tramiteRepository.findAndCount({

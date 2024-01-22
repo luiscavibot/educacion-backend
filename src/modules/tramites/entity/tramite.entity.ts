@@ -18,13 +18,18 @@ export class Tramite extends BaseEntity {
   @Column({ type: 'text' })
   titulo!: string;
 
-  
+  @Column({
+    type: 'varchar',
+    default: 'GENERAL',
+  })
+  target_project: string;
+
   @Column({ type: 'text' })
   descripcion: string;
-  
-  @Column({ type: 'text'})
+
+  @Column({ type: 'text' })
   dirigido: string[];
-  
+
   @Column({ type: 'datetime' })
   fecha: Date;
 
@@ -37,9 +42,9 @@ export class Tramite extends BaseEntity {
   @Column({ type: 'text' })
   correo: string;
 
-  @Column({ type: 'boolean'})
+  @Column({ type: 'boolean' })
   fijar: boolean;
-  
+
   @Column({ type: 'varchar', length: 5 })
   anexo: string;
 
