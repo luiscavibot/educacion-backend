@@ -16,7 +16,7 @@ spec:
         - name: facultades-backend-container
           image: 365227208102.dkr.ecr.us-east-2.amazonaws.com/facultades-backend:latest
           ports:
-            - containerPort: 1337
+            - containerPort: 4000
           env:
             - name: NODE_ENV
               value: 'production'

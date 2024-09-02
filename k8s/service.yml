@@ -10,5 +10,5 @@ spec:
     - protocol: TCP
       port: 80
       name: http
-      targetPort: 1337
+      targetPort: 4000
   type: ClusterIP
