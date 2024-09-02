@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: facultades-backend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: facultades-backend-app
+  template:
+    metadata:
+      labels:
+        app: facultades-backend-app
+    spec:
+      containers:
+        - name: facultades-backend-container
+          image: 365227208102.dkr.ecr.us-east-2.amazonaws.com/facultades-backend:latest
+          ports:
+            - containerPort: 1337
+          env:
+            - name: NODE_ENV
+              value: 'production'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '100m'
+            limits:
+              memory: '512Mi'
+              cpu: '200m'
