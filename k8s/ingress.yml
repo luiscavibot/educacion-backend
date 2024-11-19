@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: facultades-backend
+  name: educacion-backend
   namespace: default
   annotations:
     kubernetes.io/ingress.class: alb
@@ -11,13 +11,13 @@ metadata:
     alb.ingress.kubernetes.io/group.name: unmsm-alb-ingress
 spec:
   rules:
-    - host: unmsmadmin.edu.pe
+    - host: educacionback.unmsm.edu.pe
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: facultades-backend-service
+                name: educacion-backend-service
                 port:
                   name: http

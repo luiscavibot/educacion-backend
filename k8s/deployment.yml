@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: facultades-backend-deployment
+  name: educacion-backend-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: facultades-backend-app
+      app: educacion-backend-app
   template:
     metadata:
       labels:
-        app: facultades-backend-app
+        app: educacion-backend-app
     spec:
       containers:
-        - name: facultades-backend-container
-          image: 365227208102.dkr.ecr.us-east-2.amazonaws.com/facultades-backend:latest
+        - name: educacion-backend-container
+          image: 365227208102.dkr.ecr.us-east-2.amazonaws.com/educacion-backend:latest
           ports:
             - containerPort: 4000
           env:

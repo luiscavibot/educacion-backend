@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: facultades-backend-service
+  name: educacion-backend-service
   namespace: default
 spec:
   selector:
-    app: facultades-backend-app
+    app: educacion-backend-app
   ports:
     - protocol: TCP
       port: 80
