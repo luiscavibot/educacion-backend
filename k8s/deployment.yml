@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: educacion-backend-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: educacion-backend-app
@@ -22,8 +22,8 @@ spec:
               value: 'production'
           resources:
             requests:
-              memory: '256Mi'
+              memory: '100Mi'
               cpu: '100m'
             limits:
-              memory: '512Mi'
+              memory: '200Mi'
               cpu: '200m'
