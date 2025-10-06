@@ -27,7 +27,7 @@ export class Noticia extends BaseEntity {
   })
   target_project: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   subtitulo: string;
 
   @Column({ type: 'text' })

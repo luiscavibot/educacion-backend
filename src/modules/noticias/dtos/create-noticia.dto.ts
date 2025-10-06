@@ -15,9 +15,9 @@ export class CreateNoticiaDto {
   @IsString()
   target_project: string;
 
-  // @IsOptional()
-  // @IsString()
-  // subtitulo: string;
+  @IsOptional()
+  @IsString()
+  subtitulo: string;
 
   @IsOptional()
   @IsString()
