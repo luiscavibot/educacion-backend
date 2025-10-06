@@ -30,28 +30,28 @@ export class Noticia extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   subtitulo: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   slug: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   foto: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   pie_foto: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   cuerpo: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   fecha: Date;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   destacado: boolean;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: true })
   estado: boolean;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   resumen: string;
 
   @OneToMany(() => Adjunto, (adjunto) => adjunto.noticia)

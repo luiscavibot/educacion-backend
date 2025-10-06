@@ -44,6 +44,7 @@ export class CreateNoticiaDto {
   destacado: boolean;
 
   @IsOptional()
+  @IsBoolean()
   estado: boolean;
 
   @IsOptional()
