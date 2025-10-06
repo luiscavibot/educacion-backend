@@ -186,6 +186,11 @@ export class NoticiasService {
     let nuevosAdjuntos = {};
     dto.slug = await generateSlug(dto.titulo, hash);
 
+    // Asignar last_updated_by con el mismo valor de usuario_id
+    if (dto.usuario_id) {
+      dto.last_updated_by = dto.usuario_id;
+    }
+
     if (file) {
       const nombre_foto = fileFilterName(file, hash);
       if (!nombre_foto) {
@@ -237,6 +242,11 @@ export class NoticiasService {
         nombre_foto,
       );
       dto.foto = Location;
+    }
+
+    // Si no se proporciona last_updated_by, mantener el valor actual
+    if (!dto.last_updated_by) {
+      dto.last_updated_by = noticia.last_updated_by;
     }
 
     const noticiaEditado = Object.assign(noticia, dto);

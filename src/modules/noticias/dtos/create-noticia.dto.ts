@@ -53,4 +53,7 @@ export class CreateNoticiaDto {
   @IsNotEmpty()
   @IsOptional()
   usuario_id: number;
+
+  @IsOptional()
+  last_updated_by: number;
 }

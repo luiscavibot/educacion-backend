@@ -61,10 +61,10 @@ export class Noticia extends BaseEntity {
   @JoinColumn({ name: 'usuario_id' })
   user: User;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true })
   usuario_id: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true })
   last_updated_by: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
