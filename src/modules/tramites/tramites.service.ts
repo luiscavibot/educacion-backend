@@ -115,8 +115,6 @@ export class TramitesService {
     //   ];
     // }
 
-    console.log('_where-->', _where);
-
     return from(
       this.tramiteRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,

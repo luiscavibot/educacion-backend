@@ -110,8 +110,6 @@ export class ComunicadosService {
       };
     }
 
-    console.log('_where-->', _where);
-
     return from(
       this.comunicadoRepository.findAndCount({
         skip: Number(options.page) * Number(options.limit) || 0,

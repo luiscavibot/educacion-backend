@@ -215,8 +215,6 @@ export class NoticiasController {
     @Body() dto: EditNoticiaDto,
     @UploadedFile() file,
   ) {
-    console.log('DTO-->', dto);
-
     if (file) {
       dto.foto = file.originalname;
     }

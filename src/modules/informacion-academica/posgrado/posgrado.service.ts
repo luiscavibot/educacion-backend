@@ -73,7 +73,6 @@ export class PosgradoService {
         },
       ];
     }
-    console.log('tipoPrograma-->', tipoPrograma);
 
     if (tipoPrograma?.length > 0) {
       tipoPrograma.map((tipo) => {
@@ -173,7 +172,6 @@ export class PosgradoService {
           }
         }
       }
-      console.log('condition-->', condition);
     }
 
     return from(
