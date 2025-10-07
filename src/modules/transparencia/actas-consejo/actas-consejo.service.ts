@@ -39,15 +39,17 @@ export class ActasConsejoService {
   ): Observable<Pagination<ActaConsejo>> {
     let order_by = sort?.split(':')[0] || 'id';
     let direction = sort?.split(':')[1] || 'DESC';
-    let _where: FindOptionsWhere<ActaConsejo>[] = [{
-      user: { facultad: { slug } },
-    }];
+    let _where: FindOptionsWhere<ActaConsejo>[] = [
+      {
+        user: { facultad: { slug } },
+      },
+    ];
     let _select: FindOptionsSelect<ActaConsejo> = {
       id: true,
       sesion: true,
       estado: true,
       fecha: true,
-      palabras_claves:true
+      palabras_claves: true,
     };
 
     if (estado == 'true') {
@@ -58,24 +60,41 @@ export class ActasConsejoService {
         documento: true,
         video: true,
         fecha: true,
-        palabras_claves:true
+        palabras_claves: true,
       };
       _where = [{ user: { facultad: { slug } }, estado: true }];
     }
-    if (query.length>=1) {
+    if (query.length >= 1) {
       _where = [
-        {  user: { facultad: { slug } }, estado: true, palabras_claves: Like(`%${query}%`) },
-        {  user: { facultad: { slug } }, estado: true, descripcion: Like(`%${query}%`) },
-      ]
-    }
-    
-    if(fecha_inicio && fecha_fin){
-      _where = [
-        {  user: { facultad: { slug } }, estado: true, palabras_claves: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)), },
-        {  user: { facultad: { slug } }, estado: true, descripcion: Like(`%${query}%`), fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)) },
-      ]
+        {
+          user: { facultad: { slug } },
+          estado: true,
+          palabras_claves: Like(`%${query}%`),
+        },
+        {
+          user: { facultad: { slug } },
+          estado: true,
+          descripcion: Like(`%${query}%`),
+        },
+      ];
     }
 
+    if (fecha_inicio && fecha_fin) {
+      _where = [
+        {
+          user: { facultad: { slug } },
+          estado: true,
+          palabras_claves: Like(`%${query}%`),
+          fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)),
+        },
+        {
+          user: { facultad: { slug } },
+          estado: true,
+          descripcion: Like(`%${query}%`),
+          fecha: Between(new Date(fecha_inicio), new Date(fecha_fin)),
+        },
+      ];
+    }
 
     return from(
       this.actaConsejoRepository.findAndCount({
@@ -121,6 +140,12 @@ export class ActasConsejoService {
 
   async createActaConsejo(dto: CreateActaConsejoDto, file: any) {
     const hash = Date.now().toString();
+
+    // Asignar last_updated_by con el mismo valor de usuario_id
+    if (dto.usuario_id) {
+      dto.last_updated_by = dto.usuario_id;
+    }
+
     if (file) {
       const nombre_archivo = fileFilterName(file, hash);
       if (!nombre_archivo) {
@@ -166,6 +191,11 @@ export class ActasConsejoService {
       );
       dto.documento = Location;
       dto.fileName = file.originalname;
+    }
+
+    // Si no se proporciona last_updated_by, mantener el valor actual
+    if (!dto.last_updated_by) {
+      dto.last_updated_by = actaConsejo.last_updated_by;
     }
 
     const memoriaEditada = Object.assign(actaConsejo, dto);
