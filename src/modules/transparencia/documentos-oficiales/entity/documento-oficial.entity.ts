@@ -17,7 +17,7 @@ export class DocumentoOficial {
   @Column({ type: 'text', charset: 'utf8mb4' })
   nombre: string;
 
-  @Column({ type:'text' })
+  @Column({ type:'text', nullable: true })
   palabras_claves: string;
 
   @Column({ type: 'text' })
@@ -29,7 +29,7 @@ export class DocumentoOficial {
   @Column({ type: 'text', charset: 'utf8mb4' })
   fileName: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', nullable: true })
   estado: boolean;
 
   @ManyToOne(() => User, (user) => user.documentos)
@@ -39,7 +39,7 @@ export class DocumentoOficial {
   @Column({ type: 'int' })
   usuario_id: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true })
   last_updated_by: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })

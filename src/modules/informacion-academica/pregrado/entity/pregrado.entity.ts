@@ -22,7 +22,7 @@ export class Pregrado {
     @Column({ type: 'text'})
     url: string;
 
-    @Column({ type: 'boolean'})
+    @Column({ type: 'boolean', nullable: true})
     estado: boolean;
 
     @Column({ type: 'boolean'})
