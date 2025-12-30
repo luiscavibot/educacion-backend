@@ -17,7 +17,7 @@ export class Memoria {
   @Column({ type: 'text' })
   nombre: string;
 
-  @Column({ type: 'simple-array' })
+  @Column({ type: 'simple-array', nullable: true })
   palabras_claves: string[];
 
   @Column({ type: 'text' })

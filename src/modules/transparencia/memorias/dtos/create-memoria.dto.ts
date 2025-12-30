@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateMemoriaDto {
 
@@ -18,11 +19,18 @@ export class CreateMemoriaDto {
   nombre: string;
 
   @ApiProperty({
-    description: 'Palabras claves para la busqueda de la memoria'
+    description: 'Palabras claves para la busqueda de la memoria',
   })
-  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').filter((v) => v.trim() !== '');
+    }
+    return value;
+  })
+  @IsString({ each: true })
   @IsArray()
-  palabras_clave: string[];
+  palabras_claves: string[];
 
   @ApiProperty({
     description: 'Url del s3 de la memoria'
